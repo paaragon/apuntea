@@ -128,3 +128,8 @@ dl.left{
     clear: both;
     height: 0;
 }
+
+img {
+    max-width: 180px;
+    max-height: 270px;
+} 
