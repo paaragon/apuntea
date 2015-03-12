@@ -40,12 +40,12 @@ main{
     margin: 50px auto;
 }
 
-h1, h2, h3{
-    color: #455A64;
+p{
+    text-align: justify;
 }
 
-main h1{
-    /*text-align: center;*/
+h1, h2, h3{
+    color: #455A64;
 }
 
 main div{
@@ -112,24 +112,22 @@ dd{
     width: 200px;
 }
 
-.arriba{
-    text-align: right;
-}
-
-.left{
+.miembro p, .miembro dl{
     float: left;
 }
 
-dl.left{
+.miembro dl{
     margin-left: 15px;
+    max-width: 80%;
+    text-align: justify;
+}
+
+.miembro p.arriba{
+    text-align: right;
+    float: none;
 }
 
 .clear{
     clear: both;
     height: 0;
 }
-
-img {
-    max-width: 180px;
-    max-height: 270px;
-} 
