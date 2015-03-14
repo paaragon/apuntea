@@ -43,11 +43,30 @@ El formulario debe pedir al usuario los siguientes datos:
         <!--Contenido principal-->
         <main>
             <h1>Contacto</h1>
-            <!--*************************************************
-            Aquí teneis que poner el contenido de vuestra sección
-            **************************************************-->
+            <!--***************************************************************************************************-->
+            <form>
+                <br />Nombre: <input type="text" class="field" id="orderName" required />
+                <br>
+                <br />Mail: <input type="email" name="email" required />
+                <br>
+                <br />Motivo:<input type="radio" name="motivo" value="evaluacion" checked="checked">Evaluacion
+                             <input type="radio" name="motivo" value="sugerencias">Sugerencias
+                             <input type="radio" name="motivo" value="criticas" />Críticas
+                <br><br>
+                <br />Marque esta casilla para verificar que ha leído nuestros términos y condiciones del servicio<input type="checkbox" name="consulta" required />
+                <br><br>
+                <br />Consulta: <input type="text" name="consulta" value=""/>
+                <br><br>
+                <input type="submit" value="Continuar">
+            </form>
+            <!--***************************************************************************************************-->
         </main><!--Fin contenido principal-->
-
+        
+        <div>
+            
+            
+        </div>
+        
         <!--Pie de página-->
         <footer>
             <p>
