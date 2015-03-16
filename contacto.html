@@ -44,28 +44,27 @@ El formulario debe pedir al usuario los siguientes datos:
         <main>
             <h1>Contacto</h1>
             <!--***************************************************************************************************-->
-            <form>
-                <br />Nombre: <input type="text" class="field" id="orderName" required />
+            <form action="mailto:jlacruz@ucm.es" method="post">
+                <br /><label>Nombre: </label><input type="text" class="field" id="orderName" required>
                 <br>
-                <br />Mail: <input type="email" name="email" required />
-                <br>
-                <br />Motivo:<input type="radio" name="motivo" value="evaluacion" checked="checked">Evaluacion
-                             <input type="radio" name="motivo" value="sugerencias">Sugerencias
-                             <input type="radio" name="motivo" value="criticas" />Críticas
+                <br /><label>Mail: </label><input type="email" name="email" required>
                 <br><br>
+                <fieldset>
+                    <legend>Motivo:</legend>
+                    <input type="radio" name="motivo" value="evaluacion" checked="checked">Evaluacion
+                    <br>
+                    <input type="radio" name="motivo" value="sugerencias">Sugerencias
+                    <br>
+                    <input type="radio" name="motivo" value="criticas">Críticas
+                </fieldset>
                 <br />Marque esta casilla para verificar que ha leído nuestros términos y condiciones del servicio<input type="checkbox" name="consulta" required />
-                <br><br>
-                <br />Consulta: <input type="text" name="consulta" value=""/>
+                <br>
+                <br /><label>Consulta: </label><input type="text" class="consulta" name="consulta" value="" maxlength="512" required>
                 <br><br>
                 <input type="submit" value="Continuar">
             </form>
             <!--***************************************************************************************************-->
         </main><!--Fin contenido principal-->
-        
-        <div>
-            
-            
-        </div>
         
         <!--Pie de página-->
         <footer>

@@ -131,3 +131,12 @@ dd{
     clear: both;
     height: 0;
 }
+
+form label, legend{
+   font-weight: bold; 
+}
+
+.consulta {
+    width: 90%;
+    
+}
