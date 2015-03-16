@@ -140,3 +140,19 @@ form label, legend{
     width: 90%;
     
 }
+
+table{
+    width: 100%;
+}
+
+th, td{
+    padding: 10px;
+}
+
+th{
+    border-bottom: 2px solid #212121;
+}
+
+td{
+    border-bottom: 1px solid #212121;
+}
