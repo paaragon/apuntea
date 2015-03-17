@@ -133,12 +133,12 @@ dd{
 }
 
 form label, legend{
-   font-weight: bold; 
+    font-weight: bold; 
 }
 
 .consulta {
     width: 90%;
-    
+
 }
 
 table{
@@ -155,4 +155,16 @@ th{
 
 td{
     border-bottom: 1px solid #212121;
+}
+
+p.boceto, h3.titulo-boceto{
+    text-align: center;
+}
+
+p.boceto img{
+    width: 50%;
+}
+
+p.desc-boceto{
+    text-align: justify;
 }
