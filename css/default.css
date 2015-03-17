@@ -168,3 +168,11 @@ p.boceto img{
 p.desc-boceto{
     text-align: justify;
 }
+
+.colFecha{
+	text-align: right;
+}
+
+.colGrupo{
+	text-align: center;
+}
