@@ -1,178 +1,113 @@
-/*
-    Color principal oscuro: #455A64;
-    Color principal:        #607D8B;
-    Color principal claro:  #CFD8DC;
-    Texto / Iconos:         #FFFFFF;
-    Color acentuado:        #8BC34A;
-    Texto principal:        #212121;
-    Texto secundario:       #727272;
-    Color divisor:          #B6B6B6;
-*/
-
 body{
-    color: #212121;
-    font-family: sans-serif;
-    margin: 0;
+    background-image: url('../img/graduation-bg.png');
+    background-size: 100%;
+    background-attachment: fixed;
+    padding-top: 70px;
 }
 
-nav{
-    background-color: #455A64;
-    font-weight: bold;
+.wrapper{
+    background-color: #fff;
+    box-shadow: 0 0 5px #aaa;
+    margin-bottom: 15px;
+    border-radius: 3px;
+    overflow: hidden;
 }
 
-footer{
-    padding: 5px 15px;
-    background-color: #455A64;
-    color: #FFFFFF;
+#descripcion{
+    text-align: justify;
 }
 
-main, header{
-    width: 80%;
-}
-
-header{
-    margin: 30px auto;
+section{
+    margin-top: 35px;
+    margin-bottom: 35px;
 }
 
 main{
-    box-shadow: 0px 0px 5px #888888;
-    padding: 20px;
-    margin: 50px auto;
-}
-
-p{
-    text-align: justify;
-}
-
-h1, h2, h3{
-    color: #455A64;
-}
-
-main div{
-    margin: 50px 0 50px 0;
-    border-bottom: 1px solid #B6B6B6;
-}
-
-main div:last-of-type{
-    border-bottom: 0px;
-}
-
-small{
-    color: #B6B6B6;
-    font-style: italic;
-}
-
-a{
-    color: #8BC34A;
-    text-decoration: none;
-}
-
-a:hover{
-    color: #7BB33A;
-}
-
-nav a{
-    color: #FFFFFF;
-}
-
-nav a:hover{
-    color: #CFD8DC;
-}
-
-nav li.active a{
-    color: #8BC34A;
-}
-
-nav ul{
-    list-style: none;
-    margin: 0;
-    padding: 20px;
-}
-
-@media (min-width: 834px){
-    nav ul li{
-        display: inline;
-        margin: 15px;
-    }
-
-    nav{
-        text-align: right;
-    }
-}
-
-dt{
-    font-weight: bold;
-}
-
-dd{
-    margin-bottom: 10px;
-}
-
-.logo{
-    width: 200px;
-}
-
-.miembro p, .miembro dl{
-    float: left;
-}
-
-.miembro dl{
-    margin-left: 15px;
-    max-width: 80%;
-    text-align: justify;
-}
-
-.miembro p.arriba{
-    text-align: right;
-    float: none;
-}
-
-.clear{
-    clear: both;
-    height: 0;
-}
-
-form label, legend{
-    font-weight: bold; 
-}
-
-.consulta {
-    width: 90%;
-
-}
-
-table{
-    width: 100%;
-}
-
-th, td{
     padding: 10px;
 }
 
-th{
-    border-bottom: 2px solid #212121;
+footer{
+    background-color: #383838;
+    border-top: 3px solid #113315;
+    margin: 10px -15px 0 -15px;
+    font-weight: bold;
+    text-align: justify;
+    padding: 10px;
+    color: #222;
+    text-shadow: 0px 1px 0px #4d4d4d;
 }
 
-td{
-    border-bottom: 1px solid #212121;
+footer strong{
+    color: #151515;
 }
 
-p.boceto, h3.titulo-boceto{
+footer ul{
+    list-style: none;
+}
+
+section h3{
     text-align: center;
 }
 
-p.boceto img{
-    width: 50%;
+.mini-logo{
+    width: 100px;
 }
 
-p.desc-boceto{
-    text-align: justify;
+.slide{
+    padding: 5px;
 }
 
-.colFecha{
-	text-align: right;
+.slide:hover{
+    border: 2px solid #46B552;
+    overflow: hidden;
+    height: 100%;
 }
 
-.colGrupo{
-	text-align: center;
+.teaser .panel .panel-body h3{
+    text-align: left;
+    margin: 9px;
+}
+
+.teaser .panel .panel-body .teaser-icon{
+    margin-left: 15px;
+    text-align: right;
+    font-size: 2.2em;
+    margin-top: 9px;
+}
+
+.go-icon{
+    text-align: right;
+}
+
+.teaser{
+    margin: 5px 0 5px 0;
+}
+
+footer .logo img{
+    width: 70px;
+}
+
+footer .logo p{
+    color: #fff;
+    text-align: center;
+}
+
+.upload-perfil{
+    padding: 5px;
+    /*text-align: center;*/
+}
+
+.upload-perfil img{
+    margin: 5px;
+    float: left;
+    width: 100px;
+}
+
+.info-apuntes{
+    text-align: center;
+    font-size: 2em;
+}
+
+.info-apuntes p > span{
+    margin: 15px;
 }
