@@ -183,3 +183,8 @@ textarea#area-apunte{
     height: 500px;
     border: none;
 }
+
+.no-style-list{
+    list-style-type: none;
+    font-size: 20px;
+}
