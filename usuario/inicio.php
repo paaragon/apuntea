@@ -1,25 +1,137 @@
 <?php ob_start(); ?>
-<div role="tabpanel" class="col-md-9">
+<body>
+   <div class="col-9" id="principal">
+    <div>
+        <p>
+            <a href="inicio/aportaciones.php" class="boton boton-activo"><span class="fa fa-cloud-upload"></span> Mis aportes</a>
+            <a href="inicio/novedades.php" class="boton"><span class="fa fa-star"></span> Novedades</a>
+        </p>
+    </div>
+    <div>
+        <div class="fila">
+            <p>
+                <span class="col-7">
+                    <span class="fa fa-file-text-o"></span>
+                    <strong><a href="ver-apunte-propio.php">Tema 1</a></strong>
+                </span>
 
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#aportaciones" aria-controls="presentaciones" role="tab" data-toggle="tab">Mis aportaciones</a></li>     
-        <li role="presentation"><a href="#novedades" aria-controls="novedades" role="tab" data-toggle="tab">Novedades</a></li>
-    </ul>
-
-    <!-- Tab panes -->
-    <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="aportaciones">
-            <?php require "inicio/novedades.php"; ?>
+                <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
+                <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
+                <span class="col-1"><span class="fa fa-eye"></span> 999</span>
+                <span class="col-1"><span class="fa fa-star"></span></span>
+                <span class="col-1"><span class="fa fa-trash-o"></span></span>
+            </p>
+            <div class="clear"></div>
         </div>
-        <div role="tabpanel" class="tab-pane" id="novedades">
-            <?php require "inicio/novedades.php"; ?>
+        <div class="fila">
+            <p>
+                <span class="col-7">
+                    <span class="fa fa-file-text-o"></span>
+                    <strong><a href="ver-apunte-propio.php">Tema 1</a></strong>
+                </span>
+
+                <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
+                <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
+                <span class="col-1"><span class="fa fa-eye"></span> 999</span>
+                <span class="col-1"><span class="fa fa-star apunte-favorito"></span></span>
+                <span class="col-1"><span class="fa fa-trash-o"></span></span>
+            </p>
+            <div class="clear"></div>
+        </div>
+        <div class="fila">
+            <p>
+                <span class="col-7">
+                    <span class="fa fa-file-text-o"></span>
+                    <strong><a href="ver-apunte-propio.php">Tema 1</a></strong>
+                </span>
+
+                <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
+                <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
+                <span class="col-1"><span class="fa fa-eye"></span> 999</span>
+                <span class="col-1"><span class="fa fa-star"></span></span>
+                <span class="col-1"><span class="fa fa-trash-o"></span></span>
+            </p>
+            <div class="clear"></div>
+        </div>
+        <div class="fila">
+            <p>
+                <span class="col-7">
+                    <span class="fa fa-file-text-o"></span>
+                    <strong><a href="ver-apunte-propio.php">Tema 1</a></strong>
+                </span>
+
+                <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
+                <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
+                <span class="col-1"><span class="fa fa-eye"></span> 999</span>
+                <span class="col-1"><span class="fa fa-star apunte-favorito"></span></span>
+                <span class="col-1"><span class="fa fa-trash-o"></span></span>
+            </p>
+            <div class="clear"></div>
+        </div>
+        <div class="fila">
+            <p>
+                <span class="col-7">
+                    <span class="fa fa-file-text-o"></span>
+                    <strong><a href="ver-apunte-propio.php">Tema 1</a></strong>
+                </span>
+
+                <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
+                <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
+                <span class="col-1"><span class="fa fa-eye"></span> 999</span>
+                <span class="col-1"><span class="fa fa-star"></span></span>
+                <span class="col-1"><span class="fa fa-trash-o"></span></span>
+            </p>
+            <div class="clear"></div>
+        </div>
+        <div class="fila">
+            <p>
+                <span class="col-7">
+                    <span class="fa fa-file-text-o"></span>
+                    <strong><a href="ver-apunte-propio.php">Tema 1</a></strong>
+                </span>
+
+                <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
+                <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
+                <span class="col-1"><span class="fa fa-eye"></span> 999</span>
+                <span class="col-1"><span class="fa fa-star apunte-favorito"></span></span>
+                <span class="col-1"><span class="fa fa-trash-o"></span></span>
+            </p>
+            <div class="clear"></div>
+        </div>
+        <div class="fila">
+            <p>
+                <span class="col-7">
+                    <span class="fa fa-file-text-o"></span>
+                    <strong><a href="ver-apunte-propio.php">Tema 1</a></strong>
+                </span>
+
+                <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
+                <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
+                <span class="col-1"><span class="fa fa-eye"></span> 999</span>
+                <span class="col-1"><span class="fa fa-star"></span></span>
+                <span class="col-1"><span class="fa fa-trash-o"></span></span>
+            </p>
+            <div class="clear"></div>
+        </div>
+        <div class="fila">
+            <p>
+                <span class="col-7">
+                    <span class="fa fa-file-text-o"></span>
+                    <strong><a href="ver-apunte-propio.php">Tema 1</a></strong>
+                </span>
+
+                <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
+                <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
+                <span class="col-1"><span class="fa fa-eye"></span> 999</span>
+                <span class="col-1"><span class="fa fa-star apunte-favorito"></span></span>
+                <span class="col-1"><span class="fa fa-trash-o"></span></span>
+            </p>
+            <div class="clear"></div>
         </div>
     </div>
 </div>
-<div class="col-md-3">
-    <?php require "inicio/busqueda.php"; ?>
-</div>
+</body>
+
 <?php
 $contenido = ob_get_clean();
 require "../common/usuario/layout.php";
