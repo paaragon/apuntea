@@ -1,0 +1,84 @@
+
+.p_bar{
+ 
+  border-radius:3px;
+  margin:5% auto;
+  
+}
+.p_bar .profile{
+  border-radius:3px;
+  overflow:hidden;
+  box-shadow:0 0 3px 0 rgba(0,0,0,.4);
+  margin:20px 0;
+  background:whitesmoke;
+}
+.p_bar .profile .picture{
+    
+  background:black;
+  display:inline-block;
+  margin-right:20px;
+  float:left;
+  position: relative;
+  z-index: 9;
+  overflow:hidden;
+  /*Para poner borde*/
+  box-shadow:8px 0 0 0 greenyellow; 
+}
+
+.p_bar .profile .picture img{
+  margin:24px;
+  border-radius:8px;
+  width:100px;
+}
+.p_bar .profile .description{
+  position:relative;
+  padding-top:15px;
+}
+
+.description button{
+  position:absolute;
+  right:15px;
+  border-radius:5px;
+  width:70px;
+  line-height:25px;
+  color:white;
+  
+}
+.green{
+    background:green;
+}
+
+.color-green{
+  color:greenyellow;
+}
+.border-green{
+  border:1px solid greenyellow;
+}
+
+.profile .description .name{
+  display:block;
+  padding:0;
+  margin:0;
+  font:25px Myriad Pro;
+}
+.profile .description a{
+  display:block;
+  color:#446e00;
+  padding:5px 0;
+  margin:0;
+  font:12px Myriad Pro;
+}
+
+
+
+.profile .description .pretext{
+  font:12px Myriad Pro;
+  padding-right:6px;
+}
+
+.profile .description .amigos{
+  margin-top:20px;
+  font:bold 12px Arial;
+  background:rgba(0,0,0,0.1);
+  padding:4px 0;
+}
