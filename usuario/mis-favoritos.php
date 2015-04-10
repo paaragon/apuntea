@@ -52,7 +52,6 @@
     </div>
 </div>
 <div class="col-3">
-    <?php require "inicio/busqueda.php"; ?>
 </div>
 <?php
 $contenido = ob_get_clean();
