@@ -1,0 +1,87 @@
+body{
+    background-image: url('../img/graduation-bg.png');
+    background-size: 100%;
+    background-attachment: fixed;
+    padding-top: 70px;
+}
+
+.wrapper{
+    background-color: #fff;
+    box-shadow: 0 0 5px #aaa;
+    margin-bottom: 15px;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+section p{
+    text-align: justify;
+}
+
+section h3{
+    text-align: center;
+}
+
+/*** Presentación universidades (index.php) ***/
+#top-universidades > .slide{
+    padding: 5px;
+    float: left;
+}
+
+#top-universidades > .slide img{
+    width: 100%;
+}
+
+.slide:hover{
+    border: 2px solid #46B552;
+}
+/*** FIN presentación universidades ***/
+
+.teaser .panel .panel-body h3{
+    text-align: left;
+    margin: 9px;
+}
+
+.teaser .panel .panel-body .teaser-icon{
+    margin-left: 15px;
+    text-align: right;
+    font-size: 2.2em;
+    margin-top: 9px;
+}
+
+.go-icon{
+    text-align: right;
+    font-size: 1.5em;
+}
+
+.teaser{
+    margin: 5px 0 5px 0;
+}
+
+footer .logo img{
+    width: 70px;
+}
+
+footer .logo p{
+    color: #fff;
+    text-align: center;
+}
+
+.upload-perfil{
+    padding: 5px;
+    /*text-align: center;*/
+}
+
+.upload-perfil img{
+    margin: 5px;
+    float: left;
+    width: 100px;
+}
+
+.info-apuntes{
+    text-align: center;
+    font-size: 2em;
+}
+
+.info-apuntes p > span{
+    margin: 15px;
+}
