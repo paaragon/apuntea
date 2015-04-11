@@ -5,7 +5,7 @@
     </div>
     <ul>
         <li><a href="mis-apuntes.php"><i class="fa fa-file-text-o"></i> Mis apuntes</a></li>
-        <li><i class="fa fa-users"></i> Mis grupos</li>
+        <li><a href="mis-grupos.php"><i class="fa fa-users"></i> Mis grupos</a></li>
         <li><i class="fa fa-user"></i> Mis contactos</li>
         <li><i class="fa fa-envelope"></i> Mensajes</li>
         <li><i class="fa fa-cog"></i> Configuración</li>

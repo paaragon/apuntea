@@ -2,8 +2,8 @@
 <div class="col-9" id="principal">
     <div>
         <p>
-            <a href="inicio.php" class="boton boton-activo"><span class="fa fa-file-o"></span> Mis aportaciones </a>
-            <a href="#" class="boton"><span class="fa fa-star"></span> Novedades </a>
+            <a href="inicio.php" class="boton"><span class="fa fa-file-o"></span> Mis aportaciones </a>
+            <a href="#" class="boton boton-activo"><span class="fa fa-star"></span> Novedades </a>
         </p>
     </div>
     <div>
