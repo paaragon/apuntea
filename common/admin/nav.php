@@ -4,11 +4,11 @@
         <h3>[Nombre usuario]</h3>
     </div>
     <ul>
-        <li><a href="#"> Inicio</a></li>
+        <li><a href="inicio.php"> Inicio</a></li>
         <li><a href="#"> Usuarios</a></li>
         <li><a href="#"> Universidades</a></li>
         <li><a href="#"> Carreras</a></li>
-        <li><a href="#"> Asignaturas</a></li>
+        <li><a href="mis-asignaturas.php"> Asignaturas</a></li>
         <li><a href="#"> Apuntes</a></li>
     </ul>
 </div>
