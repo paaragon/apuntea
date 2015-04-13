@@ -6,6 +6,8 @@
             <name>apuntea</name>
         </data>
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>amigos</word>
+            <word>amigosQuien</word>
             <word>Pepe</word>
         </spellchecker-wordlist>
     </configuration>
