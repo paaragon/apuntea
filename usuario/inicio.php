@@ -1,10 +1,13 @@
 <?php ob_start(); ?>
-<body>
-   <div class="col-9" id="principal">
+<div id="principal">
+    <h2>
+        <span class="fa fa-newspaper-o"></span> Novedades
+    </h2>
+    <hr>
     <div>
         <p>
-            <a href="inicio/aportaciones.php" class="boton boton-activo"><span class="fa fa-cloud-upload"></span> Mis aportes</a>
-            <a href="inicio/novedades.php" class="boton"><span class="fa fa-star"></span> Novedades</a>
+            <a href="#" class="boton boton-activo"><span class="fa fa-file-o"></span> Sobre mis aportaciones </a>
+            <a href="mis-novedades.php" class="boton"><span class="fa fa-star"></span> Otras Novedades </a>
         </p>
     </div>
     <div>
@@ -130,8 +133,8 @@
         </div>
     </div>
 </div>
-</body>
-
+<div class="col-3">
+</div>
 <?php
 $contenido = ob_get_clean();
 require "../common/usuario/layout.php";

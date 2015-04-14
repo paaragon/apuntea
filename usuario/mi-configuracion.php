@@ -1,8 +1,7 @@
 <?php ob_start(); ?>
 
 <div id="principal">
-
-    <div class="col-5">
+    <div>
         <form action="mi-configuracion.php" method="post">
             <legend>Mis datos personales:</legend>
             <span class="col-3"><label>Nombre completo:</label></span>
@@ -18,7 +17,7 @@
         </form>
     </div>
     <div class="clear"></div>
-    <div class="col-5">
+    <div>
         <form action="mi-configuracion.php" method="post">
             <legend>Privacidad: </legend>
             ¿Quién puede ver mi perfil? <br>

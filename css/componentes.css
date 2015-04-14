@@ -76,12 +76,23 @@ footer{
     margin: 10px -15px 0 -15px;
 }
 
+footer{
+    clear: both;
+}
+
 footer strong{
     color: #151515;
 }
 
 footer ul{
     list-style: none;
+}
+
+blockquote{
+    padding: 5px 10px;
+    margin: 0 0 0px;
+    font-size: 1em;
+    border-left: 5px solid #eeeeee;
 }
 
 p{
@@ -97,22 +108,17 @@ p{
     border-color: #2E7636;
     color: #fff;
     position: fixed;
+    z-index: 5;
     width: 100%;
     top: 0;
-    padding-top: 15px;
+    padding-top: 13px;
     padding-bottom: 15px;
-    height: 55px;
+    height: 60px;
 }
 
 .menu-nav p{
     margin: 0;
     padding: 0;
-}
-
-.menu-nav p.logo img{
-    position: relative;
-    margin-top: -13px;
-    width: 100px;
 }
 
 .contenedor{
@@ -124,6 +130,13 @@ p{
 .menu-nav a{
     color: #fff;
     font-size: 1.2em;
+    padding: 17px;
+    padding-top: 22px;
+}
+
+.menu-nav a span{
+    color: #205626;
+    text-shadow: 1px 1px 0px #4CAE55;
 }
 
 .menu-nav ul{
@@ -132,7 +145,44 @@ p{
 
 .menu-nav ul li{
     display: inline;
-    margin: 7px;
+    margin: 0;
+    padding: 0;
+}
+
+.menu-nav ul li a:hover{
+    background-color: #2E7636;
+    text-decoration: none;
+    animation-duration: 0.5s;
+    animation-name: head-nav-in;
+}
+
+.menu-nav ul li a span:hover{
+    color: #18411D;
+    text-shadow: 1px 1px 0px #54995A;
+}
+
+.menu-nav ul li a span{
+    padding-top: 7px;
+    font-size: 1.3em;
+}
+
+@keyframes head-nav-in {
+    from {
+        background-color: transparent;
+    }
+
+    to {
+        background-color: #2E7636;
+    }
+}
+
+
+
+.menu-nav p.logo img{
+    position: relative;
+    margin-top: -13px;
+    width: 100px;
+    padding: 0;
 }
 
 /*Breadcrum*/
@@ -264,15 +314,19 @@ p{
     width: auto;
 }
 
-input[type="submit"].campo-formulario{
+input[type="submit"].campo-formulario, button.campo-formulario{
     color: #FFF;
     background-color: #46B552;
     border-color: #3FA34A;
 }
 
-input[type="submit"].campo-formulario:hover{
+input[type="submit"].campo-formulario:hover, button.campo-formulario:hover{
     background-color: #3B9845;
     border-color: #2E7636;
+}
+
+input[disabled=""]{
+    background-color: #e7e7e7;
 }
 
 .boton{
@@ -333,7 +387,13 @@ input[type="submit"].campo-formulario:hover{
 }
 
 #principal p span[class^="fa"]{
-     font-size: 1em;
+    font-size: 1em;
+}
+
+.no-style-list{
+    list-style-type: none;
+    font-size: 1.3em;
+    padding: 0;
 }
 
 
