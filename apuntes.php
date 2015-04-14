@@ -15,7 +15,7 @@
     ?>
     <li><a href="carrera.php<?php echo $uni ?>">[Nombre de carrera]</a></li>
     <li><a href="asignatura.php<?php echo $uni ?>">[Nombre de asignatura]</a></li>
-    <li>[Nombre de apuntes]</li>
+   ----- <li>[Nombre de apuntes]</li>
 </ol>
 <hr>
 <section>
