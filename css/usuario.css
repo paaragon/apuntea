@@ -4,6 +4,7 @@ body{
     width: 100%;
     padding-top: 55px;
     margin: 0;
+    font-family: sans-serif;
 }
 
 .mini-logo{
@@ -36,16 +37,37 @@ body{
 #menu-user ul{
     padding-left: 0;
     list-style: none;
+    margin-bottom: 0;
+    margin: 0;
+    padding: 0;
 }
 
-#menu-user li{
+#menu-user li a{
+    color: #333;
     padding: 15px;
     font-size: 1.2em;
+    width: 100%;
+    display: block;
 }
 
-#menu-user li:hover{
-    background-color: #C0C0C0;
+#menu-user li a:hover{
     cursor: pointer;
+    text-decoration: none;
+    border-left: 4px solid #3B9845;
+    padding-left: 11px;
+    animation-duration: 0.5s;
+    animation-name: user-nav-in;
+    background-color: #C0C0C0;
+}
+
+@keyframes user-nav-in {
+    from {
+        background-color: transparent;
+    }
+
+    to {
+        background-color: #C0C0C0;
+    }
 }
 
 main#main{
@@ -84,16 +106,294 @@ main#main{
     text-shadow: 0px 0px 1px rgba(150, 150, 150, 1);
 }
 
-.control-formulario{
-    width: 100%;
-    border-radius: 4px;
-    margin: 5px 0;
-    border: 1px solid #E8E8E8;
-    padding: 5px;
-}
-
 textarea#area-apunte{
     width: 100%;
     height: 500px;
     border: none;
+}
+
+/**Perfil usuario**/
+
+.profile #fondo {
+    height: 250px;
+    margin: -10px;
+    overflow: hidden;
+    border-bottom: 3px solid #e7e7e7;
+}
+
+.profile #fondo img {
+    width: 100%;
+    margin-top: -20%;
+}
+
+.profile #avatar {
+    margin-left:20px;
+    position:relative;
+    float:left;
+    width: 200px;
+    height: 200px;
+    margin-top:-85px
+}
+
+.profile #avatar img{
+    border-radius:200px;
+    border: solid 3px #fff;
+    outline: 1px #eee;
+    width: 100%;
+}
+
+.profile #actividad{
+    float: right;
+    margin-right: 25px;
+}
+.profile #actividad li {
+    text-align: center;
+    display: inline;
+    float: left;
+    padding: 10px;
+    padding-top: 25px;
+    color: #fff;
+    border-radius: 0 0 3px 3px;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.profile #actividad li span{
+    display: block;
+    font-size: 1.2em;
+    border-bottom: 1px solid #fff;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.profile #actividad li#amigos {
+    background:#3a5795;
+}
+.profile #actividad li#apuntes{
+    background:#517fa4;
+}
+.profile #actividad li#comentarios{
+    background:#dd4b39;
+}
+
+.activity-time{
+    display: block;
+    text-align: right;
+    color: #818181;
+}
+
+.picture {
+    float: left;
+    margin: 5px;
+    text-align: center;
+}
+
+.picture p, .picture h4{
+    margin: 0;
+}
+
+.profile-img {
+    width: 130px;
+    border: 3px solid #e7e7e7;
+    border-radius: 50%;
+}
+
+/*Status general*/
+.status {
+    position: relative;
+    /*Estado de contacto
+    y desplazo a la derecha*/
+    top: -30px;
+    right: -107px;
+    width: 20px;
+    height: 20px;
+    border: 3px solid white;
+    border-radius: 100%;  
+}
+/*Status on*/
+.status-red {
+    background-color: red;
+}
+/*Status off*/
+.status-green {
+    background-color: green;
+}
+
+.teaser .panel .panel-cuerpo h3{
+    text-align: left;
+    margin: 9px;
+}
+
+.teaser .panel .panel-cuerpo .teaser-icon{
+    margin-left: 15px;
+    text-align: right;
+    font-size: 2.2em;
+    margin-top: 9px;
+}
+
+.go-icon{
+    text-align: right;
+}
+
+.teaser{
+    margin: 5px 0 5px 0;
+}
+
+.upload-perfil{
+    padding: 5px;
+    /*text-align: center;*/
+}
+
+.upload-perfil img{
+    margin: 5px;
+    float: left;
+    width: 100px;
+}
+
+.info-apuntes{
+    text-align: center;
+    font-size: 2em;
+}
+
+.info-apuntes p > span{
+    margin: 15px;
+}
+
+.msg{
+    margin: 5px;
+    padding: 7px;
+    border: 1px solid #e7e7e7;
+    border-radius: 7px;
+    clear: both;
+    max-width: 80%;
+    color: #5C5C5C;
+}
+
+.msg-amigo{
+    float: left;
+}
+
+.msg-propio{
+    float: right;
+}
+
+#conversacion{
+    overflow-y: scroll;
+    height: 500px;
+}
+
+#chat #conversacion{
+    height: 300px;
+}
+
+
+#chat textarea{
+    max-width: 100%;
+    min-width: 100%;
+}
+
+.msg-amigo{
+    border-bottom-left-radius: 0!important;
+    background-color: #DCF6DF;
+}
+
+.msg-propio{
+    border-bottom-right-radius: 0!important;
+    background-color: #DCE4F6;
+}
+
+#chat img{
+    width: 50px;
+    border-radius: 50px;
+    margin: 5px;
+}
+
+#conversaciones-recientes{
+    width: 100%;
+    overflow-x: scroll;
+
+}
+
+#conversaciones-recientes > div{
+    width: 1450px;
+}
+
+#img-perfil-user{
+    width: 100%;
+    border-radius: 50%;
+}
+
+.notice {
+    position: relative;
+    margin: 1em;
+    background: #F9F9F9;
+    padding: 1em 1em 1em 2em;
+}
+
+@font-face {
+    font-family: 'FontAwesome';
+    src: url('../fonts/fontawesome-webfont.eot?v=4.3.0');
+    src: url('../fonts/fontawesome-webfont.eot?#iefix&v=4.3.0') format('embedded-opentype'), url('../fonts/fontawesome-webfont.woff2?v=4.3.0') format('woff2'), url('../fonts/fontawesome-webfont.woff?v=4.3.0') format('woff'), url('../fonts/fontawesome-webfont.ttf?v=4.3.0') format('truetype'), url('../fonts/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.notice:before {
+    position: absolute;
+    top: 50%;
+    margin-top: -17px;
+    left: -17px;
+    width: 30px;
+    height: 30px;
+    color: #FFF;
+    border-radius: 50%;
+    border: 1px solid;
+    text-align: center;
+    line-height: 27px;
+    font-family: FontAwesome;
+}
+
+.info {
+    border-color: #bce8f1;
+}
+
+.info:before {
+    content: "\f129";
+    border-color: #bce8f1;
+    background-color: #d9edf7;
+    color: #3a87ad;
+}
+
+.success {
+    border-color: #d6e9c6;;
+}
+
+.success:before {
+    content: "\f00c";
+    border-color: #d6e9c6;
+    background-color: #dff0d8;
+    color: #468847;
+}
+
+.warning {
+    border-color: #fbeed5;
+}
+
+.warning:before {
+    content: "\f12a";
+    border-color: #fbeed5;
+    background-color: #fcf8e3;
+    color: #c09853;
+}
+
+.error {
+    border-color: #eed3d7;
+}
+
+.error:before {
+    content: "\f00d";
+    border-color: #eed3d7;
+    background-color: #f2dede;
+    color: #b94a48;
 }

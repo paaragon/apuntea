@@ -1,5 +1,9 @@
 <?php ob_start(); ?>
-<div class="col-9" id="principal">
+<div id="principal">
+    <h2>
+        <span class="fa fa-file-text-o"></span> Mis apuntes
+    </h2>
+    <hr>
     <div>
         <p>
             <a href="#" class="boton boton-activo"><span class="fa fa-cloud-upload"></span> Subidos</a>
@@ -13,6 +17,7 @@
                     <span class="fa fa-file-text-o"></span>
                     <strong><a href="ver-apunte-propio.php">Tema 1</a></strong>
                 </span>
+
                 <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
                 <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
                 <span class="col-1"><span class="fa fa-eye"></span> 999</span>
@@ -127,9 +132,6 @@
             <div class="clear"></div>
         </div>
     </div>
-</div>
-<div class="col-3">
-    <?php require "inicio/busqueda.php"; ?>
 </div>
 <?php
 $contenido = ob_get_clean();
