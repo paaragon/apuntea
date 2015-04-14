@@ -1,14 +1,15 @@
 <?php ob_start(); ?>
 <div id="head-apunte">
-    <span class="col-8">
-        <a href="#">[Universidad]</a> / 
-        <a href="#">[Carrera]</a> /
-        <a href="#">[Asignatura]</a>
+    <span class="col-7">
+        <a href="lista-universidades.php">Archivo</a> /
+        <a href="universidad.php">[Universidad]</a> / 
+        <a href="carrera.php">[Carrera]</a> /
+        <a href="asignatura.php">[Asignatura]</a>
     </span>
     <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
     <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
     <span class="col-1"><span class="fa fa-eye"></span> 999</span>
-    <span class="col-1"><span class="fa fa-star"></span> Favorito</span>
+    <span class="col-2"><span class="fa fa-star"></span> Favorito</span>
     <div class="clear"></div>
 </div>
 <div id="contenido-apunte">

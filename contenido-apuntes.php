@@ -1,5 +1,5 @@
 <?php ob_start(); ?>
-<section id="presentacion">
+<section>
     <h1>Carreras</h1>
 </section>
 <ol class="breadcrumb">
