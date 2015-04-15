@@ -6,15 +6,15 @@
         <!--Div para el avatar del perfil-->
         <div id="avatar"><img src="../img/no-user.jpg"/></div>
         <ul id="actividad">
-            <li id="amigos">
+            <li id="actividad-1">
                 <span>355</span>
                 <small>Amigos</small>
             </li>
-            <li id="apuntes">
+            <li id="actividad-2">
                 <span>355</span>
                 <small>Apuntes</small>
             </li>
-            <li id="comentarios">
+            <li id="actividad-3">
                 <span>355</span>
                 <small>Comentarios</small>
             </li>

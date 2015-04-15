@@ -9,8 +9,6 @@
         <link rel="stylesheet" type="text/css" href="../css/componentes.css" />
         <link rel="stylesheet" type="text/css" href="../css/usuario.css" />
         <link rel="stylesheet" type="text/css" href="../css/perfect-scrollbar.css" />
-        <script src="../js/jquery-2.1.1.js"></script>
-        <script src="../js/bootstrap.js"></script>
     </head>
     <body>
 
