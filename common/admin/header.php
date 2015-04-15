@@ -1,23 +1,10 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="index.php"><img src="../img/logo-inv.png" class="img-responsive mini-logo"></a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><i class="fa fa-envelope"></i></a></li>
-                <li><a href="#"><i class="fa fa-globe"></i></a></li>
-                <li><a href="#"><i class="fa fa-cloud-upload"></i></a></li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
+<nav class="menu-nav">
+    <div>
+        <p class="logo col-1">
+            <a href="inicio.php"><img src="../img/logo-inv.png"></a>
+        </p>
+        <ul class="col-11">
+            <li><a href="../index.php"><span class="fa fa-power-off"></span></a></li>
+        </ul>
+    </div>
 </nav>

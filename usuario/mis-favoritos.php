@@ -1,9 +1,13 @@
 <?php ob_start(); ?>
-<div class="col-9" id="principal">
+<div id="principal">
+    <h2>
+        <span class="fa fa-file-text-o"></span> Mis apuntes
+    </h2>
+    <hr>
     <div>
         <p>
             <a href="mis-apuntes.php" class="boton"><span class="fa fa-cloud-upload"></span> Subidos</a>
-            <a href="#" class="boton boton-activo"><span class="fa fa-star"></span> Favoritos</a>
+            <a href="mis-favoritos.php" class="boton boton-activo"><span class="fa fa-star"></span> Favoritos</a>
         </p>
     </div>
     <div>
@@ -50,9 +54,6 @@
             <div class="clear"></div>
         </div>
     </div>
-</div>
-<div class="col-3">
-    <?php require "inicio/busqueda.php"; ?>
 </div>
 <?php
 $contenido = ob_get_clean();
