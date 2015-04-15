@@ -45,7 +45,7 @@
         <div class="clearfix"></div>
     </div>
     <div>
-        <p><a class="boton campo-formulario">Ver apuntes</a></p>
+        <p><a class="boton campo-formulario" href="ver-apunte.php">Ver apuntes</a></p>
     </div>
 </section>
 <?php

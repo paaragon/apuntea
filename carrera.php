@@ -9,8 +9,9 @@
     <li>[Nombre de carrera]</li>
 </ul>
 <hr>
-<form>
-    <input class="campo-formulario" name="buscar" type="text" placeholder="Buscar asignatura    ...">
+<form action="carrera.php" method="post">
+    <input class="campo-formulario" name="buscar" type="text" placeholder="Buscar asignatura...">
+    <input type="submit" class="campo-formulario" value="Buscar">
 </form>
 <section>
     <div>

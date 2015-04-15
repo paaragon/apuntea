@@ -19,7 +19,7 @@
         de aquellos apuntes que sean privados. Pulsa <a href="#" data-toggle="modal" data-target="#myModal">aqui para registrarte</a>
     </p>
 </section>
-<div class="alerta alerta-info" role="alert">
+<div class="alerta alerta-info">
     <p>Llevamos un total de <span class="distintivo" title="Ya quisiéramos...">1250</span> apuntes</p>
 </div>
 <section>

@@ -6,7 +6,7 @@
         <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
         <link rel="stylesheet" href="../font-awesome-4.3.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="../css/componentes.css" />
-        <link rel="stylesheet" type="text/css" href="../css/admin.css" />
+        <link rel="stylesheet" type="text/css" href="../css/usuario.css" />
         <script src="../js/jquery-2.1.1.js"></script>
         <script src="../js/bootstrap.js"></script>
     </head>

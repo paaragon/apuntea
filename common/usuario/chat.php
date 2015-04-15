@@ -4,10 +4,10 @@
         <h5><strong>Usuarios conectados:</strong></h5>
         <hr>
         <p>
-            <img src="../img/no-user.jpg"><a href="perfil-usuario.php">[Usuario]</a> <span class="distintivo"><span class="fa fa-envelope"></span> 5</span><br>
-            <img src="../img/no-user.jpg"><a href="perfil-usuario.php">[Usuario]</a><br>
-            <img src="../img/no-user.jpg"><a href="perfil-usuario.php">[Usuario]</a> <span class="distintivo"><span class="fa fa-envelope"></span> 5</span><br>
-            <img src="../img/no-user.jpg"><a href="perfil-usuario.php">[Usuario]</a><br>
+            <img src="../img/no-user.jpg"><a href="#">[Usuario]</a> <span class="distintivo"><span class="fa fa-envelope"></span> 5</span><br>
+            <img src="../img/no-user.jpg"><a href="#">[Usuario]</a><br>
+            <img src="../img/no-user.jpg"><a href="#">[Usuario]</a> <span class="distintivo"><span class="fa fa-envelope"></span> 5</span><br>
+            <img src="../img/no-user.jpg"><a href="#">[Usuario]</a><br>
         </p>
         <hr>
         <h5><strong>Conversación con <a href="perfil-usuario.php">[Usuario]</a>:</strong></h5>

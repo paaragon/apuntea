@@ -2,12 +2,12 @@
 <section>
     <h1>[Nombre de asignatura]</h1>
 </section>
-<ol class="breadcrumb">
+<ul class="breadcrumb">
     <li><a href="lista-universidades.php.php">Archivo</a></li>
     <li><a href="universidad.php">[Nombre universidad]</a></li>
     <li><a href="carrera.php">[Nombre carrera]</a></li>
     <li>[Nombre asignatura]</li>
-</ol>
+</ul>
 <section>
     <div>
         <div class="fila">

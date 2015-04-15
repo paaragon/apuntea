@@ -1,7 +1,7 @@
 <nav class="menu-nav">
     <div>
         <p class="logo col-1">
-            <a href="index.php"><img src="../img/logo-inv.png"></a>
+            <a href="inicio.php"><img src="../img/logo-inv.png"></a>
         </p>
         <form action="resultado-de-busqueda.php" method="post" class="col-4">
             <span class="col-8">

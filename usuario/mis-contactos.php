@@ -7,13 +7,13 @@
     <div>
         <!-- Linea de botones-->
         <p>
-            <a href="#" class="boton boton-activo"><span class="fa fa-users"></span> Todos</a>
+            <a href="mis-contactos" class="boton boton-activo"><span class="fa fa-users"></span> Todos</a>
             <a href="mis-contactos-reco.php" class="boton"><span class="fa fa-star"></span> Recomendados</a>
-
         </p>
         <!-- Form para la busqueda de contactos-->
-        <form action="#" method="post">
+        <form action="mis-contactos.php" method="post">
             <input type="text" class="campo-formulario" placeholder="Buscar Contacto...">
+            <input type="submit" class="campo-formulario" value="Buscar">
         </form>
     </div>
     <hr>

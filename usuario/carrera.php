@@ -2,13 +2,14 @@
 <section>
     <h1>[Nombre de carrera]</h1>
 </section>
-<ol class="breadcrumb">
+<ul class="breadcrumb">
     <li><a href="lista-universidades.php">Archivo</a></li>
     <li><a href="universidad.php">[Nombre universidad]</a></li>
     <li>[Nombre carrera]</li>
-</ol>
-<form>
-    <input class="campo-formulario" name="buscar" type="text" placeholder="Buscar asignatura    ...">
+</ul>
+<form action="carrera.php" method="post">
+    <input class="campo-formulario" name="buscar" type="text" placeholder="Introduzca el nombe de una carrera">
+    <input type="submit" class="campo-formulario" value="Buscar">
 </form>
 <section>
     <div>

@@ -1,8 +1,8 @@
 <?php ob_start(); ?>
 <div id="head-apunte">
     <span class="col-8">
-        <a href="#">[Universidad]</a> / 
-        <a href="#">[Carrera]</a> /
+        <a href="universidad.php">[Universidad]</a> / 
+        <a href="carrera.php">[Carrera]</a> /
         <a href="#">[Asignatura]</a>
     </span>
     <span class="col-2"><a href="ver-apunte-propio.php"><span class="fa fa-floppy-o"></span> Guardar</a></span>

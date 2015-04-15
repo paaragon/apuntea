@@ -71,6 +71,14 @@ footer{
     color: #222;
     text-shadow: 0px 1px 0px #4d4d4d;
 }
+footer .logo img{
+    width: 70px;
+}
+
+footer .logo p{
+    color: #fff;
+    text-align: center;
+}
 
 .wrapper > footer{
     margin: 10px -15px 0 -15px;
@@ -105,15 +113,25 @@ p{
 /*** Menú de navegación superior ***/
 .menu-nav{
     background-color: #3B9845;
-    border-color: #2E7636;
+    border-bottom: 1px solid #287D32;
+    box-shadow: 0px 1px 3px #A8A8A8;
     color: #fff;
     position: fixed;
     z-index: 5;
     width: 100%;
     top: 0;
-    padding-top: 13px;
+    padding-top: 20px;
     padding-bottom: 15px;
     height: 60px;
+    background: rgba(67,173,76,1);
+    background: -moz-linear-gradient(top, rgba(67,173,76,1) 0%, rgba(74,161,78,1) 52%, rgba(59,152,68,1) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(67,173,76,1)), color-stop(52%, rgba(74,161,78,1)), color-stop(100%, rgba(59,152,68,1)));
+    background: -webkit-linear-gradient(top, rgba(67,173,76,1) 0%, rgba(74,161,78,1) 52%, rgba(59,152,68,1) 100%);
+    background: -o-linear-gradient(top, rgba(67,173,76,1) 0%, rgba(74,161,78,1) 52%, rgba(59,152,68,1) 100%);
+    background: -ms-linear-gradient(top, rgba(67,173,76,1) 0%, rgba(74,161,78,1) 52%, rgba(59,152,68,1) 100%);
+    background: linear-gradient(to bottom, rgba(67,173,76,1) 0%, rgba(74,161,78,1) 52%, rgba(59,152,68,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#43ad4c', endColorstr='#3b9844', GradientType=0 );
+
 }
 
 .menu-nav p{
@@ -162,8 +180,11 @@ p{
 }
 
 .menu-nav ul li a span{
-    padding-top: 7px;
     font-size: 1.3em;
+}
+
+.menu-nav form{
+    margin-top: -7px;
 }
 
 @keyframes head-nav-in {
@@ -264,6 +285,12 @@ p{
     background-color: #d9edf7;
     border-color: #bce8f1;
     color: #3a87ad;
+}
+
+.alerta-error {
+    background-color: #f2dede;
+    border-color: #eed3d7;
+    color: #b94a48;
 }
 
 /* Etiquetas */
@@ -396,9 +423,16 @@ input[disabled=""]{
     padding: 0;
 }
 
-
-/*** UTILIDADES ***/
-/*** Limpiar float ***/
 .clear{
     clear: both;
+}
+
+.imagen-circular{
+    border-radius: 50%;
+}
+
+.imagen-responsive{
+    display: block;
+    max-width: 100%;
+    height: auto;
 }

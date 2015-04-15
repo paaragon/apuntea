@@ -1,7 +1,7 @@
 <?php ob_start(); ?>
 <div id="principal">
     <h2>
-        <i class="fa fa-globe"></i> Notificaciones
+        <span class="fa fa-globe"></span> Notificaciones
     </h2>
     <hr>
 

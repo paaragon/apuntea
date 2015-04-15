@@ -59,15 +59,6 @@ section h3{
     margin: 5px 0 5px 0;
 }
 
-footer .logo img{
-    width: 70px;
-}
-
-footer .logo p{
-    color: #fff;
-    text-align: center;
-}
-
 .upload-perfil{
     padding: 5px;
     /*text-align: center;*/
@@ -86,4 +77,11 @@ footer .logo p{
 
 .info-apuntes p > span{
     margin: 15px;
+}
+
+#head-apunte{
+    background-color: #f7f7f7;
+    border: 1px solid #E8E8E8;
+    padding: 7px;
+    border-radius: 4px;
 }

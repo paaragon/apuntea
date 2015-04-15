@@ -8,7 +8,7 @@
     <form action="apuntes-subidos.php" method="post">
         <h3>Datos de los apuntes:</h3>
         <label>Nombre:</label>
-        <input type="text" name="nombre" placeholder="Nombre de los apuntes" class="campo-formulario">
+        <input type="text" name="nombre" placeholder="Nombre de los apuntes" class="campo-formulario" required="">
         <label><span class="fa fa-university"></span> Universidad:</label>
         <select class="campo-formulario">
             <option value="UCM">UCM</option>
@@ -27,7 +27,7 @@
         <h3><span class="fa fa-key"></span>Permisos:</h3>
         <span class="col-4">
             <label><span class="fa fa-eye"></span> Visualización:</label>
-            <label class="campo-formulario"><input type="radio" name="visualizacion"> Solo yo</label>
+            <label class="campo-formulario"><input type="radio" name="visualizacion" checked=""> Solo yo</label>
             <label class="campo-formulario"><input type="radio" name="visualizacion"> Algunos usuarios</label>
             <label class="campo-formulario"><input type="radio" name="visualizacion"> Público</label>
             <hr>
@@ -38,8 +38,8 @@
         </span>
         <span class="col-4">
             <label><span class="fa fa-edit"></span> Modificación:</label>
-            <label class="campo-formulario"><input type="radio" name="visualizacion"> Solo yo</label>
-            <label class="campo-formulario"><input type="radio" name="visualizacion"> Alguno usuarios</label>
+            <label class="campo-formulario"><input type="radio" name="modificacion" checked=""> Solo yo</label>
+            <label class="campo-formulario"><input type="radio" name="modificacion"> Alguno usuarios</label>
             <hr>
             <label>Usuarios que modifiquen:</label>
             <input type="text" name="modificador-1" disabled="" value="[Usuario 1]" class="campo-formulario">
@@ -49,8 +49,8 @@
         </span>
         <span class="col-4">
             <label><span class="fa fa-key"></span> Edición de permisos:</label>
-            <label class="campo-formulario"><input type="radio" name="visualizacion"> Solo yo</label>
-            <label class="campo-formulario"><input type="radio" name="visualizacion"> Alguno usuarios</label>
+            <label class="campo-formulario"><input type="radio" name="edicion-permisos" checked=""> Solo yo</label>
+            <label class="campo-formulario"><input type="radio" name="edicion-permisos"> Alguno usuarios</label>
             <hr>
             <label>Usuarios que editen permisos:</label>
             <input type="text" name="modificador-1" disabled="" value="[Usuario 1]" class="campo-formulario">
