@@ -52,7 +52,7 @@
                 <p>
                     <span class="col-9">
                         <span class="fa fa-file-text-o"></span>
-                        <strong><a href="ver-apunte-propio.php">Tema 1</a></strong>
+                        <strong><a href="ver-apunte.php">Tema 1</a></strong>
                     </span>
                     <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
                     <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
@@ -65,7 +65,7 @@
                 <p>
                     <span class="col-9">
                         <span class="fa fa-file-text-o"></span>
-                        <strong><a href="ver-apunte-propio.php">Tema 1</a></strong>
+                        <strong><a href="ver-apunte.php">Tema 1</a></strong>
                     </span>
                     <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
                     <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
@@ -78,7 +78,7 @@
                 <p>
                     <span class="col-9">
                         <span class="fa fa-file-text-o"></span>
-                        <strong><a href="ver-apunte-propio.php">Tema 1</a></strong>
+                        <strong><a href="ver-apunte.php">Tema 1</a></strong>
                     </span>
                     <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
                     <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
@@ -91,7 +91,7 @@
                 <p>
                     <span class="col-9">
                         <span class="fa fa-file-text-o"></span>
-                        <strong><a href="ver-apunte-propio.php">Tema 1</a></strong>
+                        <strong><a href="ver-apunte.php">Tema 1</a></strong>
                     </span>
                     <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
                     <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
@@ -104,7 +104,7 @@
                 <p>
                     <span class="col-9">
                         <span class="fa fa-file-text-o"></span>
-                        <strong><a href="ver-apunte-propio.php">Tema 1</a></strong>
+                        <strong><a href="ver-apunte.php">Tema 1</a></strong>
                     </span>
                     <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
                     <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
@@ -117,7 +117,7 @@
     </div>
     <div id="comentarios-apuntes">
         <div class="fila">
-            <form action="ver-apunte-propio.php" method="post">
+            <form action="ver-grupo.php" method="post">
                 <h3><span class="fa fa-comment"></span> Añadir comentario</h3>
                 <textarea class="campo-formulario" name="comentario"></textarea>
                 <input type="submit" class="campo-formulario" value="añadir comentario">
