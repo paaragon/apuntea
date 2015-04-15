@@ -83,3 +83,15 @@ main#main{
     float: left;
     width: 80%;
 }
+
+.minus-color{
+    color:red;
+}
+
+.plus-color, .carrera-icon{
+    color:green;
+}
+
+.carrera-tag{
+    color:gray;
+}
