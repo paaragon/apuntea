@@ -1,34 +1,18 @@
-<?php
-if ($_POST["opcion"] == "universidades") {
-    $res = '<li><a href="universidad.php">[Nombre universidad]</a></li>';
-} else if ($_POST["opcion"] == "carreras") {
-    $res = '<li><a href="carrera.php">[Nombre universidad] / [Nombre carrera]</a></li>';
-} else {
-    $res = '<li><a href="asignatura.php">[Nombre universidad] / [Nombre carrera]</a></li>';
-}
-ob_start();
-?>
-<section id="presentacion">
+<section>
     <h1>Resultados de búsqueda</h1>
 </section>
-<ol class="breadcrumb">
+<ul class="breadcrumb">
     <li><a href="index.php">Apuntea</a></li>
     <li>Búsqueda</li>
-    <li>Búsqueda</li>
-    <li><?php echo $_POST["consulta"] ?></li>
-</ol>
+    <li>[Consulta]</li>
+</ul>
 <hr>
 <section>
-    <h2><?php echo ucfirst($_POST["opcion"]) ?></h2>
+    <h2>Resultado de la búsqueda</h2>
     <ul>
-        <li><a href="<?php echo $url ?>">[Resultado]</a></li>
-        <li><a href="<?php echo $url ?>">[Resultado]</a></li>
-        <li><a href="<?php echo $url ?>">[Resultado]</a></li>
-        <li><a href="<?php echo $url ?>">[Resultado]</a></li>
-        <li><a href="<?php echo $url ?>">[Resultado]</a></li>
-        <li><a href="<?php echo $url ?>">[Resultado]</a></li>
-        <li><a href="<?php echo $url ?>">[Resultado]</a></li>
-        <li><a href="<?php echo $url ?>">[Resultado]</a></li>
+        <li><a href="universidad.php">Resultado (Universidad)</a></li>
+        <li><a href="carrera.php">Resultado (Carrera)</a></li>
+        <li><a href="asignatura.php">Resultado (Asignatura)</a></li>
     </ul>
 </section>
 <?php
