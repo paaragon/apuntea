@@ -20,13 +20,13 @@
             <?php require "nav.php"; ?>
         </nav>
         <?php
-        if (isset($_SESSION["exito"])) {
-            echo $_SESSION["exito"];
-            unset($_SESSION["exito"]);
-        } else if (isset($_SESSION["error"])) {
-            echo $_SESSION["error"];
-            unset($_SESSION["exito"]);
-        }
+//        if (isset($_SESSION["exito"])) {
+//            echo $_SESSION["exito"];
+////            unset($_SESSION["exito"]);
+//        } else if (isset($_SESSION["error"])) {
+//            echo $_SESSION["error"];
+////            unset($_SESSION["error"]);
+//        }
         ?>
         <main class="col-md-10" id="main">
             <?php echo $contenido; ?>
