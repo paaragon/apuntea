@@ -16,7 +16,7 @@
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <form class="navbar-form navbar-left" role="search">
+               <form class="navbar-form navbar-left" role="search" action="../usuario/resultado-de-busqueda.php" method="post">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Buscar">
                 </div>
