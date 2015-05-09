@@ -1,4 +1,11 @@
-<?php ob_start() ?>
+<?php
+require "../controladores/ControladorUsuario.php";
+$controlador = new ControladorUsuario();
+
+$variables = $controlador->inicio();
+
+ob_start();
+?>
 <div id="principal">
     <div class="fila profile">
         <!--Div para el fondo del perfil-->
@@ -24,8 +31,8 @@
         <div class ="clear"></div>
         <!--Contiene los elementos principales del perfil social-->
         <div class="description">
-            <h2 class="col-9">[Nombre y apellidos]</h2>
-            <p class="col-3"><a href="mis-mensajes.php" class="boton">Enviar mensaje</a></p>
+            <h2 class="col-sm-9">[Nombre y apellidos]</h2>
+            <p class="col-sm-3"><a href="mis-mensajes.php" class="boton">Enviar mensaje</a></p>
             <div class="clear"></div>
             <hr>
             <blockquote>
@@ -34,7 +41,7 @@
                 </p>
             </blockquote>
             <!--Principal social dentro del pefil-->
-            <div class="col-7">
+            <div class="col-sm-7">
                 <h2><i class="fa fa-child"></i> Social</h2>
                 <hr>
                 <div class="fila">
@@ -51,7 +58,7 @@
                 </div>
             </div>
             <!--Principal actividades dentro del perfil-->
-            <div class=" col-5">
+            <div class="col-sm-5">
                 <h2><i class="fa fa-cogs"></i> Actividades</h2>
                 <hr>
                 <div class="fila">

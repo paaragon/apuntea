@@ -3,6 +3,8 @@
     <h3>Datos de la asignatura:</h3>
     <label>Nombre:</label>
     <input type="text" name="nombre" placeholder="Nombre de la asignatura" class="campo-formulario">
+    <label>Curso:</label>
+    <input type="number" name="curso" placeholder="Curso de la asignatura" class="campo-formulario">
     <label><span class="fa fa-university"></span> Universidad:</label>
     <select class="campo-formulario">
         <option value="UCM">UCM</option>

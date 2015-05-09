@@ -1,10 +1,7 @@
 body{
-    position: absolute;
-    height: 100%;
-    width: 100%;
     padding-top: 55px;
     margin: 0;
-    font-family: sans-serif;
+    font-family: sans-serif;    
 }
 
 .mini-logo{
@@ -23,7 +20,7 @@ body{
 #menu-user > div > div#user-info{
     text-align: center;
     background-color: #fff;
-    padding: 15px; 
+    padding: 15px;
 }
 
 #menu-user > div > div#user-info img{
@@ -268,6 +265,7 @@ textarea#area-apunte{
     clear: both;
     max-width: 80%;
     color: #5C5C5C;
+    padding-top: 15px;
 }
 
 .msg-amigo{
@@ -307,6 +305,60 @@ textarea#area-apunte{
     width: 50px;
     border-radius: 50px;
     margin: 5px;
+}
+
+img#loading{
+    float: right;
+    width: 100px;
+}
+
+#loading-msg{
+    height: 15px;
+    text-align: center;
+}
+
+#loading-msg img{
+    height: 10px;
+    width: auto;
+    margin-top: -5px;
+}
+
+#panel-conversacion{
+    display: none;
+}
+
+.fecha-chat{
+    font-size: 0.5em;
+    margin-top: -20px;
+    background-color: #e7e7e7;
+    border-radius: 3px;
+    padding: 3px;
+    color: #707070;
+}
+
+.dia-chat{
+    clear: both;
+    float: left;
+    width: 100%;
+    text-align: center;
+    border-top: 1px solid #e7e7e7;
+}
+
+.dia-chat span{
+    position: relative;
+    padding: 5px;
+    font-size: 0.7em;
+    color: #707070;
+    top: -7px;
+    background-color: #fff;
+}
+
+.msg-amigo .fecha-chat{
+    float: left;
+}
+
+.msg-propio .fecha-chat{
+    float: right;
 }
 
 #conversaciones-recientes{

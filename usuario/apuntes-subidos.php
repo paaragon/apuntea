@@ -1,4 +1,11 @@
-<?php ob_start(); ?>
+<?php
+require "../controladores/ControladorUsuario.php";
+$controlador = new ControladorUsuario();
+
+$variables = $controlador->inicio();
+
+ob_start();
+?>
 <h2>
     <span class="fa fa-edit"></span> Redactar apuntes:
 </h2>

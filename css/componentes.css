@@ -111,7 +111,7 @@ p{
 /*** Componentes auxiliares ***/
 
 /*** Menú de navegación superior ***/
-.menu-nav{
+.navbar-default{
     background-color: #3B9845;
     border-bottom: 1px solid #287D32;
     box-shadow: 0px 1px 3px #A8A8A8;
@@ -120,9 +120,6 @@ p{
     z-index: 5;
     width: 100%;
     top: 0;
-    padding-top: 20px;
-    padding-bottom: 15px;
-    height: 60px;
     background: rgba(67,173,76,1);
     background: -moz-linear-gradient(top, rgba(67,173,76,1) 0%, rgba(74,161,78,1) 52%, rgba(59,152,68,1) 100%);
     background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(67,173,76,1)), color-stop(52%, rgba(74,161,78,1)), color-stop(100%, rgba(59,152,68,1)));
@@ -131,10 +128,9 @@ p{
     background: -ms-linear-gradient(top, rgba(67,173,76,1) 0%, rgba(74,161,78,1) 52%, rgba(59,152,68,1) 100%);
     background: linear-gradient(to bottom, rgba(67,173,76,1) 0%, rgba(74,161,78,1) 52%, rgba(59,152,68,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#43ad4c', endColorstr='#3b9844', GradientType=0 );
-
 }
 
-.menu-nav p{
+.navbar-default p{
     margin: 0;
     padding: 0;
 }
@@ -145,46 +141,40 @@ p{
     margin: auto;
 }
 
-.menu-nav a{
+.navbar-default a{
     color: #fff;
     font-size: 1.2em;
-    padding: 17px;
-    padding-top: 22px;
 }
 
-.menu-nav a span{
+.navbar-default a span{
     color: #205626;
     text-shadow: 1px 1px 0px #4CAE55;
 }
 
-.menu-nav ul{
+.navbar-default ul{
     text-align: right;
 }
 
-.menu-nav ul li{
+.navbar-default ul li{
     display: inline;
     margin: 0;
     padding: 0;
 }
 
-.menu-nav ul li a:hover{
+.navbar-default ul li a:hover{
     background-color: #2E7636;
     text-decoration: none;
     animation-duration: 0.5s;
     animation-name: head-nav-in;
 }
 
-.menu-nav ul li a span:hover{
+.navbar-default ul li a span:hover{
     color: #18411D;
     text-shadow: 1px 1px 0px #54995A;
 }
 
-.menu-nav ul li a span{
+.navbar-default ul li a span{
     font-size: 1.3em;
-}
-
-.menu-nav form{
-    margin-top: -7px;
 }
 
 @keyframes head-nav-in {
@@ -198,12 +188,25 @@ p{
 }
 
 
-
-.menu-nav p.logo img{
-    position: relative;
-    margin-top: -13px;
+.navbar-default p.logo img{
     width: 100px;
-    padding: 0;
+}
+
+@media(max-width: 768px){
+    .navbar-default form button{
+        width: 100%;
+    }
+
+    .navbar-default ul{
+        text-align: left;
+    }
+}
+
+@media(min-width: 768px){
+
+    .navbar-default .menu-label{
+        display: none;
+    }
 }
 
 /*Breadcrum*/
@@ -435,4 +438,12 @@ input[disabled=""]{
     display: block;
     max-width: 100%;
     height: auto;
+}
+
+#statusdiv{
+    position: fixed;
+    right: 15px;
+    top: 65px;
+    max-width: 255px;
+    z-index: 99;
 }

@@ -4,6 +4,7 @@
         <span class="fa fa-envelope"></span> Mis mensajes
     </h2>
     <hr>
+    <p><small>A esta página se accede desde muchos lugares. Cuando se accede a través de un usuario concreto, aparecerá directamente la conversación con él.</small></p>
     <h3>Conversaciones recientes: </h3>
     <div id="conversaciones-recientes">
         <div>

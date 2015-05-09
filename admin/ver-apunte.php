@@ -111,7 +111,7 @@
         <span class="col-3"><span class="fa fa-thumbs-o-up"></span> 20</span>
         <span class="col-3"><span class="fa fa-thumbs-o-down"></span> 2</span>
         <span class="col-4"><span class="fa fa-eye"></span> 999</span>
-        <span class="col-1"><span class="fa fa-trash-o"></span></span>
+        <span class="col-1"><a href="apuntes.php"><span class="fa fa-trash-o"></span></a></span>
         <br>
     </div>
     <p>

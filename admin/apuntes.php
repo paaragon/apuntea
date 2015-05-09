@@ -35,7 +35,7 @@
             <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
             <span class="col-1"><span class="fa fa-eye"></span> 999</span>
 
-            <span class="col-1"><span class="fa fa-trash-o"></span></span>
+            <span class="col-1"><a href="apuntes.php"><span class="fa fa-trash-o"></span></a></span>
         </p>
         <div class="clear"></div>
     </div>  
@@ -50,7 +50,7 @@
             <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
             <span class="col-1"><span class="fa fa-eye"></span> 999</span>
 
-            <span class="col-1"><span class="fa fa-trash-o"></span></span>
+            <span class="col-1"><a href="apuntes.php"><span class="fa fa-trash-o"></span></a></span>
         </p>
         <div class="clear"></div>
     </div>  
@@ -65,7 +65,7 @@
             <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
             <span class="col-1"><span class="fa fa-eye"></span> 999</span>
 
-            <span class="col-1"><span class="fa fa-trash-o"></span></span>
+            <span class="col-1"><a href="apuntes.php"><span class="fa fa-trash-o"></span></a></span>
         </p>
         <div class="clear"></div>
     </div>  
@@ -80,7 +80,7 @@
             <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
             <span class="col-1"><span class="fa fa-eye"></span> 999</span>
 
-            <span class="col-1"><span class="fa fa-trash-o"></span></span>
+            <span class="col-1"><a href="apuntes.php"><span class="fa fa-trash-o"></span></a></span>
         </p>
         <div class="clear"></div>
     </div>  
@@ -95,7 +95,7 @@
             <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
             <span class="col-1"><span class="fa fa-eye"></span> 999</span>
 
-            <span class="col-1"><span class="fa fa-trash-o"></span></span>
+            <span class="col-1"><a href="apuntes.php"><span class="fa fa-trash-o"></span></a></span>
         </p>
         <div class="clear"></div>
     </div>  
@@ -110,7 +110,7 @@
             <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
             <span class="col-1"><span class="fa fa-eye"></span> 999</span>
 
-            <span class="col-1"><span class="fa fa-trash-o"></span></span>
+            <span class="col-1"><a href="apuntes.php"><span class="fa fa-trash-o"></span></a></span>
         </p>
         <div class="clear"></div>
     </div>  
@@ -125,7 +125,7 @@
             <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
             <span class="col-1"><span class="fa fa-eye"></span> 999</span>
 
-            <span class="col-1"><span class="fa fa-trash-o"></span></span>
+            <span class="col-1"><a href="apuntes.php"><span class="fa fa-trash-o"></span></a></span>
         </p>
         <div class="clear"></div>
     </div>  
@@ -140,7 +140,7 @@
             <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
             <span class="col-1"><span class="fa fa-eye"></span> 999</span>
 
-            <span class="col-1"><span class="fa fa-trash-o"></span></span>
+            <span class="col-1"><a href="apuntes.php"><span class="fa fa-trash-o"></span></a></span>
         </p>
         <div class="clear"></div>
     </div>
