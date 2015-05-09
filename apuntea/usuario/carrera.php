@@ -1,4 +1,11 @@
-<?php ob_start(); ?>
+<?php
+require "../controladores/ControladorUsuario.php";
+$controlador = new ControladorUsuario();
+
+$variables = $controlador->inicio();
+
+ob_start();
+?>
 <section>
     <h1>[Nombre de carrera]</h1>
 </section>

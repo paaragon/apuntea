@@ -1,4 +1,8 @@
-<?php ob_start(); ?>
+<?php
+session_start();
+
+ob_start();
+?>
 <div class="col-9">
     <h2>
         <span class="fa fa-users"></span> Administración de usuarios

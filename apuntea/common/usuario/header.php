@@ -12,6 +12,7 @@
                 <a href="index.php"><img src="../img/logo-inv.png"></a>
             </p>
         </div>
+        <a href="header.php"></a>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -25,7 +26,7 @@
                 <li><a href="mis-mensajes.php"><span class="fa fa-envelope"></span><span class="menu-label"> Mensajes</span></a></li>
                 <li><a href="notificaciones.php"><span class="fa fa-globe"></span><span class="menu-label"> Novedades</span></a></li>
                 <li><a href="subir-apuntes.php"><span class="fa fa-cloud-upload"></span><span class="menu-label"> Subir apuntes</span></a></li>
-                <li><a href="../index.php"><span class="fa fa-power-off"></span><span class="menu-label"> Cerrar sesión</span></a></li>
+                <li><a href="../servicios/usuarioHandler.php?action=logout"><span class="fa fa-power-off"></span><span class="menu-label"> Cerrar sesión</span></a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

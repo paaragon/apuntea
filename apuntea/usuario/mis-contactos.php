@@ -1,6 +1,5 @@
 <?php
 /* Iniciamos sesion con usuario id */
-session_start();
 
 
 /* DIR... LA RUTA absoluta dsde donde  se llama .. donde esta el archivo */

@@ -1,6 +1,8 @@
 <?php
 require "controladores/ControladorEstandar.php";
 
+session_start();
+
 $controlador = new ControladorEstandar();
 $variables = $controlador->inicio();
 

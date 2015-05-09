@@ -1,10 +1,8 @@
 <?php
 
-session_start();
-
 require "../servicios/ServiciosAdmin.php";
 
-$servicio = new ServiciosAdmin();
+$servicios = new ServiciosAdmin();
 
 $action = filter_input(INPUT_GET, "action", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
@@ -12,14 +10,23 @@ $params = array();
 
 foreach ($_GET as $key => $val) {
     if ($key != "action") {
-        $params[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_MAGIC_QUOTES);
+        $params[$key] = $val;
     }
 }
 
-if (method_exists($servicio, $action)) {
-    $return = $servicio->$action($params);
+if (method_exists($servicios, $action)) {
+    $return = $servicios->$action($params);
 } else {
-    $return = $servicio->notFound();
+    $return = $servicios->notFound();
 }
 
-header("location: ../" . $return);
+if (!isJson($return)) {
+    header("location: ../" . $return);
+} else {
+    echo $return;
+}
+
+function isJson($string) {
+    json_decode($string);
+    return (json_last_error() == JSON_ERROR_NONE);
+}

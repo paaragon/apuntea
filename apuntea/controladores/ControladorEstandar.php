@@ -23,7 +23,7 @@ class ControladorEstandar {
     }
 
     private function cargarComunes() {
-        
+        $this->variables["url"] = filter_var($_SERVER["REQUEST_URI"], FILTER_SANITIZE_MAGIC_QUOTES);
     }
 
     private function setUpDatabase() {
