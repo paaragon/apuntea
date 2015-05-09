@@ -10,6 +10,34 @@ class ServiciosAdmin {
         apunteaSec\checkAdmin();
     }
 
+    public function borrarCarrera($parametros) {
+
+        /*
+          usar parametros obtenemos el id por este parametro
+         *          */
+
+        try {
+            $this->setUpDatabase();
+
+            //CReamos un bean
+            $carrera = R::load('carrera', $parametros['idCarrera']);
+            //Borramos 
+            R::trash($carrera);
+
+            $_SESSION["exito"] = $carrera->nombre . " - (" . $carrera->universidad->siglas . ") borrada con éxito";
+            $return = "admin/carreras.php";
+        } catch (Exception $ex) {
+
+            $_SESSION["error"] = "Error al borrar carrera";
+            $return = "admin/carreras.php";
+        }
+
+
+        R::close();
+
+        return $return;
+    }
+
     public function anadirCarrera() {
 
         $nombre = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES);

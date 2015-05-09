@@ -15,6 +15,6 @@ class DbConfig {
     
     public static $dbHost = "localhost";
     public static $dbName = "apuntea";
-    public static $dbUser = "root";
-    public static $dbPassword = "clara123";
+    public static $dbUser = "usu_apuntea";
+    public static $dbPassword = "miproyectomolamas";
 }

@@ -19,21 +19,29 @@
         <nav class="col-md-2" id="menu-user">
             <?php require "nav.php"; ?>
         </nav>
-        <?php
-        if (isset($_SESSION["exito"])) {
-            echo $_SESSION["exito"];
-            unset($_SESSION["exito"]);
-        } else if (isset($_SESSION["error"])) {
-            echo $_SESSION["error"];
-            unset($_SESSION["exito"]);
-        }
-        ?>
+
+        <?php if (isset($_SESSION["exito"])) { ?>
+            <div id="statusdiv" class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <?php echo $_SESSION["exito"];
+                unset($_SESSION["exito"]);
+                ?>
+            </div>
+<?php } else if (isset($_SESSION["error"])) { ?>
+            <div id="statusdiv" class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <?php echo $_SESSION["error"];
+                unset($_SESSION["error"])
+                ?>
+            </div>
+            <?php } ?>
+        
         <main class="col-md-10" id="main">
-            <?php echo $contenido; ?>
+<?php echo $contenido; ?>
         </main>
         <!--<div class="clear"></div>-->
         <footer>
-            <?php require "footer.php" ?>
+<?php require "footer.php" ?>
         </footer>
     </body>
 </html>

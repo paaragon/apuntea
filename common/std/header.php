@@ -16,9 +16,9 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="index">Inicio</a></li>
-                <li><a href="universidades">Universidades</a></li>
-                <li><a href="carreras">Carreras</a></li>
+                <li><a href="index.php">Inicio</a></li>
+                <li><a href="universidades.php">Universidades</a></li>
+                <li><a href="carreras.php">Carreras</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

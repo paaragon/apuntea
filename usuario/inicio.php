@@ -1,4 +1,10 @@
-<?php ob_start(); ?>
+<?php
+
+/*Empexamos session*/
+session_start();
+$_SESSION["idUsuario"] = 1;
+
+ob_start(); ?>
 <div id="principal">
     <h2>
         <span class="fa fa-newspaper-o"></span> Novedades

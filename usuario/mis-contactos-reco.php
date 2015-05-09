@@ -1,4 +1,23 @@
-<?php ob_start(); ?>
+<?php
+
+ session_start();
+
+ 
+ /* DIR... LA RUTA absoluta dsde donde  se llama .. donde esta el archivo */
+require __DIR__ . "/../controladores/ControladorUsuario.php";
+
+/* Creamos el controlaor */
+$controlador = new ControladorUsuario();
+
+/* Metodo de controladro que nos devuelva las varialbes que necesitamos
+  vamos a controlador a rea el metodo */
+
+//Llamamos al metodo que contiene la funcionalidad(variables cde la vista)
+//Con todos los contactos
+$variables = $controlador->misContactosReco();
+
+
+ob_start(); ?>
 <div id="principal">
     <h2>
         <span class="fa fa-user"></span> Mis contactos

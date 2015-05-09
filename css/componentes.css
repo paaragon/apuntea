@@ -439,3 +439,11 @@ input[disabled=""]{
     max-width: 100%;
     height: auto;
 }
+
+#statusdiv{
+    position: fixed;
+    right: 15px;
+    top: 65px;
+    max-width: 255px;
+    z-index: 99;
+}
