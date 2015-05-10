@@ -12,6 +12,24 @@ class ControladorUsuario {
         $this->cargarComunes();
     }
 
+    public function misGrupos() {
+
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+
+        $this->setUpDatabase();
+
+        $grupos = R::findAll("usuariogrupo", " usuario_id = " . $idUsuario);
+
+        $this->variables["gruposUsuario"] = $grupos;
+
+        R::close();
+
+        return $this->variables;
+    }
+
+    public function countMiembros($idGrupo) {
+        return R::count('usuariogrupo', ' grupo_id = ? AND admitido = 1', [$idGrupo]);
+    }
     //Publico
     public function misContactos() {
 
@@ -66,9 +84,9 @@ class ControladorUsuario {
             $this->variables["contactosUsuario"][$contacto->nombre] = $contacto;
         }
 
-         //Recorremos la lista de alice para obtener sus alices
+        //Recorremos la lista de alice para obtener sus alices
         foreach ($bob as $b) {
-            
+
             //Obtenemos un amigo de alice(bob)
             $contacto = $b->fetchAs('usuario')->alice;
             //Guardamos en el array el contacto
@@ -80,19 +98,18 @@ class ControladorUsuario {
 
         //Cerramos conexioon
         R::close();
-        
+
         //Devolvemos con contenido
         return $this->variables;
     }
 
-     private function cmp($a, $b) {
+    private function cmp($a, $b) {
         if ($a == $b) {
             return 0;
         }
         return ($a < $b) ? -1 : 1;
     }
-    
-    
+
     public function misContactosReco() {
 
         //Sobre este usuario hare la insersion de nuevos 
@@ -117,6 +134,21 @@ class ControladorUsuario {
         R::close();
     }
 
+    public function misGruposSug() {
+
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+
+        $this->setUpDatabase();
+
+        $grupos = R::getAll('SELECT DISTINCT * FROM grupo, usuariogrupo WHERE grupo.id != usuariogrupo.grupo_id AND ' . $idUsuario . ' != usuariogrupo.usuario_id');
+
+        $this->variables["gruposSugeridos"] = $grupos;
+        
+        R::close();
+
+        return $this->variables;
+    }
+
     private function getAmigosDeMisBob($alice, $idUsuario) {
 
         //array con los amigos de mis alices
@@ -124,7 +156,6 @@ class ControladorUsuario {
 
         foreach ($alice as $a) { //recorro los contactos donde yo soy alice
             $micontacto = $a->fetchAs('usuario')->bob; //recojo mis bobs
-
             //alice Amigo de Amigo
             $aliceAA = $micontacto->alias('alice')->ownContactoList; //Contacto donde mis bobs son alice
             //bob Amigo de Amigo
@@ -155,18 +186,16 @@ class ControladorUsuario {
     }
 
     private function getAmigosDeMisAlice($bob, $idUsuario) {
-        
+
         //array con los amigos de mis alices
         $contactosAA = array();
 
         foreach ($bob as $b) {//recorro los contactos donde yo soy bob
-
-            $micontacto = $a->fetchAs('usuario')->alice;//recojo mis alices
-
+            $micontacto = $a->fetchAs('usuario')->alice; //recojo mis alices
             //alice Amigo de Amigo
-            $aliceAA = $micontacto->alias('alice')->ownContactoList;//Contacto donde mis alices son alice
+            $aliceAA = $micontacto->alias('alice')->ownContactoList; //Contacto donde mis alices son alice
             //bob Amigo de Amigo
-            $bobAA = $micontacto->alias('bob')->ownContactoList;//Contacto donde mis alices son bob
+            $bobAA = $micontacto->alias('bob')->ownContactoList; //Contacto donde mis alices son bob
 
             foreach ($aliceAA as $aAA) {//recorro todos los contactos donde mis alices son alices
                 $contacto = $aAA->fetchAs('usuario')->bob;
@@ -190,8 +219,6 @@ class ControladorUsuario {
         }
         return $contactosAA;
     }
-
-   
 
     private function cargarComunes() {
         
