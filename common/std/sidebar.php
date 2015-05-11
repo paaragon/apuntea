@@ -13,10 +13,6 @@
             ?>
             <input type="submit" class="campo-formulario" value="Entrar">
         </form>
-        <form action="admin/inicio.php" method="post">
-            <input type="submit" class="campo-formulario" value="Entrar como administrador">
-        </form>
-        <p><small>El boton "Entrar como administrador" no aparecerá en la versión final. El mismo formulario de login servirá para ambos tipos de usuarios."</small></p>
         <hr>
         <div>
             <p>

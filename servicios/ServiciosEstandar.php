@@ -22,10 +22,16 @@ class ServiciosEstandar {
             $_SESSION["login-error"] = "Usuario o contraseña incorrectos";
             return "index.php";
         }
-        echo "Bien";
-        apunteaSec\startUsuarioSession($usuario);
 
-        return "usuario/inicio.php";
+        if ($usuario->tipo == 1) {
+            apunteaSec\startUsuarioSession($usuario);
+            return "usuario/inicio.php";
+        } else if ($usuario->tipo == 2) {
+            apunteaSec\startUsuarioSession($usuario);
+            return "admin/inicio.php";
+        } else {
+            apunteaSec\logout();
+        }
     }
 
     public function notFound() {

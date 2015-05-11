@@ -46,7 +46,7 @@ class ServiciosUsuario {
             $mensajes = R::findAll('mensaje', ' emisor_id = ' . $idContacto . ' AND receptor_id = ' . $idUsuario . ' OR emisor_id = ' . $idUsuario . ' AND receptor_id = ' . $idContacto . ' ORDER BY fecha');
         } else {
 
-            $mensajes = R::findAll('mensaje', ' (emisor_id = ' . $idContacto . ' AND receptor_id = ' . $idUsuario . ' OR emisor_id = ' . $idUsuario . ' AND receptor_id = ' . $idContacto . ') AND visto = 0 ORDER BY fecha');
+            $mensajes = R::findAll('mensaje', ' emisor_id = ' . $idContacto . ' AND receptor_id = ' . $idUsuario . ' AND visto = 0 ORDER BY fecha');
         }
         foreach ($mensajes as $mensaje) {
 
@@ -78,7 +78,7 @@ class ServiciosUsuario {
 
         try {
             R::store($mensaje);
-            echo $texto;
+            echo json_encode($mensaje->export());
         } catch (Exception $e) {
             echo $e;
         }
