@@ -1,8 +1,20 @@
-<?php ob_start(); ?>
+<?php
+
+require __DIR__ . "/../controladores/ControladorAdmin.php";
+
+$controlador = new ControladorAdmin();
+
+$variables = $controlador->universidad();
+
+ob_start();
+?>
 <div id="principal" class="col-9">
+      <?php
+        foreach ($variables["universidades"] as $universidad):
+           ?>
     <div class="fila profile">
-        <div id="fondo"><img src="../img/fondo-user.jpg"/></div>
-        <div id="avatar"><img src="../img/universidades/LogoUCM.jpg"/></div>
+        <div id="fondo"><?php echo $universidad->imagenportada ?></div>
+        <div id="avatar"><?php echo $universidad->imagenperfil ?></div>
         <ul id="actividad">
             <li id="actividad-1">
                 <span>355</span>
@@ -19,7 +31,7 @@
         </ul>
         <div class ="clear"></div><br>
         <div class="description">
-            <h2 class="col-6">UNIVERSIDAD COMPLUTENSE DE MADRID</h2>
+            <h2 class="col-6"><?php echo $universidad->nombre ?></h2>
             <p class="col-6">
                 <a href="editar-universidad.php" class="boton">Editar universidad</a>
                 <a href="universidades.php" class="boton">Eliminar universidad</a>
@@ -28,7 +40,7 @@
             <hr>
             <blockquote>
                 <p> 
-                    Descripcion de la universidad
+                    <?php echo $universidad->descripcion ?>
                 </p>
             </blockquote>
             <div class="col-7">
@@ -192,6 +204,9 @@
         </div>
     </div>
 </div>
+<?php
+        endforeach;
+?>
 <div class="col-3">
     <p>
         <img src="../img/line-graph.gif" class="img-responsive">

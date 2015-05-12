@@ -6,16 +6,14 @@
     <hr>
     <section class="col-9">
         <form action="perfil-universidad.php" method="post">
-            <legend>Datos de la universidad:</legend>
             <span class="col-3"><label>Universidad:</label></span>
             <span class="col-9"><input type="text" name="universidad" class="campo-formulario" placeholder="Nombre de la universidad" required=""></span>
-            <span class="col-3"><label>Alias:</label></span>
-            <span class="col-9"><input type="email" name="alias" class="campo-formulario" placeholder="Alias de la universidad" required=""></span>
-            <span class="col-3"><label>E-mail de contacto:</label></span>
-            <span class="col-9"><input type="text" name="email" class="campo-formulario" placeholder="Email de contacto de la universidad"></span>
+            <span class="col-3"><label>Siglas:</label></span>
+            <span class="col-9"><input type="text" name="alias" class="campo-formulario" placeholder="Alias de la universidad" required=""></span>
             <span class="col-3"><label>Descripción:</label></span>
-            <span class="col-9"><textarea class="campo-formulario" placeholder="Breve descripción de la universidad"></textarea></span>
-            <span class="col-9"><label>Logo de la universidad: </label><input type="file" name="imagen_universidad" class="campo-formulario" ></span>
+            <span class="col-9"><textarea class="campo-formulario" name="descripcion" placeholder="Breve descripción de la universidad"></textarea></span>
+            <span class="col-9"><label>Logo de la universidad: </label><input type="file" name="imagen_logo" class="campo-formulario" ></span>
+            <span class="col-9"><label>Portada de la universidad: </label><input type="file" name="imagen_portada" class="campo-formulario" ></span>
             <input type="submit" value="Guardar universidad" class="campo-formulario ">
         </form>
     </section>
