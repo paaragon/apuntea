@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require __DIR__ . "/../controladores/ControladorAdmin.php";
 
 $controlador = new ControladorAdmin();
@@ -41,7 +43,7 @@ ob_start();
                     <strong><a href="perfil-carrera.php?id=<?php echo $carrera->id ?>"><?php echo $carrera->nombre ?></a> <small>/ <a href="perfil-universidad.php?id=<?php echo $carrera->universidad->id ?>"><?php echo $carrera->universidad->siglas ?></a></small></strong>
                 </span>
                 <span class="col-1"><span class="fa fa-file"></span> <strong>13</strong></span>
-                <span class="col-1 minus-color"><a href="carreras.php"><span class="fa fa-trash"></span></a></span>
+                <span class="col-1 minus-color"><a href="../servicios/adminHandler.php?action=borrarCarrera&idCarrera=<?php echo $carrera->id ?>"><span class="fa fa-trash"></span></a></span>
             </p> 
             <div class="clear"></div>
         </div>

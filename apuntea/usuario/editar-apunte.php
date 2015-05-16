@@ -1,11 +1,4 @@
-<?php
-require "../controladores/ControladorUsuario.php";
-$controlador = new ControladorUsuario();
-
-$variables = $controlador->inicio();
-
-ob_start();
-?>
+<?php ob_start(); ?>
 <div id="head-apunte">
     <span class="col-8">
         <a href="universidad.php">[Universidad]</a> / 

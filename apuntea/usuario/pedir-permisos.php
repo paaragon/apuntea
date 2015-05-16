@@ -1,11 +1,4 @@
-<?php
-require "../controladores/ControladorUsuario.php";
-$controlador = new ControladorUsuario();
-
-$variables = $controlador->inicio();
-
-ob_start();
-?>
+<?php ob_start(); ?>
 <section>
     <h1><span class="fa fa-key"></span> Pedir permisos</h1>
 </section>

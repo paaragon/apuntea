@@ -1,11 +1,4 @@
-<?php
-require "../controladores/ControladorUsuario.php";
-$controlador = new ControladorUsuario();
-
-$variables = $controlador->inicio();
-
-ob_start();
-?>
+<?php ob_start() ?>
 <div id="principal">
     <div class="fila profile">
         <!--Div para el fondo del perfil-->

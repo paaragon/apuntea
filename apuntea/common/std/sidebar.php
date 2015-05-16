@@ -1,16 +1,10 @@
 <div class="panel">
     <div class="panel-cabecera"><strong>Acceder</strong></div>
     <div class="panel-cuerpo">
-        <form action="servicios/standarHandler.php?action=doLogin&url=<?php echo $variables["url"] ?>" method="post">
-            <input type="text" name="username" class="campo-formulario" placeholder="Usuario" required>
+        <form action="usuario/inicio.php" method="post">
+            <input type="text" class="campo-formulario" id="username" placeholder="Usuario">
             <br>
-            <input type="password" name="password" class="campo-formulario" placeholder="Contraseña" required>
-            <?php
-            if (isset($_SESSION["login-error"])) {
-                echo '<p class="text-danger">' . $_SESSION["login-error"] . '</p>';
-                unset($_SESSION["login-error"]);
-            }
-            ?>
+            <input type="password" class="campo-formulario" id="password" placeholder="Contraseña">
             <input type="submit" class="campo-formulario" value="Entrar">
         </form>
         <form action="admin/inicio.php" method="post">

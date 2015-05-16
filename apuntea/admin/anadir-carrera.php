@@ -16,6 +16,7 @@ ob_start();
     </h2>
     <hr>
     <div class="col-9">
+        
         <form action="../servicios/adminHandler.php?action=anadirCarrera" method="post">
             <label>Nombre:</label>
             <input type="text" name="nombre" required="" class="campo-formulario" placeholder="Introduce el nombre">
@@ -35,6 +36,7 @@ ob_start();
             </select>
             <input type="submit" value="Añadir carrera" class="campo-formulario">
         </form>
+        
     </div>
 </div>
 <?php

@@ -1,11 +1,4 @@
-<?php
-require "../controladores/ControladorUsuario.php";
-$controlador = new ControladorUsuario();
-
-$variables = $controlador->inicio();
-
-ob_start();
-?>
+<?php ob_start(); ?>
 <section>
     <h1>[Nombre de los apuntes]</h1>
 </section>
@@ -47,6 +40,5 @@ ob_start();
     </div>
 </section>
 <?php
-
 $contenido = ob_get_clean();
 require "../common/usuario/layout.php";

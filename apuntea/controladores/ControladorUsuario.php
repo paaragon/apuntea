@@ -1,18 +1,103 @@
 <?php
 
-require __DIR__ . "/../security/security.php";
 require __DIR__ . "/../DB/rb.php";
 require __DIR__ . "/../DB/DbConfig.php";
 
 class ControladorUsuario {
+    /* GUARDAMOS TODAS LAS VARIABLES A UTILIZAR */
 
     private $variables = array();
 
     public function __construct() {
-        apunteaSec\checkUsuario();
+        $this->cargarComunes();
     }
 
-    public function inicio() {
+    public function recomendados() {
+
+        //Sobre este usuario hare la insersion de nuevos 
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+
+        //Conectamos a la base de datos
+        $this->setUpDatabase();
+
+        //Obtenemos el usuario asociado al idUsuario
+        $usuario = R::load('usuario', $idUsuario);
+
+
+        //Obtenemos la lista de contactos(alice)
+        $alice = $usuario->alias('alice')->ownContactoList;
+        //Obtenemos la lista de contactos(bob)
+        $bob = $usuario->alias('bob')->ownContactoList;
+
+        $miscontactos = array();
+
+        //Recorremos la lista de alice para obtener sus bobs
+        foreach ($alice as $a) {
+
+            //Obtenemos un amigo de alice(bob)
+            $contacto = $a->fetchAs('usuario')->bob;
+            //Guardamos en el array el contacto
+            $miscontactos[$contacto->id] = $contacto;
+        }
+        //Recorremos la lista de bob para obtener sus alices
+        foreach ($bob as $b) {
+
+            //Obtenemos un amigo de alice(bob)
+            $contacto = $b->fetchAs('usuario')->alice;
+            //Guardamos en el array el contacto
+            $miscontactos[$contacto->id] = $contacto;
+        }
+
+
+        //Recorremos cada contacto
+        //array con los amigos de mis amigos
+        $contactosAmigos = array();
+
+        foreach ($miscontactos as $contacto) {
+            //Obtenemos la lista de contactos(alice)
+            $alice2 = $contacto->alias('alice')->ownContactoList;
+            //Obtenemos la lista de contactos(bob)
+            $bob2 = $contacto->alias('bob')->ownContactoList;
+
+
+            //Recorremos la lista de alice para obtener sus bobs
+            foreach ($alice2 as $a) {
+
+                //Obtenemos un amigo de alice(bob)
+                $contactoA = $a->fetchAs('usuario')->bob;
+                //Guardamos en el array el contacto
+                if (!isset($contactosAmigos[$contactoA->id]) && $contactoA->id != $idUsuario) {
+                    $contactosAmigos[$contacto->id] = $contactoA;
+                }
+            }
+
+            //Recorremos la lista de bob para obtener sus alices
+            foreach ($bob2 as $b) {
+
+                //Obtenemos un amigo de alice(bob)
+                $contactoB = $b->fetchAs('usuario')->alice;
+                //Guardamos en el array el contacto
+                if (!isset($contactosAmigos[$contactoB->id]) && $contactoB->id != $idUsuario) {
+                    $contactosAmigos[$contacto->id] = $contactoB;
+                }
+            }
+        }
+
+        //Recorrer los elementos del contacto para saber cuales no tiene
+        //si son distintos los guardo
+        $this->variables["contactosUsuario"] = array();
+
+        foreach ($contactosAmigos as $contacto) {
+
+            if (!isset($miscontactos[$contacto->id])) {
+                
+                $this->variables["contactosUsuario"][$contacto->id] = $contacto;
+            }
+        }
+
+
+        //Cerramos conexioon
+        R::close();
 
         return $this->variables;
     }
@@ -97,136 +182,10 @@ class ControladorUsuario {
         return ($a < $b) ? -1 : 1;
     }
 
-    public function misContactosReco() {
-
-        //Sobre este usuario hare la insersion de nuevos 
-        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
-
-        //Conectamos a la base de datos
-        $this->setUpDatabase();
-
-        //Obtenemos el usuario asociado al idUsuario
-        $usuario = R::load('usuario', $idUsuario);
-
-        //Obtenemos la lista de contactos(alice) del usuario
-        //Lista donde yo soy alice (para comprobar quienes son mis bobs)
-        $alice = $usuario->alias('alice')->ownContactoList;
-
-        //Lista donde yo soy bob (para comprobar quienes son mis alices)
-        $bob = $usuario->alias('bob')->ownContactoList;
-
-
-        $this->variables = $this->getAmigosDeMisBob($alice, $idUsuario);
-
-
-
-        //Ordenamos los contactos del array
-        usort($this->variables["contactosUsuario"], array("self", "cmp"));
-
-        //Cerramos conexioon
-        R::close();
-
-        //Devolvemos con contenido
-        return $this->variables;
-
-        R::close();
-    }
-
-    private function getAmigosDeMisBob($alice, $idUsuario) {
-
-        //array con los amigos de mis alices
-        $contactosAA = array();
-
-        foreach ($alice as $a) { //recorro los contactos donde yo soy alice
-            $micontacto = $a->fetchAs('usuario')->bob; //recojo mis bobs
-            //alice Amigo de Amigo
-            $aliceAA = $micontacto->alias('alice')->ownContactoList; //Contacto donde mis bobs son alice
-            //bob Amigo de Amigo
-            $bobAA = $micontacto->alias('bob')->ownContactoList; //Contactos donde mis bobs son bobs
-
-            foreach ($aliceAA as $aAA) { //recorro todos los contactos donde mis bobs son alices
-                $contacto = $aAA->fetchAs('usuario')->bob;
-
-
-                if ($contacto->id != $idUsuario) {
-
-                    $contactosAA[$contacto->nombre] = $contacto;
-                }
-
-                //$this->variables["contactosUsuario"][$contacto->nombre] = $contacto;
-
-                /*
-                  if (isset($contactosAA[$contacto->nombre]) && $contacto->id != $idUsuario) {
-                  $contactosAA[$contacto->nombre] ++;
-                  } else if ($contacto->id != $idUsuario) {
-                  $contactosAA[$contacto->nombre] = 1;
-                  } */
-            }
-
-            foreach ($bobAA as $bAA) {//recorro todos contactos donde mis bobs son bobs
-                $contacto = $bAA->fetchAs('usuario')->alice;
-
-
-                if ($contacto->id != $idUsuario) {
-
-                    $contactosAA[$contacto->nombre] = $contacto;
-                }
-
-                /*
-                  if (isset($contactosAA[$contacto->nombre]) && $contacto->id != $idUsuario) {
-                  $contactosAA[$contacto->nombre] ++;
-                  } else if ($contacto->id != $idUsuario) {
-                  $contactosAA[$contacto->nombre] = 1;
-                  }
-                 * */
-            }
-        }
-
-        return $contactosAA;
-    }
-
-    private function getAmigosDeMisAlice($bob, $idUsuario) {
-
-        //array con los amigos de mis alices
-        $contactosAA = array();
-
-        foreach ($bob as $b) {//recorro los contactos donde yo soy bob
-            $micontacto = $a->fetchAs('usuario')->alice; //recojo mis alices
-            //alice Amigo de Amigo
-            $aliceAA = $micontacto->alias('alice')->ownContactoList; //Contacto donde mis alices son alice
-            //bob Amigo de Amigo
-            $bobAA = $micontacto->alias('bob')->ownContactoList; //Contacto donde mis alices son bob
-
-            foreach ($aliceAA as $aAA) {//recorro todos los contactos donde mis alices son alices
-                $contacto = $aAA->fetchAs('usuario')->bob;
-
-                if (isset($contactosAA[$contacto->nombre]) && $contacto->id != $idUsuario) {
-                    $contactosAA[$contacto->nombre] ++;
-                } else if ($contacto->id != $idUsuario) {
-                    $contactosAA[$contacto->nombre] = 1;
-                }
-            }
-
-            foreach ($bobAA as $bAA) {//recorro todos los contactos donde mis alices son bob
-                $contacto = $bAA->fetchAs('usuario')->alices;
-
-                if (isset($contactosAA[$contacto->nombre]) && $contacto->id != $idUsuario) {
-                    $contactosAA[$contacto->nombre] ++;
-                } else if ($contacto->id != $idUsuario) {
-                    $contactosAA[$contacto->nombre] = 1;
-                }
-            }
-        }
-        return $contactosAA;
-    }
-
-    private function cargarComunes() {
-        $this->variables["usuario-actual"] = R::load('usuario', $_SESSION["idUsuario"]);
-    }
+   
 
     private function setUpDatabase() {
         R::setup('mysql:host=' . DbConfig::$dbHost . ';dbname=' . DbConfig::$dbName, DbConfig::$dbUser, DbConfig::$dbPassword);
-        $this->cargarComunes();
     }
 
 }

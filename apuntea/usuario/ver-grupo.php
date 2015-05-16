@@ -1,11 +1,5 @@
-<?php
-require "../controladores/ControladorUsuario.php";
-$controlador = new ControladorUsuario();
+<?php ob_start(); ?>
 
-$variables = $controlador->inicio();
-
-ob_start();
-?>
 <div id="principal">
     <h2>
         <span class="fa fa-group"></span> Grupo 1

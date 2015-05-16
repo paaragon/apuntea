@@ -1,8 +1,4 @@
-<?php
-session_start();
-
-ob_start();
-?>
+<?php ob_start(); ?>
 <h2>
     <span class="fa fa-home"></span> Inicio
 </h2>

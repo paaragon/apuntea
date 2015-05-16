@@ -1,7 +1,7 @@
 <div>
     <div id="user-info">
-        <p><img src="../img/usuarios/perfil/<?php echo $variables["usuario-actual"]->avatar ?>" id="img-perfil-user"></p>
-        <h3><a href="perfil-usuario.php?id=<?php echo $variables["usuario-actual"]->id ?>"><?php echo $variables["usuario-actual"]->nombre . " " . $variables["usuario-actual"]->apellidos ?></a></h3>
+        <p><img src="../img/no-user.jpg" id="img-perfil-user"></p>
+        <h3><a href="perfil-usuario.php">[Nombre usuario]</a></h3>
     </div>
     <ul>
         <li><a href="inicio.php"><span class="fa fa-newspaper-o"></span> Novedades</a></li>

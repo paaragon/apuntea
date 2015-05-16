@@ -1,5 +1,7 @@
 <?php
 
+ session_start();
+
  
  /* DIR... LA RUTA absoluta dsde donde  se llama .. donde esta el archivo */
 require __DIR__ . "/../controladores/ControladorUsuario.php";
@@ -12,7 +14,8 @@ $controlador = new ControladorUsuario();
 
 //Llamamos al metodo que contiene la funcionalidad(variables cde la vista)
 //Con todos los contactos
-$variables = $controlador->misContactosReco();
+$variables = $controlador->recomendados();
+
 
 ob_start(); ?>
 <div id="principal">
