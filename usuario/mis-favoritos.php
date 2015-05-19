@@ -1,4 +1,11 @@
-<?php ob_start(); ?>
+<?php
+require "../controladores/ControladorUsuario.php";
+$controlador = new ControladorUsuario();
+
+$variables = $controlador->inicio();
+
+ob_start();
+?>
 <div id="principal">
     <h2>
         <span class="fa fa-file-text-o"></span> Mis apuntes
@@ -7,7 +14,7 @@
     <div>
         <p>
             <a href="mis-apuntes.php" class="boton"><span class="fa fa-cloud-upload"></span> Subidos</a>
-            <a href="#" class="boton boton-activo"><span class="fa fa-star"></span> Favoritos</a>
+            <a href="mis-favoritos.php" class="boton boton-activo"><span class="fa fa-star"></span> Favoritos</a>
         </p>
     </div>
     <div>
