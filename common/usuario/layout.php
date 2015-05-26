@@ -15,6 +15,13 @@
         <script type="text/javascript" src="../js/bootstrap.min.js"></script>
         <script type="text/javascript" src="../js/perfect-scrollbar.jquery.min.js"></script>
         <script type="text/javascript" src="../js/perfect-scrollbar.min.js"></script>
+        <?php
+        if (isset($scripts)) {
+            foreach ($scripts as $script) {
+                echo $script;
+            }
+        }
+        ?>
     </head>
     <body>
 
@@ -24,6 +31,24 @@
         <nav class="col-sm-2" id="menu-user">
             <?php require "nav.php"; ?>
         </nav>
+
+        <?php if (isset($_SESSION["exito"])) { ?>
+            <div id="statusdiv" class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <?php
+                echo $_SESSION["exito"];
+                unset($_SESSION["exito"]);
+                ?>
+            </div>
+        <?php } else if (isset($_SESSION["error"])) { ?>
+            <div id="statusdiv" class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <?php
+                echo $_SESSION["error"];
+                unset($_SESSION["error"])
+                ?>
+            </div>
+        <?php } ?>
         <main class="col-sm-7" id="main">
             <?php echo $contenido; ?>
         </main>

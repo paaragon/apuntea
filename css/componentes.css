@@ -447,3 +447,8 @@ input[disabled=""]{
     max-width: 255px;
     z-index: 99;
 }
+
+#load-carrera{
+    display: none;
+    width: 100px;
+}

@@ -479,3 +479,8 @@ img#loading{
         height: 100%;
     }
 }
+
+.editar-apunte{
+    border: 0 solid #000!important;
+    box-shadow: none!important;
+}

@@ -34,6 +34,25 @@ class ServiciosUsuario {
         echo json_encode($infoConectados);
     }
 
+    public function guardarApunte() {
+
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+        $idApunte = filter_input(INPUT_POST, "apunte", FILTER_SANITIZE_NUMBER_INT);
+        $contenido = filter_input(INPUT_POST, "contenido", FILTER_SANITIZE_MAGIC_QUOTES);
+
+        $this->setUpDatabase();
+
+        $apunte = R::findOne("apunte", ' id = ? AND (usuario_id = ? OR id IN (SELECT apunte_id FROM usuariointeractuaapunte WHERE usuario_id = ?))', [$idApunte, $idUsuario, $idUsuario]);
+
+        $apunte->contenido = $contenido;
+
+        R::store($apunte);
+        R::close();
+
+        $_SESSION["exito"] = "Apunte guardado con éxito";
+        return "usuario/editar-apunte.php?id=" . $idApunte;
+    }
+
     public function getMensajesDeUsuario($params) {
 
         $idContacto = $params["contacto"];

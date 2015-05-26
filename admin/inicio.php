@@ -1,5 +1,7 @@
 <?php
-session_start();
+require __DIR__ . "/../controladores/ControladorAdmin.php";
+$controlador = new ControladorAdmin();
+$variables = $controlador->anadirCarrera();
 
 ob_start();
 ?>

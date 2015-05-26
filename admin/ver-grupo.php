@@ -1,5 +1,10 @@
-<?php ob_start(); ?>
+<?php
+require __DIR__ . "/../controladores/ControladorAdmin.php";
+$controlador = new ControladorAdmin();
+$variables = $controlador->anadirCarrera();
 
+ob_start();
+?>
 <div id="principal">
     <h2>
         <span class="fa fa-group"></span> Grupo 1
