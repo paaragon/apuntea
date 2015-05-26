@@ -7,7 +7,7 @@
     <li>Carreras</li>
 </ul>
 <hr>
-<form>
+<form action="carreras.php" method="post">
     <input type="text" class="campo-formulario" placeholder="Buscar carrera...">
     <label>Universidad: </label>
     <select class="campo-formulario campo-en-linea" name="universidad">
@@ -16,6 +16,7 @@
         <option value="[Nombre universidad]">[Nombre universidad]</option>
         <option value="[Nombre universidad]">[Nombre universidad]</option>
     </select>
+    <input type="submit" class="campo-formulario" value="Buscar">
 </form>
 <section>
 

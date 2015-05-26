@@ -7,14 +7,14 @@
     <li>Apuntes</li>
 </ul>
 <hr>
-<form>
+<form action="lista-apuntes.php" method="post">
     <input type="text" class="campo-formulario" placeholder="Buscar...">
     <label>Universidad: </label>
     <select class="campo-formulario campo-en-linea">
         <option>Todas</option>
-        <option>[Nombre universidad]</option>
-        <option>[Nombre universidad]</option>
-        <option>[Nombre universidad]</option>
+        <option>[universidad]</option>
+        <option>[universidad]</option>
+        <option>[universidad]</option>
     </select>
     <label>Carrera: </label>
     <select class="campo-formulario campo-en-linea">
@@ -30,6 +30,7 @@
         <option>[Nombre asignatura]</option>
         <option>[Nombre asignatura]</option>
     </select>
+    <input type="submit" class="campo-formulario" value="Buscar">
 </form>
 <section>
     <div>

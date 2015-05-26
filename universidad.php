@@ -1,25 +1,20 @@
 <?php ob_start(); ?>
-<section id="presentacion">
+<section>
     <h1>[Nombre universidad]</h1>
 </section>
-<ol class="breadcrumb">
+<ul class="breadcrumb">
     <li><a href="index.php">Apuntea</a></li>
     <li><a href="carreras.php">Carreras</a></li>
     <li>[Nombre universidad]</li>
-</ol>
+</ul>
 <hr>
-<form>
-    <div class="form-group">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Buscar...">
-            <div class="input-group-addon"><a href="#"><i class="fa fa-search"></i></a></div>
-        </div>
-    </div>
+<form action="universidad.php" method="post">
+    <input type="text" class="campo-formulario" placeholder="Buscar...">
+    <input type="submit" class="campo-formulario" value="Buscar">
 </form>
 <section>
-
     <div class="rama-conocimiento">
-        <h2><i class="fa fa-paint-brush"></i> Artes y humanidades</h2>
+        <h2><span class="fa fa-paint-brush"></span> Artes y humanidades</h2>
         <hr>
         <ul>
             <li><a href="carrera.php?uni=[Nombre universidad]">[Nombre de carrera]</a></li>
@@ -33,7 +28,7 @@
     </div>
 
     <div class="rama-conocimiento">
-        <h2><i class="fa fa-rocket"></i> Ciencias</h2>
+        <h2><span class="fa fa-rocket"></span> Ciencias</h2>
         <hr>
         <ul>
             <li><a href="carrera.php?uni=[Nombre universidad]">[Nombre de carrera]</a></li>
@@ -47,7 +42,7 @@
     </div>
 
     <div class="rama-conocimiento">
-        <h2><i class="fa fa-user-md"></i> Ciencias de la salud</h2>
+        <h2><span class="fa fa-user-md"></span> Ciencias de la salud</h2>
         <hr>
         <ul>
             <li><a href="carrera.php?uni=[Nombre universidad]"><?php echo "adsf" ?></a></li>
@@ -60,7 +55,7 @@
         </ul>
     </div>
     <div class="rama-conocimiento">
-        <h2><i class="fa fa-cogs"></i> Ingeniería y arquitectura</h2>
+        <h2><span class="fa fa-cogs"></span> Ingeniería y arquitectura</h2>
         <hr>
         <ul>
             <li><a href="carrera.php?uni=[Nombre universidad]">[Nombre de carrera]</a></li>
@@ -74,7 +69,7 @@
     </div>
 
     <div class="rama-conocimiento">
-        <h2><i class="fa fa-gavel"></i> Ciencias sociales y jurídicas</h2>
+        <h2><span class="fa fa-gavel"></span> Ciencias sociales y jurídicas</h2>
         <hr>
         <ul>
             <li><a href="carrera.php?uni=[Nombre universidad]">[Nombre de carrera]</a></li>
@@ -88,6 +83,5 @@
     </div>
 </section>
 <?php
-
 $contenido = ob_get_clean();
 require "common/std/layout.php";

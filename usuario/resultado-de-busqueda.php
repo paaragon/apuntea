@@ -1,10 +1,43 @@
-<?php ob_start(); ?>
+<?php
+session_start();
+require __DIR__ . "../controladores/controladorUsuario.php";
+
+$controlador = new ControladorUsuario();
+
+$variables = $controlador->resultadoBusqueda();
+
+ob_start();
+?>
 <section>
     <h1><span class="fa fa-search"></span> Resultado de búsqueda:</h1>
 </section>
 <section>
     <div class="alerta-info fila">
         <p><strong>Resultados de:</strong> [Cadena de texto que se insertó en la búsqueda]</p>
+    </div>
+    <?php foreach ($variables["apuntes"] as $apunte) { ?>
+        <div class="fila">
+            <p>
+                <span class="col-6">
+                    <span class="fa fa-user"></span>
+                    <a href="ver-apunte.php?id=<?php echo $apunte->id ?>"><?php echo $apunte->titulo ?></a>
+                </span>
+                <span class="col-3"><a href="universidad.php"><span class="fa fa-university"></span> [Universidad]</a></span>
+                <span class="col-3"><a href="universidad.php"><span class="fa fa-graduation-cap"></span> [Carrera]</a></span>
+            </p>
+            <div class="clear"></div>
+        </div>
+    <?php } ?>
+    <div class="fila">
+        <p>
+            <span class="col-6">
+                <span class="fa fa-user"></span>
+                <a href="perfil-usuario.php">[Ejemplo resultado usuario]</a>
+            </span>
+            <span class="col-3"><a href="universidad.php"><span class="fa fa-university"></span> [Universidad]</a></span>
+            <span class="col-3"><a href="universidad.php"><span class="fa fa-graduation-cap"></span> [Carrera]</a></span>
+        </p>
+        <div class="clear"></div>
     </div>
     <div class="fila">
         <p>
@@ -144,6 +177,5 @@
     </div>
 </section>
 <?php
-
 $contenido = ob_get_clean();
 require "../common/usuario/layout.php";

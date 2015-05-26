@@ -1,13 +1,20 @@
-<?php ob_start(); ?>
+<?php
+require "../controladores/ControladorUsuario.php";
+$controlador = new ControladorUsuario();
+
+$variables = $controlador->inicio();
+
+ob_start();
+?>
 <div id="head-apunte">
-    <span class="col-7">
-        <a href="lista-universidades.php">[Universidad]</a> / 
-        <a href="#">[Carrera]</a> /
+    <span class="col-6">
+        <a href="universidad.php">[Universidad]</a> / 
+        <a href="carrera.php">[Carrera]</a> /
         <a href="#">[Asignatura]</a>
     </span>
     <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
     <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
-    <span class="col-1"><span class="fa fa-eye"></span> 999</span>
+    <span class="col-2"><span class="fa fa-eye"></span> 999</span>
     <span class="col-1"><a href="editar-apunte.php">Editar</a></span>
     <span class="col-1"><span class="fa fa-star apunte-favorito"></span></span>
     <div class="clear"></div>

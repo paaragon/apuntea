@@ -1,4 +1,11 @@
-<?php ob_start(); ?>
+<?php
+require "../controladores/ControladorUsuario.php";
+$controlador = new ControladorUsuario();
+
+$variables = $controlador->inicio();
+
+ob_start();
+?>
 <section id="presentacion">
     <h1>[Nombre universidad]</h1>
 </section>

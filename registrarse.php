@@ -1,5 +1,5 @@
 <?php ob_start(); ?>
-<section id="presentacion">
+<section>
     <h1>Registrarse:</h1>
 </section>
 <section>
