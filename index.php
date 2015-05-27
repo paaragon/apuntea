@@ -54,7 +54,7 @@ ob_start();
         <hr>
         <ul>
             <?php foreach ($variables["asignaturas"] as $asignatura): ?>
-                <li><a href="asignatura.php?id=<?php echo $asignatura->id ?>"><?php echo $asignatura->nombre ?></a> - <a href="carrera.php?id=<?php echo $id ?>"><?php echo $asignatura->carrera->nombre ?></a></li>
+                <li><a href="asignatura.php?id=<?php echo $asignatura->id ?>"><?php echo $asignatura->nombre ?></a> - <a href="carrera.php?id=<?php echo $asignatura->carrera->id ?>"><?php echo $asignatura->carrera->nombre ?></a><a href="universidad.php?id=<?php echo $asignatura->carrera->universidad->id ?>"><?php echo $asignatura->carrera->universidad->siglas ?></a></li>
             <?php endforeach; ?>
         </ul>
         <p><a href="asignaturas.php"><span class="etiqueta"><span class="fa fa-plus"></span> Ver todas</span></a></p>

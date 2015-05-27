@@ -29,10 +29,9 @@ if($variables["apunte"] != null):
         <label class="campo-formulario"><input type="radio" name="visualizacion"> Algunos usuarios</label>
         <label class="campo-formulario"><input type="radio" name="visualizacion"> Público</label>
         <hr>
-        <label>Lectores y grupos:</label>
+        <label>Lectores:</label>
         <input type="text" name="lector-1" disabled="" value="[Lector 1]" class="campo-formulario">
         <input type="text" placeholder="Nombre de nuevo usuario o grupo" class="campo-formulario">
-        <a href="#"><span class="fa fa-plus"></span> Añadir lector</a>
     </span>
     <span class="col-4">
         <label><span class="fa fa-edit"></span> Modificación:</label>
@@ -43,7 +42,6 @@ if($variables["apunte"] != null):
         <input type="text" name="modificador-1" disabled="" value="[Usuario 1]" class="campo-formulario">
         <input type="text" name="modificador-2" disabled="" value="[Grupo 1]" class="campo-formulario">
         <input type="text" placeholder="Nombre de nuevo usuario o grupo" class="campo-formulario">
-        <a href="#"><span class="fa fa-plus"></span> Añadir lector</a>
     </span>
     <span class="col-4">
         <label><span class="fa fa-key"></span> Edición de permisos:</label>
@@ -54,7 +52,6 @@ if($variables["apunte"] != null):
         <input type="text" name="modificador-1" disabled="" value="[Usuario 1]" class="campo-formulario">
         <input type="text" name="modificador-2" disabled="" value="[Grupo 1]" class="campo-formulario">
         <input type="text" placeholder="Nombre de nuevo usuario o grupo" class="campo-formulario">
-        <a href="#"><span class="fa fa-plus"></span> Añadir lector</a>
     </span>
 </form>
 <script>

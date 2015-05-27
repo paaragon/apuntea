@@ -77,12 +77,49 @@ class ControladorUsuario {
     public function editarApunte() {
 
         $this->setUpDatabase();
-        
+
         $idApunte = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
         $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
-        
+
         $this->variables["apunte"] = R::findOne("apunte", ' id = ? AND (usuario_id = ? OR id IN (SELECT apunte_id FROM usuariointeractuaapunte WHERE usuario_id = ?))', [$idApunte, $idUsuario, $idUsuario]);
 
+        return $this->variables;
+    }
+
+    public function miConfiguracion() {
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+        $this->setUpDatabase();
+        $this->variables["usuario"] = R::findOne('usuario', " id=?", [$idUsuario]);
+        $this->variables["universidades"] = R::findAll('universidad');
+        if ($this->variables["usuario"]->carrera_id == NULL) {
+            $this->variables["usuario"]->carrera = R::dispense('carrera');
+            $this->variables["usuario"]->carrera->universidad = R::dispense('universidad');
+        }
+        if ($this->variables["usuario"]->direccion == NULL) {
+            $this->variables["usuario"]->direccion = "";
+        }
+        R::close();
+        return $this->variables;
+    }
+
+    public function subirApuntes() {
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+        $this->setUpDatabase();
+        $this->variables["universidades"] = R::findAll('universidad');
+        $misAlice = R::findAll('contacto', " bob_id=?", [$idUsuario]);
+        $misBob = R::findAll('contacto', " alice_id=?", [$idUsuario]);
+        $this->variables["usuario"] = R::findOne("usuario", " id=?", [$idUsuario]);
+        foreach ($misAlice as $a) {
+            $this->variables["contactos"][] = $a->fetchAs('usuario')->alice;
+        }
+        foreach ($misBob as $b) {
+            $this->variables["contactos"][] = $b->fetchAs('usuario')->bob;
+        }
+
+        if (isset($this->variables["contactos"])) {
+            usort($this->variables["contactos"], "cmp2");
+        }
+        R::close();
         return $this->variables;
     }
 
@@ -197,4 +234,11 @@ class ControladorUsuario {
         $this->cargarComunes();
     }
 
+}
+
+function cmp2($a, $b) {
+    if ($a->nombre == $b->nombre) {
+        return 0;
+    }
+    return ($a->nombre < $b->nombre) ? -1 : 1;
 }

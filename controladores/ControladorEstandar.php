@@ -75,6 +75,41 @@ class ControladorEstandar {
         return $this->variables;
     }
 
+    public function asignatura() {
+
+        $this->setUpDatabase();
+
+        if (!isset($_GET["id"])) {
+
+            $this->variables["asignatura"] = R::dispense('asignatura');
+            $this->variables["apuntes"] = $this->variables["carrera"]->ownApunteList;
+        } else {
+            $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+
+            $this->variables["asignatura"] = R::findOne('asignatura', ' id = ?', [$id]);
+            $this->variables["apuntes"] = R::findAll('apunte', ' asignatura_id = ? ORDER BY titulo ASC', [$id]);
+        }
+
+        R::close();
+        return $this->variables;
+    }
+
+    public function apunte() {
+
+        $this->setUpDatabase();
+
+        if (!isset($_GET["id"])) {
+
+            $this->variables["apunte"] = R::dispense('apunte');
+        } else {
+            $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+            $this->variables["apunte"] = R::findOne('apunte', ' id = ?', [$id]);
+        }
+
+        R::close();
+        return $this->variables;
+    }
+
     public function carreras() {
 
         $this->setUpDatabase();
