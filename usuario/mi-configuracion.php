@@ -98,8 +98,8 @@ ob_start();
     getCarreras($("#selectUniversidad").val());
 
     $(document).on("ready", function () {
-        
-        $("#selectUniversidad").on("change", function(){
+
+        $("#selectUniversidad").on("change", function () {
             getCarreras($("#selectUniversidad").val());
         });
     });
@@ -108,7 +108,7 @@ ob_start();
         $.post("../servicios/usuarioHandler.php?action=getCarreras", {idUniversidad: id}, function (data) {
             for (i = 0; i < data.length; i++) {
                 if (data[i]["id"] ==<?php echo ($variables["usuario"]->carrera_id == NULL) ? -1 : $variables["usuario"]->carrera_id ?>) {
-                    $("#selectCarrera").append("<option value='" + data[i]["id"] + "' selected>" + data[i]["nombre"] + "</option>"); 
+                    $("#selectCarrera").append("<option value='" + data[i]["id"] + "' selected>" + data[i]["nombre"] + "</option>");
                 }
                 else {
                     $("#selectCarrera").append("<option value='" + data[i]["id"] + "'>" + data[i]["nombre"] + "</option>");

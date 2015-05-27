@@ -175,7 +175,7 @@ ob_start();
     function getAsignaturas(id) {
         $("#selectAsignatura").html("");
         $.post("../servicios/usuarioHandler.php?action=getAsignaturas", {idCarrera: id}, function (data) {
-            
+
             if (data.length > 0) {
                 $('#spanCarrera').remove();
                 for (i = 0; i < data.length; i++) {

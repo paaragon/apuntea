@@ -1,4 +1,11 @@
-<?php ob_start(); ?>
+<?php
+require "controladores/ControladorEstandar.php";
+
+$controlador = new ControladorEstandar();
+$variables = $controlador->carreras();
+
+ob_start();
+?>
 <section>
     <h1>Carreras</h1>
 </section>
@@ -8,88 +15,87 @@
 </ul>
 <hr>
 <form action="carreras.php" method="post">
-    <input type="text" class="campo-formulario" placeholder="Buscar carrera...">
+    <input type="text" class="campo-formulario" placeholder="Buscar carrera..." id="consulta">
     <label>Universidad: </label>
-    <select class="campo-formulario campo-en-linea" name="universidad">
-        <option value="todas">Todas</option>
-        <option value="[Nombre universidad]">[Nombre universidad]</option>
-        <option value="[Nombre universidad]">[Nombre universidad]</option>
-        <option value="[Nombre universidad]">[Nombre universidad]</option>
+    <select class="campo-formulario campo-en-linea" name="universidad" id="universidad">
+        <option value="">Todas</option>
+        <?php foreach ($variables["universidades"] as $uni): ?>
+            <option value="<?php echo $uni->siglas ?>"><?php echo $uni->siglas ?></option>
+        <?php endforeach; ?>
     </select>
-    <input type="submit" class="campo-formulario" value="Buscar">
 </form>
 <section>
 
-    <div>
-        <h2><span class="fa fa-paint-brush"></span> Artes y humanidades</h2>
-        <hr>
-        <ul>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-        </ul>
-    </div>
+    <?php
+    $i = 0;
+    echo '<div class="rama-conocimiento">';
+    echo "<h2><span class='fa " . $variables['ramas'][$i][1] . "'></span>" . $variables['ramas'][$i][0] . "</h2>";
+    echo '<hr>';
+    echo '<ul>';
+    $rama = $variables["ramas"][$i][0];
 
-    <div class="rama-conocimiento">
-        <h2><span class="fa fa-rocket"></span> Ciencias</h2>
-        <hr>
-        <ul>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-        </ul>
-    </div>
-
-    <div class="rama-conocimiento">
-        <h2><span class="fa fa-user-md"></span> Ciencias de la salud</h2>
-        <hr>
-        <ul>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-        </ul>
-    </div>
-    <div class="rama-conocimiento">
-        <h2><span class="fa fa-cogs"></span> Ingeniería y arquitectura</h2>
-        <hr>
-        <ul>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-        </ul>
-    </div>
-
-    <div class="rama-conocimiento">
-        <h2><span class="fa fa-gavel"></span> Ciencias sociales y jurídicas</h2>
-        <hr>
-        <ul>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-            <li><a href="carrera.php">[Nombre de carrera]</a></li>
-        </ul>
-    </div>
+    foreach ($variables["carreras"] as $carrera) {
+        if ($carrera->rama != $rama) {
+            $i++;
+            echo "</ul>";
+            echo "</div>";
+            echo '<div class="rama-conocimiento">';
+            echo "<h2><span class='fa " . $variables['ramas'][$i][1] . "'></span>" . $carrera->rama . "</h2>";
+            echo '<hr>';
+            echo '<ul>';
+            $rama = $carrera->rama;
+        }
+        echo '<li class="carrera"><a class="universidad" href="universidad.php?id=' . $carrera->universidad_id . '">' . $carrera->universidad->siglas . '</a> / <a class="car" href="carrera.php?id=' . $carrera->id . '">' . $carrera->nombre . '</a></li>';
+    }
+    echo "</ul>";
+    echo "</div>";
+    ?>
 </section>
-<?php
+<script>
+    $(document).on("ready", function () {
 
+        $("#universidad").on("change", function () {
+            buscar();
+        });
+
+        $("#consulta").on("keyup", function () {
+            buscar();
+        });
+    });
+
+    function buscar() {
+
+        universidad = $("#universidad").val();
+        consulta = $("#consulta").val();
+
+        $(".carrera").each(function () {
+            var uni = $(this).children(".universidad").text();
+            var con = $(this).children(".car").text();
+
+            if ((universidad.indexOf(uni) !== -1 || universidad === "") && (quitaAcentos(con.toLowerCase()).indexOf(quitaAcentos(consulta.toLowerCase())) > -1)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+
+    function quitaAcentos(str) {
+        for (var i = 0; i < str.length; i++) {
+            if (str.charAt(i) == "á")
+                str = str.replace(/á/, "a");
+            if (str.charAt(i) == "é")
+                str = str.replace(/é/, "e");
+            if (str.charAt(i) == "í")
+                str = str.replace(/í/, "i");
+            if (str.charAt(i) == "ó")
+                str = str.replace(/ó/, "o");
+            if (str.charAt(i) == "ú")
+                str = str.replace(/ú/, "u");
+        }
+        return str;
+    }
+</script>
+<?php
 $contenido = ob_get_clean();
 require "common/std/layout.php";

@@ -20,18 +20,18 @@ function getConectados() {
         if (data.length > 0) {
             for (var i = 0, length = data.length; i < length; i++) {
 
-                usuario = '<span class="conectado" id="con-' + data[i]["usuario"]["id"] + '"><img src="../img/usuarios/perfil/' + data[i]["usuario"]["avatar"] + '"><a href="#">' + data[i]["usuario"]["nombre"] + '</a>';
+                usuario = '<div class="conectado" id="con-' + data[i]["usuario"]["id"] + '"><p class="imagen"><img src="../img/usuarios/perfil/' + data[i]["usuario"]["avatar"] + '"></p><p class="nombre"><a href="#">' + data[i]["usuario"]["nombre"] + '</a>';
 
                 if (data[i]["sin-leer"] !== 0) {
                     usuario += ' <span class="badge"><span class="fa fa-envelope"></span> ' + data[i]["sin-leer"] + '</span>';
                 }
 
-                usuario += '</span><br>';
+                usuario += '</p><div class="clearfix"></div></div>';
 
                 $("#contactos-conectados").append(usuario);
             }
-            
-            if($("#panel-conversacion").attr("display") == "none"){
+
+            if ($("#panel-conversacion").attr("display") == "none") {
                 $('.conectado:first').click();
             }
         } else {
@@ -65,6 +65,8 @@ function cargarMensajes(id) {
                 dia = fecha;
             }
 
+            data[i]["texto"] = decodeEmoji(data[i]["texto"]);
+
             if (data[i]["emisor_id"] == id) {
 
                 $("#conversacion").append('<p class="msg msg-amigo"><span class="fecha-chat">' + hora + '</span>' + data[i]["texto"] + '</p>');
@@ -86,10 +88,24 @@ function cargarMensajesNuevos(id) {
 
             for (var i = 0; i < data.length; i++) {
 
+                datetime = data[i]["fecha"].split(" ");
+                f = new Date(Date.parse(datetime[0]));
+                fecha = f.getDate() + "-" + (f.getMonth() + 1) + "-" + f.getFullYear();
+                h = datetime[1].split(":");
+                hora = h[0] + ":" + h[1];
+
+                if (dia !== fecha) {
+                    $("#conversacion").append('<p class="dia-chat"><span>' + fecha + '</span></p>');
+                    dia = fecha;
+                }
+
+                data[i]["texto"] = decodeEmoji(data[i]["texto"]);
+
                 if (data[i]["emisor_id"] == id) {
-                    $("#conversacion").append('<p class="msg msg-amigo">' + data[i]["texto"] + '</p>');
+
+                    $("#conversacion").append('<p class="msg msg-amigo"><span class="fecha-chat">' + hora + '</span>' + data[i]["texto"] + '</p>');
                 } else {
-                    $("#conversacion").append('<p class="msg msg-propio">' + data[i]["texto"] + '</p>');
+                    $("#conversacion").append('<p class="msg msg-propio"><span class="fecha-chat">' + hora + '</span>' + data[i]["texto"] + '</p>');
                 }
 
                 $("#conversacion").scrollTop($('#conversacion')[0].scrollHeight);
@@ -102,20 +118,69 @@ function enviarMensaje() {
     texto = $("#texto").val();
     idContacto = $("#idContacto").val();
 
+    texto = buscarEmoji(texto);
 
     if (texto !== "" && idContacto !== "") {
-
+        $("#texto").val("");
         $.post('../servicios/usuarioHandler.php?action=enviarMensaje', {texto: texto, idContacto: idContacto}, function (data) {
 
-            $("#conversacion").append('<p class="msg msg-propio">' + data + '</p>');
-            $("#texto").val("");
-            $("#conversacion").animate({scrollTop: $('#conversacion')[0].scrollHeight}, 1000);
-        });
+            datetime = data["fecha"].split(" ");
+            f = new Date(Date.parse(datetime[0]));
+            fecha = f.getDate() + "-" + (f.getMonth() + 1) + "-" + f.getFullYear();
+            h = datetime[1].split(":");
+            hora = h[0] + ":" + h[1];
+
+            if (dia !== fecha) {
+                $("#conversacion").append('<p class="dia-chat"><span>' + fecha + '</span></p>');
+                dia = fecha;
+            }
+
+            data["texto"] = decodeEmoji(data["texto"]);
+
+            $("#conversacion").append('<p class="msg msg-propio"><span class="fecha-chat">' + hora + '</span>' + data["texto"] + '</p>');
+
+            $("#conversacion").scrollTop($('#conversacion')[0].scrollHeight);
+        }, "json");
     } else {
         alert("Rellene todos los campos");
     }
 }
 
+var emoji = [
+    {'char': 'XD', 'alias': 'laughing', 'class': 'twa twa-laughing'},
+    {'char': ':*', 'alias': 'kissing_heart', 'class': 'twa twa-kissing-heart'},
+    {'char': ':D', 'alias': 'smile', 'class': 'twa twa-smile'},
+    {'char': ';)', 'alias': 'wink', 'class': 'twa twa-wink'},
+    {'char': ':_(', 'alias': 'cry', 'class': 'twa twa-cry'},
+    {'char': '¬¬', 'alias': 'unamused', 'class': 'twa twa-unamused'},
+    {'char': 'zzz', 'alias': 'sleeping', 'class': 'twa twa-sleeping'},
+    {'char': '^^', 'alias': 'blush', 'class': 'twa twa-blush'},
+    {'char': '<3', 'alias': 'heart', 'class': 'twa twa-heart'}
+];
+function buscarEmoji(texto) {
+
+    for (var i = 0; i < emoji.length; i++) {
+
+        while ((index = texto.indexOf(emoji[i]["char"])) != -1) {
+            em = '[' + emoji[i]["alias"] + ']';
+            texto = texto.substring(0, index) + em + texto.substring(index + emoji[i]["char"].length, texto.length);
+        }
+    }
+
+    return texto;
+}
+
+function decodeEmoji(texto) {
+
+    for (var i = 0; i < emoji.length; i++) {
+        while ((index = texto.indexOf('[' + emoji[i]["alias"] + ']')) != -1) {
+            em = '<span class="' + emoji[i]["class"] + ' twa-lg"></span>';
+            texto = texto.substring(0, index) + em + texto.substring(index + emoji[i]["alias"].length + 2, texto.length);
+        }
+    }
+
+    return texto;
+}
 $(document).on("ready", function () {
 
     $("#loading-msg img").hide();

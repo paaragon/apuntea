@@ -2,7 +2,7 @@
     <div id="user-info">
         <h3>Administrador Apuntea</h3>
         <p>
-            <strong>[Nombre de usuario]</strong><br>
+            <strong><?php echo $variables["usuario-actual"]->nombre . " " . $variables["usuario-actual"]->apellidos ?></strong><br>
             <small><a href="editar-admin.php">Editar datos de usuario</a></small>
         </p>
     </div>
