@@ -7,7 +7,7 @@
     <li>Asignaturas</li>
 </ul>
 <hr>
-<form>
+<form action="asignaturas.php" method="post">
     <input type="text" class="campo-formulario" placeholder="Buscar...">
     <label>Universidad: </label>
     <select name="universidad" class="campo-formulario campo-en-linea">
@@ -23,18 +23,19 @@
         <option value="[Nombre universidad]">[Nombre carrera]</option>
         <option value="[Nombre universidad]">[Nombre carrera]</option>
     </select>
+    <input type="submit" class="campo-formulario" value="Buscar">
 </form>
 <section>
     <div>
         <h2><span class="fa fa-paint-brush"></span> Artes y humanidades</h2>
         <hr>
         <ul>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
         </ul>
     </div>
 
@@ -42,12 +43,12 @@
         <h2><span class="fa fa-rocket"></span> Ciencias</h2>
         <hr>
         <ul>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>  
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>  
         </ul>
     </div>
 
@@ -55,24 +56,24 @@
         <h2><span class="fa fa-user-md"></span> Ciencias de la salud</h2>
         <hr>
         <ul>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
         </ul>
     </div>
     <div>
         <h2><span class="fa fa-cogs"></span> Ingeniería y arquitectura</h2>
         <hr>
         <ul>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
         </ul>
     </div>
 
@@ -80,12 +81,12 @@
         <h2><span class="fa fa-gavel"></span> Ciencias sociales y jurídicas</h2>
         <hr>
         <ul>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - (<a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a>)</li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
+            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
         </ul>
     </div>
 </section>

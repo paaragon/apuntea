@@ -41,7 +41,7 @@
         </div>
     </div>
     <div class="clear"></div>
-    
+
     <div>
         <h3>
             <br>Aportaciones
@@ -125,43 +125,44 @@
         </div>
     </div>
     <div id="comentarios-apuntes">
-        <div><p><a href="anadir-comentario.php" data-toggle="modal" data-target="#comentariosModal"><span class="fa fa-comment"></span> Añadir comentario</a></p></div>
-        <h3>[Comentario] <small>[Usuario] - [Fecha]</small></h3>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed elit eget dui maximus hendrerit non sed leo. Etiam vitae laoreet sem. Praesent et viverra massa. Ut pellentesque nisl at sapien consequat, ac vulputate lectus cursus. Suspendisse potenti. Quisque sit amet pharetra nulla. Fusce nibh neque, euismod nec fringilla eget, rhoncus tempor urna. Curabitur et molestie arcu.
-        </p>
-        <h3>[Comentario] <small>[Usuario] - [Fecha]</small></h3>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed elit eget dui maximus hendrerit non sed leo. Etiam vitae laoreet sem. Praesent et viverra massa. Ut pellentesque nisl at sapien consequat, ac vulputate lectus cursus. Suspendisse potenti. Quisque sit amet pharetra nulla. Fusce nibh neque, euismod nec fringilla eget, rhoncus tempor urna. Curabitur et molestie arcu.
-        </p>
-        <h3>[Comentario] <small>[Usuario] - [Fecha]</small></h3>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed elit eget dui maximus hendrerit non sed leo. Etiam vitae laoreet sem. Praesent et viverra massa. Ut pellentesque nisl at sapien consequat, ac vulputate lectus cursus. Suspendisse potenti. Quisque sit amet pharetra nulla. Fusce nibh neque, euismod nec fringilla eget, rhoncus tempor urna. Curabitur et molestie arcu.
-        </p>
-    </div>
-    <!-- Modal -->
-    <div class="modal fade" id="comentariosModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Añadir comentario</h4>
-                </div>
-                <div class="modal-body">
-                    <form action="#" method="post">
-                        <strong>Título:</strong>
-                        <input type="text" name="titulo" class="control-formulario" placeholder="Título del comentario">
-                        <strong>Comentario:</strong>
-                        <textarea name="comentario" class="control-formulario" placeholder="Pon aquí tu comentario"></textarea>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary">Añadir</button>
-                </div>
-            </div>
+        <div class="fila">
+            <form action="ver-apunte-propio.php" method="post">
+                <h3><span class="fa fa-comment"></span> Añadir comentario</h3>
+                <textarea class="campo-formulario" name="comentario"></textarea>
+                <input type="submit" class="campo-formulario" value="añadir comentario">
+            </form>
         </div>
-    </div>   
+        <div class="fila">
+            <h3>[Comentario] <small>[Usuario] - [Fecha]</small></h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed elit eget dui maximus hendrerit non sed leo. Etiam vitae laoreet sem. Praesent et viverra massa. Ut pellentesque nisl at sapien consequat, ac vulputate lectus cursus. Suspendisse potenti. Quisque sit amet pharetra nulla. Fusce nibh neque, euismod nec fringilla eget, rhoncus tempor urna. Curabitur et molestie arcu.
+            </p>
+        </div>
+        <div class="fila">
+            <h3>[Comentario] <small>[Usuario] - [Fecha]</small></h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed elit eget dui maximus hendrerit non sed leo. Etiam vitae laoreet sem. Praesent et viverra massa. Ut pellentesque nisl at sapien consequat, ac vulputate lectus cursus. Suspendisse potenti. Quisque sit amet pharetra nulla. Fusce nibh neque, euismod nec fringilla eget, rhoncus tempor urna. Curabitur et molestie arcu.
+            </p>
+        </div>
+        <div class="fila">
+            <h3>[Comentario] <small>[Usuario] - [Fecha]</small></h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed elit eget dui maximus hendrerit non sed leo. Etiam vitae laoreet sem. Praesent et viverra massa. Ut pellentesque nisl at sapien consequat, ac vulputate lectus cursus. Suspendisse potenti. Quisque sit amet pharetra nulla. Fusce nibh neque, euismod nec fringilla eget, rhoncus tempor urna. Curabitur et molestie arcu.
+            </p>
+        </div>
+        <div class="fila">
+            <h3>[Comentario] <small>[Usuario] - [Fecha]</small></h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed elit eget dui maximus hendrerit non sed leo. Etiam vitae laoreet sem. Praesent et viverra massa. Ut pellentesque nisl at sapien consequat, ac vulputate lectus cursus. Suspendisse potenti. Quisque sit amet pharetra nulla. Fusce nibh neque, euismod nec fringilla eget, rhoncus tempor urna. Curabitur et molestie arcu.
+            </p>
+        </div>
+        <div class="fila">
+            <h3>[Comentario] <small>[Usuario] - [Fecha]</small></h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed elit eget dui maximus hendrerit non sed leo. Etiam vitae laoreet sem. Praesent et viverra massa. Ut pellentesque nisl at sapien consequat, ac vulputate lectus cursus. Suspendisse potenti. Quisque sit amet pharetra nulla. Fusce nibh neque, euismod nec fringilla eget, rhoncus tempor urna. Curabitur et molestie arcu.
+            </p>
+        </div>
+    </div>  
 </div>
 <?php
 $contenido = ob_get_clean();

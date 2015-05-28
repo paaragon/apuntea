@@ -18,7 +18,7 @@
                     <strong> Grupo Grado en Ingeniería de Computadores</strong>
                 </span>
                 <span class="col-1"><span class="fa fa-users"></span>103</span>
-                <a href="#"> Unirse</a>
+                <a href="ver-grupo.php"> Unirse</a>
             </p>
             <div class="clear"></div>
         </div>
@@ -29,7 +29,7 @@
                     <strong> Grupo Clase 2ºA</strong>
                 </span>
                 <span class="col-1"><span class="fa fa-users"></span>137</span>
-                <a href="#"><span class="fa fa-question-circle"></span> Pedir permiso</a>
+                <a href="pedir-permiso-grupo.php"><span class="fa fa-question-circle"></span> Pedir permiso</a>
             </p>
             <div class="clear"></div>
         </div>
@@ -40,7 +40,7 @@
                     <strong> Grupo Apuntes AW</strong>
                 </span>
                 <span class="col-1"><span class="fa fa-users"></span>42</span>
-                <a href="#"><span class="fa fa-question-circle"></span> Pedir permiso</a>
+                <a href="pedir-permiso-grupo.php"><span class="fa fa-question-circle"></span> Pedir permiso</a>
             </p>
             <div class="clear"></div>
         </div>

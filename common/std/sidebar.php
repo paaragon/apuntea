@@ -15,7 +15,7 @@
         <div>
             <p>
                 <strong>¿Aún no estas registrado?</strong> haz click en el siguiente botón para registrarte<br><br>
-                <a class="campo-formulario boton" href="registrarse.php">Registrarse</a>
+                <a class="campo-formulario boton" href="registrarse">Registrarse</a>
             </p>
         </div>
     </div>

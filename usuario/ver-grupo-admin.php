@@ -5,24 +5,23 @@
         <span class="fa fa-group"></span> Grupo 1
     </h2>
     <hr>
+    <p>
+        <a href="peticiones-grupo.php" class="boton">Ver <span class="distintivo">5</span> peticiones nuevas</a>
+    </p>
     <h3 class="col-6">Miembros</h3>
     <br>
-     <h5 class="col-3">
-         <form method="post">
-            <span>
-            <input type="text" class="campo-formulario" placeholder="Nombre usuario">
-            </span>  
-        </form> 
-    </h5>
-    <h5 class="col-3">
-         <form method="post">
-            <span>
-            <input type="submit" class="campo-formulario" value="+ Añadir miembro">
-            </span>  
-        </form> 
-    </h5>
+    <form method="post">
+        <h5>
+            <span class="col-3">
+                <input type="text" class="campo-formulario" placeholder="Nombre usuario">
+            </span>
+            <span class="col-3">
+                <input type="submit" class="campo-formulario" value="+ Añadir miembro">
+            </span>
+        </h5>
+    </form>
     <div id="conversaciones-recientes">
-        
+
         <div>
             <div class="picture fila">
                 <p>
@@ -42,7 +41,7 @@
                 <p>
                     <img src="../img/no-user.jpg" class="profile-img">
                 </p>
-               <div class="status"><span class="fa fa-trash"></span></div>
+                <div class="status"><span class="fa fa-trash"></span></div>
                 <h4><a href="perfil-usuario.php">[Usuario]</a></h4>
             </div>
             <div class="picture fila">
@@ -62,7 +61,7 @@
         </div>
     </div>
     <div class="clear"></div>
-    
+
     <div>
         <h3>
             <br>Aportaciones
@@ -159,7 +158,7 @@
         <h3 class="col-1">
             <span class="col-5"><span class="fa fa-trash-o"></span></span>
         </h3>
-         <div class="clear"></div>
+        <div class="clear"></div>
         <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed elit eget dui maximus hendrerit non sed leo. Etiam vitae laoreet sem. Praesent et viverra massa. Ut pellentesque nisl at sapien consequat, ac vulputate lectus cursus. Suspendisse potenti. Quisque sit amet pharetra nulla. Fusce nibh neque, euismod nec fringilla eget, rhoncus tempor urna. Curabitur et molestie arcu.
         </p>
@@ -167,7 +166,7 @@
         <h3 class="col-1">
             <span class="col-5"><span class="fa fa-trash-o"></span></span>
         </h3>
-         <div class="clear"></div>
+        <div class="clear"></div>
         <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed elit eget dui maximus hendrerit non sed leo. Etiam vitae laoreet sem. Praesent et viverra massa. Ut pellentesque nisl at sapien consequat, ac vulputate lectus cursus. Suspendisse potenti. Quisque sit amet pharetra nulla. Fusce nibh neque, euismod nec fringilla eget, rhoncus tempor urna. Curabitur et molestie arcu.
         </p>

@@ -1,22 +1,23 @@
-<?php ob_start() ?>
+<?php 
+ob_start() ?>
 <div id="principal">
     <div class="fila profile">
         <!--Div para el fondo del perfil-->
-        <div id="fondo"><img src="../img/fondo-user.jpg"/></div>
+        <div id="fondo"><img src="../img/no-user.jpg"/></div>
         <!--Div para el avatar del perfil-->
-        <div id="avatar"><img src="../img/no-user.jpg"/></div>
+        <div id="avatar"><img src="../img/usuarios/perfil/no-user.jpg"/></div>
         <!--Eventos relacionados con el perfil-->
         <!--AÑADIR AL CSS PARA QUE ENVIE LOS ELEMENTOS DE LA LISTA A LA DERECHA-->
         <ul id="actividad">
-            <li id="amigos">
+            <li id="actividad-1">
                 <span>355</span>
                 <small>Amigos</small>
             </li>
-            <li id="apuntes">
+            <li id="actividad-2">
                 <span>355</span>
                 <small>Apuntes</small>
             </li>
-            <li id="comentarios">
+            <li id="actividad-3">
                 <span>355</span>
                 <small>Comentarios</small>
             </li>
@@ -24,8 +25,8 @@
         <div class ="clear"></div>
         <!--Contiene los elementos principales del perfil social-->
         <div class="description">
-            <h2 class="col-9">[Nombre y apellidos]</h2>
-            <p class="col-3"><a href="mis-mensajes.php" class="boton">Enviar mensaje</a></p>
+            <h2 class="col-sm-9">[Nombre y apellidos]</h2>
+            <p class="col-sm-3"><a href="mis-mensajes.php" class="boton">Enviar mensaje</a></p>
             <div class="clear"></div>
             <hr>
             <blockquote>
@@ -34,7 +35,7 @@
                 </p>
             </blockquote>
             <!--Principal social dentro del pefil-->
-            <div class="col-7">
+            <div class="col-sm-7">
                 <h2><i class="fa fa-child"></i> Social</h2>
                 <hr>
                 <div class="fila">
@@ -51,7 +52,7 @@
                 </div>
             </div>
             <!--Principal actividades dentro del perfil-->
-            <div class=" col-5">
+            <div class="col-sm-5">
                 <h2><i class="fa fa-cogs"></i> Actividades</h2>
                 <hr>
                 <div class="fila">

@@ -4,11 +4,12 @@
         <h5><strong>Usuarios conectados:</strong></h5>
         <hr>
         <p>
-            <img src="../img/no-user.jpg"><a href="perfil-usuario.php">[Usuario]</a> <span class="distintivo"><span class="fa fa-envelope"></span> 5</span><br>
-            <img src="../img/no-user.jpg"><a href="perfil-usuario.php">[Usuario]</a><br>
-            <img src="../img/no-user.jpg"><a href="perfil-usuario.php">[Usuario]</a> <span class="distintivo"><span class="fa fa-envelope"></span> 5</span><br>
-            <img src="../img/no-user.jpg"><a href="perfil-usuario.php">[Usuario]</a><br>
+            <img src="../img/no-user.jpg"><a href="#">[Usuario]</a> <span class="distintivo"><span class="fa fa-envelope"></span> 5</span><br>
+            <img src="../img/no-user.jpg"><a href="#">[Usuario]</a><br>
+            <img src="../img/no-user.jpg"><a href="#">[Usuario]</a> <span class="distintivo"><span class="fa fa-envelope"></span> 5</span><br>
+            <img src="../img/no-user.jpg"><a href="#">[Usuario]</a><br>
         </p>
+        <p><small>Al hacer click sobre un usuario de los de arriba se abrirá la conversación con ese usuario en el chat de abajo.</small></p>
         <hr>
         <h5><strong>Conversación con <a href="perfil-usuario.php">[Usuario]</a>:</strong></h5>
         <div class="panel" id="conversacion">

@@ -1,10 +1,7 @@
 body{
-    position: absolute;
-    height: 100%;
-    width: 100%;
     padding-top: 55px;
     margin: 0;
-    font-family: sans-serif;
+    font-family: sans-serif;    
 }
 
 .mini-logo{
@@ -23,7 +20,7 @@ body{
 #menu-user > div > div#user-info{
     text-align: center;
     background-color: #fff;
-    padding: 15px; 
+    padding: 15px;
 }
 
 #menu-user > div > div#user-info img{
@@ -167,13 +164,13 @@ textarea#area-apunte{
     font-weight: bold;
 }
 
-.profile #actividad li#amigos {
+.profile #actividad li#actividad-1 {
     background:#3a5795;
 }
-.profile #actividad li#apuntes{
+.profile #actividad li#actividad-2{
     background:#517fa4;
 }
-.profile #actividad li#comentarios{
+.profile #actividad li#actividad-3{
     background:#dd4b39;
 }
 
@@ -395,5 +392,9 @@ textarea#area-apunte{
     content: "\f00d";
     border-color: #eed3d7;
     background-color: #f2dede;
+    color: #b94a48;
+}
+
+.fa-trash, .fa-trash-o{
     color: #b94a48;
 }
