@@ -4,108 +4,70 @@ require __DIR__ . "/../controladores/ControladorAdmin.php";
 
 $controlador = new ControladorAdmin();
 
-$variables = $controlador->universidad();
+$variables = $controlador->getUniversidad();
 
 ob_start();
 ?>
 <div id="principal" class="col-9">
-      <?php
-        foreach ($variables["universidades"] as $universidad):
-           ?>
+
     <div class="fila profile">
-        <div id="fondo"><?php echo $universidad->imagenportada ?></div>
-        <div id="avatar"><?php echo $universidad->imagenperfil ?></div>
+        <div id="fondo"> <img src="\..\img\universidades\perfil\<?php echo $variables["universidades"]->imagenportada ?> " class="img-responsive"></div>
+        <div id="avatar"> <img src="\..\img\universidades\perfil\<?php echo $variables["universidades"]->imagenperfil ?>" class="img-responsive"></div>
         <ul id="actividad">
             <li id="actividad-1">
-                <span>355</span>
+                <span> <?php echo count($variables["carreras"]) ?></span>
                 <small>Carreras</small>
             </li>
             <li id="actividad-2">
-                <span>355</span>
+                <span> <?php echo count($variables["asignaturas"]) ?></span>
                 <small>Asignaturas</small>
             </li>
             <li id="actividad-3">
-                <span>355</span>
+                <span> <?php echo count($variables["usuarios"]) ?></span>
                 <small>Alumnos</small>
             </li>
         </ul>
         <div class ="clear"></div><br>
         <div class="description">
-            <h2 class="col-6"><?php echo $universidad->nombre ?></h2>
+            <h2 class="col-6"><?php echo $variables["universidades"]->nombre ?></h2>
             <p class="col-6">
-                <a href="editar-universidad.php" class="boton">Editar universidad</a>
-                <a href="universidades.php" class="boton">Eliminar universidad</a>
+                <a href="editar-universidad.php?id=<?php echo $variables["universidades"]->id ?>" class="boton">Editar universidad</a>
+                <a href="../servicios/adminHandler.php?action=borrarUniversidad&idUniversidad=<?php echo $variables["universidades"]->id ?>" class="boton">Eliminar universidad</a>
             </p>
             <div class="clear"></div>
             <hr>
             <blockquote>
                 <p> 
-                    <?php echo $universidad->descripcion ?>
+                    <?php echo $variables["universidades"]->descripcion ?>
                 </p>
             </blockquote>
             <div class="col-7">
                 <h2><span class="fa fa-users"></span> Alumnos</h2>
-                <hr>
+                <hr>   
+    <?php
+           if (isset($variables["usuarios"])){
+               foreach ($variables["usuarios"] as $usuarios){       
+            ?>
+                
                 <div class="fila">
                     <div class="col-3"><p><img src="../img/no-user.jpg" class="img-responsive"/></p></div>
                     <div class="col-9">
                         <p>
-                            <strong>Cholo 1</strong> 
-                            <small><a href="usuarios-detalles.php" class="color-green">@user1</a></small>
+                            <strong><?php echo $usuarios->nombre ?></strong>
+                            <small><a href="usuarios-detalles.php" class="color-green"><?php echo $usuarios->alias ?></a></small>
                         </p>
                         <blockquote>
                             <p>
-                                Adios Mundo!
+                                <?php echo $usuarios->estado ?>
                             </p>
                         </blockquote>
                     </div>
                     <div class="clear"></div>
                 </div>
-                <div class="fila">
-                    <div class="col-3"><p><img src="../img/no-user.jpg" class="img-responsive"/></p></div>
-                    <div class="col-9">
-                        <p>
-                            <strong>Cholo 1</strong> 
-                            <small><a href="usuarios-detalles.php" class="color-green">@user1</a></small>
-                        </p>
-                        <blockquote>
-                            <p>
-                                Adios Mundo!
-                            </p>
-                        </blockquote>
-                    </div>
-                    <div class="clear"></div>
-                </div>
-                <div class="fila">
-                    <div class="col-3"><p><img src="../img/no-user.jpg" class="img-responsive"/></p></div>
-                    <div class="col-9">
-                        <p>
-                            <strong>Cholo 1</strong> 
-                            <small><a href="usuarios-detalles.php" class="color-green">@user1</a></small>
-                        </p>
-                        <blockquote>
-                            <p>
-                                Adios Mundo!
-                            </p>
-                        </blockquote>
-                    </div>
-                    <div class="clear"></div>
-                </div>
-                <div class="fila">
-                    <div class="col-3"><p><img src="../img/no-user.jpg" class="img-responsive"/></p></div>
-                    <div class="col-9">
-                        <p>
-                            <strong>Cholo 1</strong> 
-                            <small><a href="usuarios-detalles.php" class="color-green">@user1</a></small>
-                        </p>
-                        <blockquote>
-                            <p>
-                                Adios Mundo!
-                            </p>
-                        </blockquote>
-                    </div>
-                    <div class="clear"></div>
-                </div>
+             <?php
+               }
+           } else echo "No hay alumnos en esta universidad";
+            ?>
             </div>
             <!--Principal actividades dentro del perfil-->
             <div class=" col-5">
@@ -135,78 +97,32 @@ ob_start();
             <div class="clear"></div>
             <div>
                 <h3><span class="fa fa-file-text-o"></span> Apuntes:</h3>
+                
+                <?php
+           if (isset($variables["apuntes"])){
+               foreach ($variables["apuntes"] as $apunte){       
+            ?>
                 <div class="fila">
                     <p>
                         <span class="col-6">
                             <span class="fa fa-file-text-o"></span>
-                            <a href="ver-apunte.php"> [Ejemplo apuntes]</a>
+                            <a href="ver-apunte.php?id=<?php echo $apunte->id ?>"><?php echo $apunte->titulo ?></a>
                         </span>
 
-                        <span class="col-2"><span class="fa fa-thumbs-o-up"></span> 20</span>
-                        <span class="col-2"><span class="fa fa-thumbs-o-down"></span> 2</span>
-                        <span class="col-2"><span class="fa fa-eye"></span> 999</span>
+                        <span class="col-2"><span class="fa fa-thumbs-o-up"></span> <?php echo $apunte->likes ?></span>
+                        <span class="col-2"><span class="fa fa-thumbs-o-down"></span> <?php echo $apunte->dislikes ?></span>
+                        <span class="col-2"><span class="fa fa-eye"></span> <?php echo $apunte->visualizaciones ?></span>
                     </p>
                     <div class="clear"></div>
-                </div>
-                <div class="fila">
-                    <p>
-                        <span class="col-6">
-                            <span class="fa fa-file-text-o"></span>
-                            <a href="ver-apunte.php"> [Ejemplo apuntes]</a>
-                        </span>
-
-                        <span class="col-2"><span class="fa fa-thumbs-o-up"></span> 20</span>
-                        <span class="col-2"><span class="fa fa-thumbs-o-down"></span> 2</span>
-                        <span class="col-2"><span class="fa fa-eye"></span> 999</span>
-                    </p>
-                    <div class="clear"></div>
-                </div>
-                <div class="fila">
-                    <p>
-                        <span class="col-6">
-                            <span class="fa fa-file-text-o"></span>
-                            <a href="ver-apunte.php"> [Ejemplo apuntes]</a>
-                        </span>
-
-                        <span class="col-2"><span class="fa fa-thumbs-o-up"></span> 20</span>
-                        <span class="col-2"><span class="fa fa-thumbs-o-down"></span> 2</span>
-                        <span class="col-2"><span class="fa fa-eye"></span> 999</span>
-                    </p>
-                    <div class="clear"></div>
-                </div>
-                <div class="fila">
-                    <p>
-                        <span class="col-6">
-                            <span class="fa fa-file-text-o"></span>
-                            <a href="ver-apunte.php"> [Ejemplo apuntes]</a>
-                        </span>
-
-                        <span class="col-2"><span class="fa fa-thumbs-o-up"></span> 20</span>
-                        <span class="col-2"><span class="fa fa-thumbs-o-down"></span> 2</span>
-                        <span class="col-2"><span class="fa fa-eye"></span> 999</span>
-                    </p>
-                    <div class="clear"></div>
-                </div>
-                <div class="fila">
-                    <p>
-                        <span class="col-6">
-                            <span class="fa fa-file-text-o"></span>
-                            <a href="ver-apunte.php"> [Ejemplo apuntes]</a>
-                        </span>
-
-                        <span class="col-2"><span class="fa fa-thumbs-o-up"></span> 20</span>
-                        <span class="col-2"><span class="fa fa-thumbs-o-down"></span> 2</span>
-                        <span class="col-2"><span class="fa fa-eye"></span> 999</span>
-                    </p>
-                    <div class="clear"></div>
+                        <?php
+               }
+           } else echo "No hay apuntes que pertenezcan a esta universidad";
+            ?>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<?php
-        endforeach;
-?>
 <div class="col-3">
     <p>
         <img src="../img/line-graph.gif" class="img-responsive">

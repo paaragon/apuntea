@@ -24,11 +24,13 @@ class ControladorAdmin {
         R::close();
         return $this->variables;
     }
+   
     public function anadirUniversidad(){
         $this->setUpDatabase();
         R::close();
         return $this->variables;
     }
+  
     public function carreras($universidad = "") {
         $this->setUpDatabase();
         $this->variables["carreras"] = ($universidad != "") ? R::find("carrera", " universidad_id = " . $universidad) : R::findAll("carrera");
@@ -48,18 +50,66 @@ class ControladorAdmin {
         R::close();
         return $this->variables;
     }
-    public function universidad($universidad = ""){
-        $idUniversidad = (isset($_POST["universidad"])) ? filter_input(INPUT_POST, "universidad", FILTER_SANITIZE_NUMBER_INT) : "";
+    public function universidad(){
+        $idUniversidad = (isset($_GET["id"])) ? filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT) : "";
         $this->setUpDatabase();
         if ($idUniversidad == "") {
             $this->variables["universidades"] = R::findAll("universidad");
-        } else {
-            $this->variables["universidades"] = R::find("universidad", " id = " . $idUniversidad);
+
+      
+        foreach($this->variables["universidades"] as $uni){
+            $acumapun=0;
+            $carr=$uni->ownCarreraList;
+            foreach ($carr as $c){
+                $asign=$c->ownAsignaturaList;
+                    foreach ($asign as $a){
+                        $acumapun+=count($a->ownApunteList);
+                    }
+                }
+             $uniapun[$uni->id]=$acumapun;
         }
-        $this->variables["universidades"] = R::findAll("universidad");
+         $this->variables['uniapun']=$uniapun;
+       
+        } else {
+            $this->variables["universidades"] = R::findOne("universidad", " id = " . $idUniversidad);
+            
+        }
         R::close();
         return $this->variables;
     }
+    
+    public function getUniversidad(){
+        
+        $idUniversidad = (isset($_GET["id"])) ? filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT) : "";
+        $this->setUpDatabase();
+        $this->variables["universidades"] = R::findOne("universidad", " id=? ", [$idUniversidad]);
+        $uni= $this->variables["universidades"];
+
+        $this->variables["carreras"] = $uni->ownCarreraList;
+        
+        foreach ($this->variables["carreras"] as $carrera){
+            foreach($carrera->ownAsignaturaList as $asig){
+                $this->variables["asignaturas"][] = $asig;
+            }
+        }
+
+        foreach ($this->variables["carreras"] as $carrera){
+            foreach($carrera->ownUsuarioList as $user){
+                $this->variables["usuarios"][] = $user;
+            }
+        }
+        
+        foreach($this->variables["usuarios"] as $usuario){
+             foreach($usuario->ownApunteList as $apunte){
+                 $this->variables["apuntes"][] =  $apunte;
+            }      
+        }
+        
+        
+        R::close();
+        return $this->variables;
+    }
+    
     
     
     public function miConfiguracion() {
@@ -71,6 +121,15 @@ class ControladorAdmin {
         R::close();
         return $this->variables;
     }
+    
+    public function mostrarUsuarios($idUniversidad) {
+        $carreras = R::find("carrera", " universidad_id=? ", [$idUniversidad]);
+        $this->variables["universidades"] = $usuarios= R::find("usuario", " carrera_id=? ", [$carreras]);
+        
+        return $usuarios;
+    }
+    
+    
     private function cargarComunes() {
         
     }
@@ -78,4 +137,5 @@ class ControladorAdmin {
         R::setup('mysql:host=' . DbConfig::$dbHost . ';dbname=' . DbConfig::$dbName, DbConfig::$dbUser, DbConfig::$dbPassword);
         $this->cargarComunes();
     }
+    
 }

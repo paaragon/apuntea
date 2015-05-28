@@ -26,9 +26,9 @@ ob_start();
     <div class="fila">
         <p>
             <span class="col-8">
-                <strong><a href="perfil-universidad.php?=<?php echo $universidad->id ?>"><?php echo $universidad->siglas ?></a></strong>
+                <strong><a href="perfil-universidad.php?id=<?php echo $universidad->id ?>"><?php echo $universidad->siglas ?></a></strong>
             </span>
-            <span class="col-2"><span class="fa fa-file"></span> <strong>13</strong></span>
+            <span class="col-2"><span class="fa fa-file"></span> <strong><?php echo $variables['uniapun'][$universidad->id] ?></strong></span>
             <span class="col-2"><a href="../servicios/adminHandler.php?action=borrarUniversidad&idUniversidad=<?php echo $universidad->id ?>"><span class="fa fa-trash"></span></a></span>
         </p>
         <div class="clear"></div>

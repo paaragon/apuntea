@@ -66,7 +66,7 @@ class ServiciosAdmin {
      public function anadirUniversidad() {
          
         $nombre = filter_input(INPUT_POST, "universidad", FILTER_SANITIZE_MAGIC_QUOTES);
-        $siglas= filter_input(INPUT_POST, "alias", FILTER_SANITIZE_NUMBER_INT);
+        $siglas= filter_input(INPUT_POST, "alias", FILTER_SANITIZE_MAGIC_QUOTES);
         $descripcion = filter_input(INPUT_POST, "descripcion", FILTER_SANITIZE_MAGIC_QUOTES);
         $logo = "upm-T.gif";
         $portada ="UPM-FI--06--Bloque_1.jpg";
@@ -111,6 +111,7 @@ class ServiciosAdmin {
         R::close();
         return $return;
     }
+   
     public function borrarCarrera($parametros) {
         /*
           usar parametros obtenemos el id por este parametro
@@ -149,8 +150,36 @@ class ServiciosAdmin {
         return $return;
     }
     
+    public function editarUniversidad($parametros){
+        
+       $this->setUpDatabase();
+       $universidad = R::load('universidad', $parametros['idUniversidad']);
+       
+        $nombre = filter_input(INPUT_POST, "universidad", FILTER_SANITIZE_MAGIC_QUOTES);
+        $siglas= filter_input(INPUT_POST, "alias", FILTER_SANITIZE_MAGIC_QUOTES);
+        $descripcion = filter_input(INPUT_POST, "descripcion", FILTER_SANITIZE_MAGIC_QUOTES);
+        $logo = "upm-T.gif";
+        $portada ="UPM-FI--06--Bloque_1.jpg";
+       
+        $universidad->nombre = $nombre;
+        $universidad->siglas = $siglas;
+        $universidad->descripcion = $descripcion;
+        $universidad->imagenperfil= $logo;
+        $universidad->imagenportada = $portada;
+     
+        try {
+            R::store($universidad);
+            $return = "admin/universidades.php";
+        } catch (Exception $e) {
+            $_SESSION["error"] = "Error al editar la universidad";
+            $return = "admin/universidades.php";
+        }
+        R::close();
+        return $return;
+        
+    }
     
-     public function getCarrerasFromUni($params) {
+    public function getCarrerasFromUni($params) {
         //Obtengo el id de la universidad
         $idUniversidad = $params["id"];
         //Conexcion a bd
@@ -167,7 +196,7 @@ class ServiciosAdmin {
         return json_encode(R::exportAll($carreras));
     }
     
-      public function cambiarConfiguracion() {
+    public function cambiarConfiguracion() {
         $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
         $nombre = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES);
         $email = filter_input(INPUT_POST, "mail", FILTER_SANITIZE_MAGIC_QUOTES);
@@ -195,8 +224,11 @@ class ServiciosAdmin {
         return $return;
     }
     
-    
     private function setUpDatabase() {
         R::setup('mysql:host=' . DbConfig::$dbHost . ';dbname=' . DbConfig::$dbName, DbConfig::$dbUser, DbConfig::$dbPassword);
+    }
+    
+    public function countMiembros($idGrupo) {
+        return R::count('usuariogrupo', ' grupo_id = ? AND admitido = 1', [$idGrupo]);
     }
 }
