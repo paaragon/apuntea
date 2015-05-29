@@ -51,7 +51,7 @@ ob_start();
             <p>
                 <span class="col-6">
                     <span class="fa fa-user"></span>
-                    <a href="perfil-usuario.php?id=<?php echo $usuario->id ?>"><?php echo $usuario["nick"] ?></a>
+                    <a href="perfil-usuario.php?id=<?php echo $usuario->id ?>"><?php echo $usuario["nombre"]."@".$usuario["nick"] ?></a>
                    
                 </span>
                 <span class="col-3"><a href="universidad.php?id=<?php echo $usuario->carrera->universidad->universidad_id ?>"><span class="fa fa-university"></span><?php echo $usuario->carrera->universidad->siglas ?></a></span>

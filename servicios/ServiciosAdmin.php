@@ -44,4 +44,28 @@ class ServiciosAdmin {
         R::setup('mysql:host=' . DbConfig::$dbHost . ';dbname=' . DbConfig::$dbName, DbConfig::$dbUser, DbConfig::$dbPassword);
     }
 
+    public function borrarCarrera(){
+        
+        
+        $this->setUpDatabase();
+        $id= filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT) ;
+        //borramos etiquetas de apuntes
+        
+        $etiquetas=R::find('etiquetaapunte', 'apunte_id= :idapunte', array(':idapunte'=> $id));
+        R::trashAll($etiquetas);
+        //borrar interactuacion
+        $interactuacion=R::find('usuariointeractuaapunte', 'apunte_id= :idapunte' ,  array(':idapunte'=> $id));
+        R::trashAll( $interactuacion ); 
+        //comprobar cascadas en bd 
+        
+        //borramos apuntes
+        //borrar apunte
+        $apunte=R::load('apunte', $id);
+        
+        R::trash( $apunte ); 
+        
+        R::close();
+        
+        
+    }
 }

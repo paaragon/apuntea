@@ -8,23 +8,22 @@ class ControladorAdmin {
 
     private $variables = array();
 
-    
     public function __construct() {
         apunteaSec\checkAdmin();
         $this->cargarComunes();
-        }
-
-    public function inicioAdmin(){
-          $this->setUpDatabase();
-          $this->variables["numcarreras"]= R::count('carrera');
-          $this->variables["numuniversidades"]= R::count('usuario');
-          $this->variables["numapuntes"]= R::count('apunte');
-          $this->variables["numasignaturas"]= R::count('asignatura');
-          
-          
-          return $this->variables;
     }
-    
+
+    public function inicioAdmin() {
+        $this->setUpDatabase();
+        $this->variables["numcarreras"] = R::count('carrera');
+        $this->variables["numuniversidades"] = R::count('usuario');
+        $this->variables["numapuntes"] = R::count('apunte');
+        $this->variables["numasignaturas"] = R::count('asignatura');
+
+
+        return $this->variables;
+    }
+
     public function anadirCarrera() {
 
         $this->setUpDatabase();
@@ -40,6 +39,19 @@ class ControladorAdmin {
 
         $this->variables["carreras"] = ($universidad != "") ? R::find("carrera", " universidad_id = " . $universidad) : R::findAll("carrera");
         $this->variables["universidades"] = R::findAll("universidad");
+        $carreras =$this->variables['carreras'];
+        foreach ($carreras as $car) {
+            $acum = 0;
+            $asig = $car->ownAsignaturaList;
+            foreach ($asig as $as) {
+                $acum+=count($as->ownApunteList);
+            }
+            $carapuntes[$car->id] = $acum;
+        }
+        if (isset($carapuntes)) {
+            $this->variables['carapuntes'] = $carapuntes;
+        } else
+            $this->variables['carapuntes'] = array();
 
         return $this->variables;
     }

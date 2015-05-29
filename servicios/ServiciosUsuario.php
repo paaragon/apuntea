@@ -97,13 +97,39 @@ class ServiciosUsuario {
 
     public function favorito(){
         
-        $apunte = R::load( 'apunte', $id ); 
-        if ($apunte->usuariointeractuaapunte->favorito==1){
-            $apunte->usuariointeractuaapunte->favorito=0;
-            
-        }if ($apunte->usuariointeractuaapunte->favorito==0){
-            $apunte->usuariointeractuaapunte->favorito=1;
-            
+        $this->setUpDatabase();
+        $id= filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT) ;
+        $interactuacion = R::findOne('usuariointeractuaapunte', 'apunte_id= :idapunte and usuario_id= :idusuario',  array(':idapunte'=> $id, ':idusuario'=> $_SESSION['idUsuario']));         
+        
+        if ($interactuacion->favorito==1){
+            $interactuacion->favorito=0;
+            R::store( $interactuacion );
+            echo 0;
+        }else if ($interactuacion->favorito==0){
+             $interactuacion->favorito=1;
+            R::store( $interactuacion );
+            echo 1;
         }
+        
+         R::close();
+    }
+    
+    public function borrarapunte(){
+        
+        $this->setUpDatabase();
+        $id= filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT) ;
+        //borrar etiquetas
+        $etiquetas=R::find('etiquetaapunte', 'apunte_id= :idapunte', array(':idapunte'=> $id));
+        R::trashAll($etiquetas);
+        //borrar interactuacion
+        $interactuacion=R::find('usuariointeractuaapunte', 'apunte_id= :idapunte' ,  array(':idapunte'=> $id));
+        R::trashAll( $interactuacion ); 
+        
+        //borrar apunte
+        $apunte=R::load('apunte', $id);
+        
+        R::trash( $apunte ); 
+        
+        R::close();
     }
 }
