@@ -4,51 +4,62 @@ require __DIR__ . "/../DB/rb.php";
 require __DIR__ . "/../DB/DbConfig.php";
 
 class ControladorUsuario {
-    /* GUARDAMOS TODAS LAS VARIABLES A UTILIZAR */
 
     private $variables = array();
 
     public function __construct() {
         $this->cargarComunes();
     }
-
-    //Publico
     
-    public function nuevosContactos() {
+    public function inicio() {
         $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
         $this->setUpDatabase();
         $usuario = R::load('usuario', $idUsuario);
         
-        $this->variables["nuevosContactos"] = array();
-       
-       //Me han agregado
-        $misBob = $usuario->alias('alice')->ownContactoList;
-       //Yo he agregado
-        $misAlice = $usuario->alias('bob')->ownContactoList;
+        //Nuevos amigos  NO FUNCIONA <= 24 HORAS      
+        $this->variables["nuevosAmigos"] = array();
+        $this->variables["amigos"] = array();
+        $pruebaAmigos = array();
         
-        foreach($misBob as $b){
-            if((time() - strtotime($b->fecha)) <= 86400000 ){ // <= 24 horas
-                $contacto = $b->fetchAs('usuario')->bob;
-                $this->variables["nuevosContactos"][$contacto->nombre] = $contacto;   
+        $misBob = $usuario->alias('alice')->ownContactoList;
+        foreach ($misBob as $b) {
+            $contacto = $b->fetchAs('usuario')->bob;
+            $this->variables["amigos"] = $contacto;
+            $pruebaAmigos[] = $contacto;
+            if((time() - strtotime($b->fecha)) <= 86400000 ) {
+                $this->variables["nuevosAmigos"][] = $contacto;
+            }    
+        }
+        
+        $misAlice = $usuario->alias('bob')->ownContactoList;
+        foreach ($misAlice as $a) {
+            $contacto = $a->fetchAs('usuario')->alice;
+            $this->variables["amigos"] = $contacto;
+            $pruebaAmigos[] = $contacto;
+            if((time() - strtotime($a->fecha)) <= 86400000) {
+                $this->variables["nuevosAmigos"][] = $contacto;
             }
         }
         
-        foreach($misAlice as $a){
-            if((time() - strtotime($a->fecha)) <= 86400000){ //= 24 horas
-                $contacto = $a->fetchAs('usuario')->alice;
-                $this->variables["nuevosContactos"][$contacto->nombre] = $contacto;
-            }
-        }  
+        //Sus apuntes  NO FUNCIONA <= 24 HORAS
+        $this->variables["nuevosApuntes"] = array();
+        $this->variables["apuntesAmigo"] = array();
         
-        R::close();
-        return $this->variables;
-    }
-    
-    public function nuevosContactosGrupo() {
-        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
-        $this->setUpDatabase();
-        $this->variables["nuevosContactosGrupo"] = array();
+        foreach($pruebaAmigos as $amigo) {
+           $this->variables["apuntesAmigo"] = R::findAll("apunte", "usuario_id = ?", [$amigo->id]);
+            foreach($this->variables["apuntesAmigo"] as $apunteAmigo) {
+                echo $apunteAmigo->titulo;
+                if ((time() - strtotime($apunteAmigo->fecha)) <= 86400000) {
+                    $this->variables["nuevosApuntes"][] = $apunteAmigo;
+               }
+        }
+           
+           
+        }
        
+        //Nuevos contactos en tus grupos
+        $this->variables["nuevosContactosGrupo"] = array();
+
         $resultado = R::getAll( ' SELECT *
                                   FROM usuario, usuariogrupo
                                   WHERE TIMESTAMPDIFF(HOUR, NOW(), fecha) >= -24 and
@@ -57,14 +68,13 @@ class ControladorUsuario {
                                                                 FROM usuariogrupo
                                                                 WHERE usuariogrupo.usuario_id = ?) ', [$idUsuario, $idUsuario]);
         
-        $user = R::convertToBeans('usuario', $resultado);
-                
-      
-       $this->variables["nuevosContactosGrupo"] = $user;   
+        $nuevoContacto = R::convertToBeans('usuario', $resultado);
+        $this->variables["nuevosContactosGrupo"] = $nuevoContacto;    
         
         R::close();
         return $this->variables;
     }
+    
     
     public function contactoAnadeApunte() {
         //Todos los apuntes
@@ -76,9 +86,7 @@ class ControladorUsuario {
                             ' );
         
         $apunte = R::convertToBeans('apunte', $apuntes);      
-      
-       // $this->variables["apuntes"] = $apunte;
-        
+             
         $misAmigos = $this->variables["contactosUsuario"];
        
         foreach ($misAmigos as $a) {
@@ -89,41 +97,25 @@ class ControladorUsuario {
                     $this->variables["amigos"] = $misAmigos;
                 }
             }
-        }
-        
-        
+        }  
     }
-   /* public function inicio() {
-        /*
-         * Modificaciones recientes de archivos
-         * Saber si idUsuario está relacionado con algún apunte:  sus apuntes o apuntes grupo
-         * Si es así --> 
-         */
-        
-        //Nuevas subidas de amigos
-        //nuevas subidas de archivos a tus grupos
-        //Has sido añadido a x grupo
-        
-        
-    /*}*/
-    
+
     public function misContactos() {
         $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
         $this->setUpDatabase();
         $usuario = R::load('usuario', $idUsuario);
       
+        //Mis amigos
         $misBob = $usuario->alias('alice')->ownContactoList;
         foreach ($misBob as $b) {
-            $contacto = $b->fetchAs('usuario')->alice;
+            $contacto = $b->fetchAs('usuario')->bob;
             $this->variables["contactosUsuario"][$contacto->nombre] = $contacto;
         }
-        
         $misAlice = $usuario->alias('bob')->ownContactoList;
         foreach ($misAlice as $a) {
-            $contacto = $a->fetchAs('usuario')->bob;
+            $contacto = $a->fetchAs('usuario')->alice;
             $this->variables["contactosUsuario"][$contacto->nombre] = $contacto;
         }
-
         usort($this->variables["contactosUsuario"], array("self", "cmp"));
 
         R::close();

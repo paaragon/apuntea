@@ -3,11 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/hlocal/xampp/htdocs/apuntea_v1/usuario/inicio.php</file>
-            <file>file:/C:/hlocal/xampp/htdocs/apuntea_v1/controladores/ControladorUsuario.php</file>
-            <file>file:/C:/hlocal/xampp/htdocs/apuntea_v1/admin/usuarios.php</file>
-            <file>file:/C:/hlocal/xampp/htdocs/apuntea_v1/admin/usuarios-detalles.php</file>
-            <file>file:/C:/hlocal/xampp/htdocs/apuntea_v1/controladores/ControladorAdmin.php</file>
+            <file>file:/C:/hlocal/xampp/htdocs/apuntea/controladores/ControladorAdmin.php</file>
+            <file>file:/C:/hlocal/xampp/htdocs/apuntea/controladores/ControladorUsuario.php</file>
+            <file>file:/C:/hlocal/xampp/htdocs/apuntea/usuario/inicio.php</file>
         </group>
     </open-files>
 </project-private>

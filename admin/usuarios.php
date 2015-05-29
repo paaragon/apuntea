@@ -1,5 +1,7 @@
 <?php 
-
+/* GRAFICA
+ * Usuarios+/dia
+ */
 require __DIR__ . "/../controladores/ControladorAdmin.php";
 $controlador = new ControladorAdmin();
 $variables = $controlador->usuarios();

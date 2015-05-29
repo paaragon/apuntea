@@ -1,5 +1,10 @@
 <?php 
-
+//GRAFICAS
+/*
+ * Apuntes apuntes/dia
+ * Amigos+/dia
+ * 
+ */
 require __DIR__ . "/../controladores/ControladorAdmin.php";
 $controlador = new ControladorAdmin();
 $variables = $controlador->usuario();

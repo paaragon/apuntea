@@ -55,7 +55,9 @@ ob_start(); ?>
                 </p>
             </div>
             
-            <?php foreach($variables["amigos"] as $amigo):?>
+            <?php foreach($variables["amigos"] as $amigo):
+                $apuntes = R::findAll("apunte", "usuario_id = ?", [$amigo->id]);
+            ?>
                 <div class="fila">
                     <p>
                         <span class="col-6">
@@ -69,7 +71,7 @@ ob_start(); ?>
                             ?>
                             <a href="perfil-universidad.php?id=<?php echo $universidadAmigo->id ?>"> <?php echo $universidadAmigo->nombre ?></a>
                         </span>
-                        <span class="col-2"><span class="fa fa-file"></span> 13</span>
+                        <span class="col-2"><span class="fa fa-file"></span> <?php echo count($apuntes) ?> </span>
                     </p>
                     <div class="clear"></div>
                 </div>
