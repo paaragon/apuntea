@@ -16,7 +16,7 @@ class ControladorUsuario {
         $this->setUpDatabase();
         $usuario = R::load('usuario', $idUsuario);
         
-        //Nuevos amigos  NO FUNCIONA <= 24 HORAS      
+        //Nuevos amigos      
         $this->variables["nuevosAmigos"] = array();
         $this->variables["amigos"] = array();
         $pruebaAmigos = array();
@@ -25,10 +25,12 @@ class ControladorUsuario {
         foreach ($misBob as $b) {
             $contacto = $b->fetchAs('usuario')->bob;
             $this->variables["amigos"] = $contacto;
-            $pruebaAmigos[] = $contacto;
-            if((time() - strtotime($b->fecha)) <= 86400000 ) {
-                $this->variables["nuevosAmigos"][] = $contacto;
-            }    
+            $pruebaAmigos[] = $contacto; 
+            $datetime = strtotime($b->fecha);
+            $current = strtotime('now');          
+            if (($current - $datetime) <= 86400) {
+               $this->variables["nuevosAmigos"][] = $contacto;
+            }
         }
         
         $misAlice = $usuario->alias('bob')->ownContactoList;
@@ -36,25 +38,27 @@ class ControladorUsuario {
             $contacto = $a->fetchAs('usuario')->alice;
             $this->variables["amigos"] = $contacto;
             $pruebaAmigos[] = $contacto;
-            if((time() - strtotime($a->fecha)) <= 86400000) {
-                $this->variables["nuevosAmigos"][] = $contacto;
+            $datetime = strtotime($a->fecha);
+            $current = strtotime('now');
+            if (($current - $datetime) <= 86400) {
+               $this->variables["nuevosAmigos"][] = $contacto;
             }
         }
         
-        //Sus apuntes  NO FUNCIONA <= 24 HORAS
+        //Nuevos apuntes de amigos
         $this->variables["nuevosApuntes"] = array();
         $this->variables["apuntesAmigo"] = array();
         
         foreach($pruebaAmigos as $amigo) {
            $this->variables["apuntesAmigo"] = R::findAll("apunte", "usuario_id = ?", [$amigo->id]);
             foreach($this->variables["apuntesAmigo"] as $apunteAmigo) {
-                echo $apunteAmigo->titulo;
-                if ((time() - strtotime($apunteAmigo->fecha)) <= 86400000) {
-                    $this->variables["nuevosApuntes"][] = $apunteAmigo;
-               }
-        }
-           
-           
+                $datetime = strtotime($apunteAmigo->fecha);
+                $current = strtotime('now');
+                if (($current - $datetime) <= 86400) {
+                   $this->variables["nuevosApuntes"][] = $apunteAmigo;
+                }             
+
+            }   
         }
        
         //Nuevos contactos en tus grupos

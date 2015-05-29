@@ -32,7 +32,7 @@ ob_start(); ?>
                     <p>
                         <span class="col-10">
                             <span class="fa fa-users"></span>
-                            <strong><em><a href="perfil-usuario.php?id=<?php $amigo->id?>">@<?php echo $amigo->nick ?></a></em> se ha añadido a tu lista de amigos</strong>
+                            <strong><em><a href="perfil-usuario.php?id=<?php echo $amigo->id?> ">@<?php echo $amigo->nick ?></a></em> se ha añadido a tu lista de amigos</strong>
                         </span>
                     </p>
                 <div class="clear"></div>
@@ -42,17 +42,20 @@ ob_start(); ?>
         <!-- NUEVOS CONTACTOS EN TUS GRUPOS -->
         <?php
             foreach ($novedades["nuevosContactosGrupo"] as $contacto):
+                $grupo = R::findOne("grupo", "id = ?", [$contacto->grupo_id]);
         ?>
                 <div class="fila">
                     <p>
                         <span class="col-10">
                             <span class="fa fa-users"></span>
-                            <strong><em><a href="perfil-usuario.php?id=<?php $contacto->id?>">@<?php echo $contacto->nick ?></a></em> se ha añadido a tu grupo " ... "</strong>
+                            <strong><em><a href="perfil-usuario.php?id=<?php echo $contacto->id?>">@<?php echo $contacto->nick ?></a></em> se ha añadido a tu grupo <a href="ver-grupo.php?id=<?php echo $grupo->id ?>"><?php echo $grupo->nombre ?></a></strong>
                         </span>
                     </p>
                     <div class="clear"></div>
                 </div>
-        <?php endforeach; ?>
+        <?php 
+        
+        endforeach; ?>
         
         <!-- NUEVOS APUNTES SUBIDOS POR TUS AMIGOS -->
         <?php 
@@ -63,10 +66,8 @@ ob_start(); ?>
                    <p>
                        <span class="col-10">
                            <span class="fa fa-user-plus"></span>
-                           <strong><em><a href="perfil-usuario.php?id=<?php $amigoApunte->id?>">@<?php echo $amigoApunte->nick ?></a></em> ha añadido un nuevo apunte <em><a href="ver-apunte.php?id=<?php$nuevoApunte->id?>"><?php echo $nuevoApunte->titulo ?></a></em></strong>
+                           <strong><em><a href="perfil-usuario.php?id=<?php echo $amigoApunte->id ?>">@<?php echo $amigoApunte->nick ?></a></em> ha añadido un nuevo apunte <em><a href="ver-apunte.php?id=<?php echo $nuevoApunte->id ?>"><?php echo $nuevoApunte->titulo ?></a></em></strong>
                        </span>  
-                       <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
-                       <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
                    </p>
                    <div class="clear"></div>
                </div>
