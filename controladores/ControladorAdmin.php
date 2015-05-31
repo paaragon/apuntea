@@ -12,6 +12,15 @@ class ControladorAdmin {
         apunteaSec\checkAdmin();
     }
 
+    public function apuntes(){
+        $this->setUpDatabase();
+        $this->variables["apuntes"] = R::findAll('apunte');
+        $this->variables["universidades"] = R::findAll('universidad');
+        $this->variables["carreras"] = R::findAll('carrera');
+        R::close();
+        return $this->variables;
+    }
+    
     public function anadirCarrera() {
 
         $this->setUpDatabase();

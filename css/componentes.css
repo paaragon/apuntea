@@ -448,6 +448,10 @@ input[disabled=""]{
     z-index: 99;
 }
 
+.cosa-verde{
+    background-color: #6fd06f;
+}
+
 #load-carrera{
     display: none;
     width: 100px;
