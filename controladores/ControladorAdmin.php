@@ -17,7 +17,68 @@ class ControladorAdmin {
         $this->setUpDatabase();
 
         $this->variables["universidades"] = R::findAll('universidad');
+        R::close();
+        return $this->variables;
+    }
 
+    public function grupos() {// = getUniversidades()...
+        $this->setUpDatabase();
+
+        $this->variables["universidades"] = R::findAll('universidad');
+        $this->variables["grupos"] = R::findAll('grupo');
+
+        R::close();
+        return $this->variables;
+    }
+
+    public function getGrupo() {// = getUniversidades()...
+        $this->setUpDatabase();
+        $idGrupo = filter_var($_GET["idGrupo"], FILTER_SANITIZE_NUMBER_INT);
+        $this->variables['grupo'] = R::findOne('grupo', ' id = ? ', [$idGrupo]);
+
+        $miembros = R::getAll('SELECT * FROM usuario, usuariogrupo '
+                        . 'WHERE usuario.id=usuariogrupo.usuario_id AND usuariogrupo.grupo_id=' . $idGrupo); //     PABLEAR
+        
+        foreach ($miembros as $m) {
+            $usuario = R::dispense('usuario');
+            /*$usuario->carrera_id = $m->carrera_id;
+            $usuario->ultimaconexion = $m->ultimaconexion;
+            $usuario->nombre = $m->nombre;
+            $usuario->apellidos = $m->apellidos;
+            $usuario->nick = $m->nick;
+            $usuario->password = $m->password;
+            $usuario->tipo = $m->tipo;
+            $usuario->avatar = $m->avatar;
+            $usuario->imagenportada = $m->imagenportada;
+            $usuario->email = $m->email;
+            $usuario->privacidadperfil = $m->privacidadperfil;
+            $usuario->privacidadactividad = $m->privacidadactividad;
+            $usuario->privacidadbuscador = $m->privacidadbuscador;
+            $usuario->estado = $m->estado;
+            $usuario->direccion = $m->direccion;*/
+            
+            $usuario->carrera_id = $m["carrera_id"];
+            $usuario->ultimaconexion = $m["ultimaconexion"];
+            $usuario->nombre = $m["nombre"];
+            $usuario->apellidos = $m["apellidos"];
+            $usuario->nick = $m["nick"];
+            $usuario->password = $m["password"];
+            $usuario->tipo = $m["tipo"];
+            $usuario->avatar = $m["avatar"];
+            $usuario->imagenportada = $m["imagenportada"];
+            $usuario->email = $m["email"];
+            $usuario->privacidadperfil = $m["privacidadperfil"];
+            $usuario->privacidadactividad = $m["privacidadactividad"];
+            $usuario->privacidadbuscador = $m["privacidadbuscador"];
+            $usuario->estado = $m["estado"];
+            
+            $this->variables['miembros'][] = $usuario;
+        }
+        
+        $comentarios = R::findAll('comentariogrupo', ' grupo_id = ? ', [$idGrupo]);
+        $this->variables['comentarios'] = $comentarios;
+        
+        R::close();
         return $this->variables;
     }
 
@@ -27,6 +88,8 @@ class ControladorAdmin {
 
         $this->variables["carreras"] = ($universidad != "") ? R::find("carrera", " universidad_id = " . $universidad) : R::findAll("carrera");
         $this->variables["universidades"] = R::findAll("universidad");
+
+        R::close();
 
         return $this->variables;
     }

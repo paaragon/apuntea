@@ -69,7 +69,6 @@ class ServiciosAdmin {
 
 
         try {
-
             $idAsignatura = R::store($asignatura);
             $_SESSION["exito"] = "Asignatura insertada con éxito";
             $return = "admin/asignatura.php?id=" . $idAsignatura;
@@ -85,8 +84,6 @@ class ServiciosAdmin {
     }
 
     public function borrarAsignatura($parametros) {
-
-
         /*
           usar parametros obtenemos el id por este parametro
          *          */
@@ -140,27 +137,36 @@ class ServiciosAdmin {
 
         return $return;
     }
-
-    public function getCarrerasFromUni($params) {
-
-        //Obtengo el id de la universidad
-        $idUniversidad = $params["id"];
-
-        //Conexcion a bd
+    
+    public function getCarreras() {
+        $idUni = filter_input(INPUT_POST, "idUniversidad", FILTER_SANITIZE_NUMBER_INT);
         $this->setUpDatabase();
-
-        //Consulta de las carreras con el idUniveridad
-        $carreras = ($idUniversidad != "") ? R::find("carrera", " universidad_id = " . $idUniversidad) : R::findAll("carrera");
+        $carreras = R::findAll("carrera", " universidad_id = ? ORDER BY nombre", [$idUni]);
 
         R::close();
-
-        /*
-          Tengo qu devolver un jSon para que se entienda con el cliente
-         * R::exportAll= array de php(lo que va necesitar el cliente)
-         * json_encode = codificamos a jSon(para que se estandar)
-         * 
-         *          */
         return json_encode(R::exportAll($carreras));
+    }
+    
+    public function getGrupos() {
+        $this->setUpDatabase();
+        $grupos = R::findAll("grupo");
+        R::close();
+        return json_encode(R::exportAll($grupos));
+    }
+/*
+    public function getGruposCon($cad) {/////////////////////////////////////////
+        $this->setUpDatabase();
+        $grupos = R::findAll("grupo", "nombre LIKE %?% ", [$cad]);
+        R::close();
+        return json_encode(R::exportAll($grupos));
+    }
+*/
+    public function getAsignaturas() {
+        $idCar = filter_input(INPUT_POST, "idCarrera", FILTER_SANITIZE_NUMBER_INT);
+        $this->setUpDatabase();
+        $asignaturas = R::findAll("asignatura", " carrera_id = ? ORDER BY nombre", [$idCar]);
+        R::close();
+        return json_encode(R::exportAll($asignaturas));
     }
 
     public function cambiarConfiguracion() {
@@ -202,9 +208,7 @@ class ServiciosAdmin {
             $return = "admin/editar-admin.php";
         }
 
-
         R::close();
-
 
         return $return;
     }

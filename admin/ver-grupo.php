@@ -1,49 +1,30 @@
 <?php
 require __DIR__ . "/../controladores/ControladorAdmin.php";
 $controlador = new ControladorAdmin();
-$variables = $controlador->anadirCarrera();
+//$variables = $controlador->anadirCarrera();
+$variables = $controlador->getGrupo();//isset($_POST['idGrupo'])...??
 
 ob_start();
 ?>
 <div id="principal">
     <h2>
-        <span class="fa fa-group"></span> Grupo 1
+        <span class="fa fa-group"></span> <?php echo $variables["grupo"]->nombre; ?>
     </h2>
     <hr>
     <p><a class="boton" href="grupos.php">Eliminar grupo</a> <a class="boton" href="mensajes.php">Enviar mensaje al administrador</a></p>
     <h3>Miembros</h3>
     <div id="conversaciones-recientes">
         <div>
-            <div class="picture fila">
-                <p>
-                    <img src="../img/no-user.jpg" class="profile-img">
-                </p>
-                <h4><a href="usuarios-detalles.php">[Usuario]</a></h4>
-            </div>
-            <div class="picture fila">
-                <p>
-                    <img src="../img/no-user.jpg" class="profile-img">
-                </p>
-                <h4><a href="usuarios-detalles.php">[Usuario]</a></h4>
-            </div>
-            <div class="picture fila">
-                <p>
-                    <img src="../img/no-user.jpg" class="profile-img">
-                </p>
-                <h4><a href="usuarios-detalles.php">[Usuario]</a></h4>
-            </div>
-            <div class="picture fila">
-                <p>
-                    <img src="../img/no-user.jpg" class="profile-img">
-                </p>
-                <h4><a href="usuarios-detalles.php">[Usuario]</a></h4>
-            </div>
-            <div class="picture fila">
-                <p>
-                    <img src="../img/no-user.jpg" class="profile-img">
-                </p>
-                <h4><a href="usuarios-detalles.php">[Usuario]</a></h4>
-            </div>
+            <?php
+                foreach ($variables['miembros'] as $m) {
+                    echo  "<div class='picture fila'>
+                          <p>
+                          <img src='../img/usuarios/perfil/" . $m->avatar . "' class='img-responsive'>
+                          </p>
+                          <h4><a href='usuarios-detalles.php'>" . $m->nick . "</a></h4>
+                          </div>";
+                }
+            ?>
         </div>
     </div>
     <div class="clear"></div>
@@ -53,111 +34,56 @@ ob_start();
             <br>Aportaciones
         </h3>
         <div>
-            <div class="fila">
-                <p>
-                    <span class="col-9">
-                        <span class="fa fa-file-text-o"></span>
-                        <strong><a href="ver-apunte.php">Tema 1</a></strong>
-                    </span>
-                    <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
-                    <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
-                    <span class="col-1"><span class="fa fa-eye"></span> 999</span>
+            
+            
+            <?php
+               /* foreach ($variables['comentarios'] as $c) {
                     
-                </p>
-                <div class="clear"></div>
-            </div>
-            <div class="fila">
-                <p>
-                    <span class="col-9">
-                        <span class="fa fa-file-text-o"></span>
-                        <strong><a href="ver-apunte.php">Tema 1</a></strong>
-                    </span>
-                    <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
-                    <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
-                    <span class="col-1"><span class="fa fa-eye"></span> 999</span>
+                    echo "<div class='fila'>
+                            <p>
+                                <span class='col-9'>
+                                    <span class='fa fa-file-text-o'></span>
+                                    <strong><a href='ver-apunte.php'>Tema 1</a></strong>
+                                </span>
+                                <span class='col-1'><span class='fa fa-thumbs-o-up'></span> 20</span>
+                                <span class='col-1'><span class='fa fa-thumbs-o-down'></span> 2</span>
+                                <span class='col-1'><span class='fa fa-eye'></span> 999</span>
+                            </p>
+                            <div class='clear'></div>
+                          </div>";
                     
-                </p>
-                <div class="clear"></div>
-            </div>
-            <div class="fila">
-                <p>
-                    <span class="col-9">
-                        <span class="fa fa-file-text-o"></span>
-                        <strong><a href="ver-apunte.php">Tema 1</a></strong>
-                    </span>
-                    <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
-                    <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
-                    <span class="col-1"><span class="fa fa-eye"></span> 999</span>
                     
-                </p>
-                <div class="clear"></div>
-            </div>
-            <div class="fila">
-                <p>
-                    <span class="col-9">
-                        <span class="fa fa-file-text-o"></span>
-                        <strong><a href="ver-apunte.php">Tema 1</a></strong>
-                    </span>
-                    <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
-                    <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
-                    <span class="col-1"><span class="fa fa-eye"></span> 999</span>
                     
-                </p>
-                <div class="clear"></div>
-            </div>
-            <div class="fila">
-                <p>
-                    <span class="col-9">
-                        <span class="fa fa-file-text-o"></span>
-                        <strong><a href="ver-apunte.php">Tema 1</a></strong>
-                    </span>
-                    <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
-                    <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
-                    <span class="col-1"><span class="fa fa-eye"></span> 999</span>
-                    
-                </p>
-                <div class="clear"></div>
-            </div>  
+                }*/
+            ?>
+            
+            
+            
+            
+            
+            
         </div>
     </div>
     <div id="comentarios-apuntes">
-        <div class="fila">
-            <form action="ver-grupo.php" method="post">
-                <h3><span class="fa fa-comment"></span> Añadir comentario</h3>
-                <textarea class="campo-formulario" name="comentario"></textarea>
-                <input type="submit" class="campo-formulario" value="añadir comentario">
-            </form>
-        </div>
-        <div class="fila">
-            <h3>[Comentario] <small>[Usuario] - [Fecha]</small></h3>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed elit eget dui maximus hendrerit non sed leo. Etiam vitae laoreet sem. Praesent et viverra massa. Ut pellentesque nisl at sapien consequat, ac vulputate lectus cursus. Suspendisse potenti. Quisque sit amet pharetra nulla. Fusce nibh neque, euismod nec fringilla eget, rhoncus tempor urna. Curabitur et molestie arcu.
-            </p>
-        </div>
-        <div class="fila">
-            <h3>[Comentario] <small>[Usuario] - [Fecha]</small></h3>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed elit eget dui maximus hendrerit non sed leo. Etiam vitae laoreet sem. Praesent et viverra massa. Ut pellentesque nisl at sapien consequat, ac vulputate lectus cursus. Suspendisse potenti. Quisque sit amet pharetra nulla. Fusce nibh neque, euismod nec fringilla eget, rhoncus tempor urna. Curabitur et molestie arcu.
-            </p>
-        </div>
-        <div class="fila">
-            <h3>[Comentario] <small>[Usuario] - [Fecha]</small></h3>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed elit eget dui maximus hendrerit non sed leo. Etiam vitae laoreet sem. Praesent et viverra massa. Ut pellentesque nisl at sapien consequat, ac vulputate lectus cursus. Suspendisse potenti. Quisque sit amet pharetra nulla. Fusce nibh neque, euismod nec fringilla eget, rhoncus tempor urna. Curabitur et molestie arcu.
-            </p>
-        </div>
-        <div class="fila">
-            <h3>[Comentario] <small>[Usuario] - [Fecha]</small></h3>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed elit eget dui maximus hendrerit non sed leo. Etiam vitae laoreet sem. Praesent et viverra massa. Ut pellentesque nisl at sapien consequat, ac vulputate lectus cursus. Suspendisse potenti. Quisque sit amet pharetra nulla. Fusce nibh neque, euismod nec fringilla eget, rhoncus tempor urna. Curabitur et molestie arcu.
-            </p>
-        </div>
-        <div class="fila">
-            <h3>[Comentario] <small>[Usuario] - [Fecha]</small></h3>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sed elit eget dui maximus hendrerit non sed leo. Etiam vitae laoreet sem. Praesent et viverra massa. Ut pellentesque nisl at sapien consequat, ac vulputate lectus cursus. Suspendisse potenti. Quisque sit amet pharetra nulla. Fusce nibh neque, euismod nec fringilla eget, rhoncus tempor urna. Curabitur et molestie arcu.
-            </p>
-        </div>
+        
+        <?php
+                foreach ($variables['comentarios'] as $c) {
+                    echo "<div class='fila'>
+                        <h3>" . $c->titulo . " - " . $c->fecha . "</small></h3>
+                        <p>
+                            " . $c->texto . "
+                        </p>
+                    </div>";
+                    
+                    
+                }
+                    
+                    
+            ?>
+        
+        
+        
+        
     </div>  
 </div>
 <?php
