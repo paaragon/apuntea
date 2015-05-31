@@ -30,13 +30,13 @@ ob_start();
                 <div class="fila">
                     <p>
                         <span class="col-8">
-                            <a href="ver-grupo.php">
+                            <a href="ver-grupo.php?id=<?php echo $grupos->grupo_id ?>">
                                 <?php
-                                if ($grupos->grupo->privacidad == 1) {
+                                if ($grupos->grupo->privacidad == 2) {
                                     echo '<span class = "fa fa-globe"></span>';
-                                } else if ($grupos->grupo->privacidad == 2) {
+                                } else if ($grupos->grupo->privacidad == 1) {
                                     echo '<span class = "fa fa-circle-o-notch"></span>';
-                                } else {
+                                } else if ($grupos->grupo->privacidad == 0) {
                                     echo '<span class="fa fa-lock"></span>';
                                 }
                                 ?>
@@ -59,8 +59,6 @@ ob_start();
         echo "No tienes ningun grupo";
     endif;
     ?>
-
-
 </div>
 <?php
 $contenido = ob_get_clean();

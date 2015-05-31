@@ -23,25 +23,25 @@ ob_start(); ?>
     </div>
     <div>
         <?php
-        if (count($variables["gruposSugeridos"]) > 0):
+        if (isset($variables["gruposSugeridos"])):
             foreach ($variables["gruposSugeridos"] as $grupos):
         ?>
         <div class="fila">
             <p>
                 <span class="col-8">
+				<a href="ver-grupo.php?id=<?php echo $grupos["id"] ?>">
                    <?php
-                   if ($grupos["privacidad"] == 1) {
+                   if ($grupos["privacidad"] == 2) {
                        echo '<span class = "fa fa-globe"></span>';
-                   } 
-                   else if ($grupos["privacidad"] == 2) {
+                   } else if ($grupos["privacidad"] == 1) {
                        echo '<span class = "fa fa-circle-o-notch"></span>';
-                   } else {
+                   } else if ($grupos["privacidad"] == 0) {
                        echo '<span class="fa fa-lock"></span>';
                    }
                    ?>
-                    <strong><?php $grupos["nombre"] ?></strong>
+                    <strong><?php echo $grupos["nombre"] ?></strong>
                 </span>
-                <span class="col-1"><span class="fa fa-users"></span>103</span>
+                <span class="col-1"><span class="fa fa-users"></span><?php echo $controlador->countMiembros ($grupos["id"])?></span>
                 <a href="ver-grupo.php"> Unirse</a>
             </p>
             <div class="clear"></div>

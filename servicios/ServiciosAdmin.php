@@ -64,7 +64,8 @@ class ServiciosAdmin {
     }
     
      public function anadirUniversidad() {
-         
+		 
+
         $nombre = filter_input(INPUT_POST, "universidad", FILTER_SANITIZE_MAGIC_QUOTES);
         $siglas= filter_input(INPUT_POST, "alias", FILTER_SANITIZE_MAGIC_QUOTES);
         $descripcion = filter_input(INPUT_POST, "descripcion", FILTER_SANITIZE_MAGIC_QUOTES);
@@ -83,13 +84,14 @@ class ServiciosAdmin {
         try {
             $idUniversidad = R::store($universidad);
             $_SESSION["exito"] = "Universidad insertada con éxito";
-            $return = "admin/universidad.php?id=" . $idUniversidad;
+            $return = "admin/perfil-universidad.php?id=" . $idUniversidad;
         } catch (Exception $e) {
             $_SESSION["error"] = "Error al insertar universidad";
             $return = "admin/universidad-nueva.php";
         }
         R::close();
         return $return;
+		
     }
     
     public function borrarAsignatura($parametros) {

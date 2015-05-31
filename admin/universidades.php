@@ -33,13 +33,14 @@ ob_start();
         </p>
         <div class="clear"></div>
     </div>
-</div>
-<?php
-        endforeach;
+	<?php
+	   endforeach;
     else:
         echo "No hay universidades disponibles";
     endif;
-?>
+	?>
+</div>
+
 <div class="col-3">
     <p>
         <img src="../img/line-graph.gif" class="img-responsive">

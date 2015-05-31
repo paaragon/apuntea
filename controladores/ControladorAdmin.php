@@ -86,26 +86,64 @@ class ControladorAdmin {
         $uni= $this->variables["universidades"];
 
         $this->variables["carreras"] = $uni->ownCarreraList;
-        
-        foreach ($this->variables["carreras"] as $carrera){
-            foreach($carrera->ownAsignaturaList as $asig){
-                $this->variables["asignaturas"][] = $asig;
+		$numCarreras = 0;
+		$numAlumnos = 0;
+		$numAsign = 0;
+		$carr = $uni->ownCarreraList;
+		$numCarreras = count($uni->ownCarreraList);
+		foreach ($carr as $c) {
+			 foreach($c->ownUsuarioList as $user){
+				 $this->variables["usuarios"][] = $user;
             }
-        }
+			$numAlumnos += count($c->ownUsuarioList);
+			$numAsign += count($c->ownAsignaturaList);
+			$asign = $c->ownAsignaturaList;
+			foreach ($asign as $a) {
+				$apuntes = $a->ownApunteList;
+			}
+		}
+		
+		
+		$this->variables["numCarreras"] = $numCarreras;
+		//} else $this->variables["numCarreras"]=array();
+		//if (isset($alumnos)){
+		$this->variables["numAlumnos"] = $numAlumnos;
+		//} else $this->variables["alumnos"]=array();
+		//if (isset($numAsig)){
+		$this->variables["numAsign"] = $numAsign;
+		//} else $this->variables["numAsign"]=array();
+		if (isset($apuntes)){
+		$this->variables["apuntes"] = $apuntes;
+		} else $this->variables["apuntes"]=array();
+			
+			
+		//novedades
+	
+		foreach($this->variables["apuntes"] as $apunteNov) {
+                $datetime = strtotime($apunteNov->fecha);
+                $current = strtotime('now');
+                if (($current - $datetime) <= 86400) {
+                   $apuntesNovedades = $apunteNov;
+                }
+		}
+		
+		if (isset($apuntesNovedades)){
+		$this->variables["apuntesNuevos"][] = $apuntesNovedades;
+		} else $this->variables["apuntesNuevos"]=array();
+		
+		
+		foreach($this->variables["usuarios"] as $usuarioNov) {
+                $datetime = strtotime($usuarioNov->fecha);
+                $current = strtotime('now');
+                if (($current - $datetime) <= 86400) {
+                   $usuariosNovedades = $usuarioNov;
+                }
+		}
+		
+		if (isset($usuariosNovedades)){
+		$this->variables["usuariosNuevos"][] = $usuariosNovedades;
+		} else $this->variables["usuariosNuevos"]=array();
 
-        foreach ($this->variables["carreras"] as $carrera){
-            foreach($carrera->ownUsuarioList as $user){
-                $this->variables["usuarios"][] = $user;
-            }
-        }
-        
-        foreach($this->variables["usuarios"] as $usuario){
-             foreach($usuario->ownApunteList as $apunte){
-                 $this->variables["apuntes"][] =  $apunte;
-            }      
-        }
-        
-        
         R::close();
         return $this->variables;
     }

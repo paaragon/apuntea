@@ -135,13 +135,20 @@ class ControladorUsuario {
     }
 
     public function misGruposSug() {
+	
 
         $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
 
         $this->setUpDatabase();
+		
+		$this->variables["gruposSugeridos"] = array();
 
-        $grupos = R::getAll('SELECT DISTINCT * FROM grupo, usuariogrupo WHERE grupo.id != usuariogrupo.grupo_id AND ' . $idUsuario . ' != usuariogrupo.usuario_id');
-
+		$grupos = R::getAll('SELECT DISTINCT * FROM grupo, usuariogrupo 
+							WHERE grupo.privacidad != 0 AND
+							grupo.id = usuariogrupo.grupo_id 
+							AND ' . $idUsuario . ' != usuariogrupo.usuario_id');
+		
+		
         $this->variables["gruposSugeridos"] = $grupos;
         
         R::close();
@@ -149,6 +156,34 @@ class ControladorUsuario {
         return $this->variables;
     }
 
+	public function grupo(){
+	
+	    $idGrupo= (isset($_GET["id"])) ? filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT) : "";
+        $this->setUpDatabase();
+		$this->variables["grupo"] = R::findOne('grupo', " id =? " , [$idGrupo]);
+		$grupo = $this->variables["grupo"];
+		
+		$usuarios = R::findAll("usuariogrupo", " grupo_id =? " , [$idGrupo]);
+		$this->variables["usuarios"] = $usuarios;
+		
+		$apuntesGrupo = R::findAll("apuntegrupo", " grupo_id =? " , [$idGrupo]);
+		
+		if(isset($apuntesGrupo)){
+			foreach($apuntesGrupo as $apunte){
+				$apuntes = R::findOne("apunte", " id =? " , [$apunte->apunte_id]); 
+			}
+			$this->variables["apuntes"][] = $apuntes;
+		}
+		
+		$comentarios = R::findAll("comentariogrupo", " grupo_id =? " , [$idGrupo]);
+		$this->variables["comentarios"] = $comentarios;
+		
+        
+        R::close();
+        return $this->variables;
+	}
+	
+	
     private function getAmigosDeMisBob($alice, $idUsuario) {
 
         //array con los amigos de mis alices
