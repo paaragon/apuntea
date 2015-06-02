@@ -1,8 +1,7 @@
 <?php
 require __DIR__ . "/../controladores/ControladorAdmin.php";
 $controlador = new ControladorAdmin();
-//$variables = $controlador->anadirCarrera();
-$variables = $controlador->getGrupo();//isset($_POST['idGrupo'])...??
+$variables = $controlador->getGrupo();
 
 ob_start();
 ?>
@@ -11,19 +10,21 @@ ob_start();
         <span class="fa fa-group"></span> <?php echo $variables["grupo"]->nombre; ?>
     </h2>
     <hr>
-    <p><a class="boton" href="grupos.php">Eliminar grupo</a> <a class="boton" href="mensajes.php">Enviar mensaje al administrador</a></p>
+    <p><a id="eliminar" class="boton" href="#">Eliminar grupo</a> <a id="mensaje" class="boton" href="#">Enviar mensaje al administrador</a></p>
     <h3>Miembros</h3>
     <div id="conversaciones-recientes">
         <div>
             <?php
+            if (isset($variables['miembros'])) {
                 foreach ($variables['miembros'] as $m) {
-                    echo  "<div class='picture fila'>
+                    echo "<div class='picture fila'>
                           <p>
-                          <img src='../img/usuarios/perfil/" . $m->avatar . "' class='img-responsive'>
+                          <img src='../img/usuarios/perfil/" . $m->avatar . "' class='profile-img'>
                           </p>
                           <h4><a href='usuarios-detalles.php'>" . $m->nick . "</a></h4>
                           </div>";
                 }
+            }
             ?>
         </div>
     </div>
@@ -33,59 +34,40 @@ ob_start();
         <h3>
             <br>Aportaciones
         </h3>
-        <div>
-            
-            
-            <?php
-               /* foreach ($variables['comentarios'] as $c) {
-                    
-                    echo "<div class='fila'>
-                            <p>
-                                <span class='col-9'>
-                                    <span class='fa fa-file-text-o'></span>
-                                    <strong><a href='ver-apunte.php'>Tema 1</a></strong>
-                                </span>
-                                <span class='col-1'><span class='fa fa-thumbs-o-up'></span> 20</span>
-                                <span class='col-1'><span class='fa fa-thumbs-o-down'></span> 2</span>
-                                <span class='col-1'><span class='fa fa-eye'></span> 999</span>
-                            </p>
-                            <div class='clear'></div>
-                          </div>";
-                    
-                    
-                    
-                }*/
-            ?>
-            
-            
-            
-            
-            
-            
-        </div>
     </div>
     <div id="comentarios-apuntes">
-        
+        <h3>
+            <br>Comentarios
+        </h3>
         <?php
-                foreach ($variables['comentarios'] as $c) {
-                    echo "<div class='fila'>
-                        <h3>" . $c->titulo . " - " . $c->fecha . "</small></h3>
-                        <p>
-                            " . $c->texto . "
-                        </p>
-                    </div>";
-                    
-                    
-                }
-                    
-                    
-            ?>
-        
-        
-        
-        
-    </div>  
+        foreach ($variables['comentarios'] as $c) {
+            $autor = $c->usuario->nick;
+            echo "<div class='fila'>
+                        <h3>" . $c->titulo . "<small> [ " . $autor . " - " . date("d/m/Y", strtotime($c->fecha) ) . " ] </small></h3>
+                            <p>" . $c->texto . "</p>
+                  </div>";
+        }
+        ?>
+    </div>
 </div>
+
+<script>
+
+    $(document).on("ready", function() {
+        $("#eliminar").on("click", function() {
+            var r = confirm("¿Está seguro?");
+            if (r == true) {
+                window.location = "../servicios/adminHandler.php?action=removeGrupo&id=<?php echo $variables['grupo']->id; ?>";
+            }
+        });
+        
+        $("#mensaje").on("click", function() {
+            window.location = "../servicios/adminHandler.php?action=sendToAdmin&id=<?php echo $variables['grupo']->id; ?>";
+        });
+    });
+
+</script>
+
 <?php
 $contenido = ob_get_clean();
 require "../common/admin/layout.php";

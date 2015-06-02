@@ -9,9 +9,36 @@ class ServiciosAdmin {
     public function __construct() {
         apunteaSec\checkAdmin();
     }
+    
+    public function removeGrupo() {
+        $idGrupo = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
+        $this->setUpDatabase();
+        $grupo = R::findOne('grupo', ' id = ? ', [$idGrupo]);
+        R::trash($grupo);
+        R::close();
+        $_SESSION['exito'] = "Grupo eliminado con éxito";
+        return "admin/grupos.php";
+    }
 
+    public function removeApunte() {
+        $idApunte = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
+        $this->setUpDatabase();
+        $apunte = R::findOne('apunte', ' id = ? ', [$idApunte]);
+        R::trash($apunte);
+        R::close();
+        $_SESSION['exito'] = "Apunte eliminado con éxito";
+        return "admin/apuntes.php";
+    }
+    
+    public function sendToAdmin() {
+        $idGrupo = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
+        $this->setUpDatabase();
+        $usuariogrupo = R::findOne('usuariogrupo', ' grupo_id = ? AND isadmin = 1 ', [$idGrupo]);
+        R::close();
+        return "admin/mensajes.php?id=" . $usuariogrupo->usuario_id;
+    }
+    
     public function anadirCarrera() {
-
         $nombre = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES);
         $idUniversidad = filter_input(INPUT_POST, "universidad", FILTER_SANITIZE_NUMBER_INT);
         $rama = filter_input(INPUT_POST, "rama", FILTER_SANITIZE_MAGIC_QUOTES);
@@ -22,21 +49,15 @@ class ServiciosAdmin {
         $carrera->nombre = $nombre;
         $carrera->universidad_id = $idUniversidad;
         $carrera->rama = $rama;
-
-
         try {
-
             $idCarrera = R::store($carrera);
             $_SESSION["exito"] = "Carrera insertada con éxito";
             $return = "admin/perfil-carrera.php?id=" . $idCarrera;
         } catch (Exception $e) {
-
             $_SESSION["error"] = "Error al insertar carrera";
             $return = "admin/anadir-carrera.php";
         }
-
         R::close();
-
         return $return;
     }
 

@@ -28,8 +28,8 @@ ob_start();
                 <?php
                 echo "<option class='carrera' value='0' selected=''>Todas</option>";
                 /* foreach ($variables["carreras"] as $c) {
-                    echo "<option class='carrera' value='$c->id'>$c->nombre</option>";
-                } */
+                  echo "<option class='carrera' value='$c->id'>$c->nombre</option>";
+                  } */
                 ?>
             </select>
             <!-- <input type="submit" class="campo-formulario" value="Buscar"> -->
@@ -44,21 +44,19 @@ ob_start();
                             <span class='col-8'>
                                 <span class='fa fa-file-text-o'></span>
                                 <label><a href='ver-apunte.php'>" . $a->titulo . "</a></label>
+                                <label class='hide'>$a->asignatura_id</a></label>
                             </span>
 
-                            <span class='col-1'><span class='fa fa-thumbs-o-up'></span> 20</span>
-                            <span class='col-1'><span class='fa fa-thumbs-o-down'></span> 2</span>
-                            <span class='col-1'><span class='fa fa-eye'></span> 999</span>
+                            <span class='col-1'><span class='fa fa-thumbs-o-up'></span>" . $a->likes . "</span>
+                            <span class='col-1'><span class='fa fa-thumbs-o-down'></span>" . $a->dislikes . "</span>
+                            <span class='col-1'><span class='fa fa-eye'></span>" . $a->visualizaciones . "</span>
 
-                            <span class='col-1'><a href='apuntes.php'><span class='fa fa-trash-o'></span></a></span>
+                            <span class='col-1'><a href='#'><span class='eliminar fa fa-trash-o' id='e".$a->id."'></span></a></span>
                         </p>
                         <div class='clear'></div>
                     </div>";
     }
     ?>
-
-
-
 </div>
 <div class="col-3">
     <p>
@@ -81,43 +79,52 @@ ob_start();
                 }
             });
         });
-        
-        $("#selectUniversidad").on("change", function () {
+
+        $("#selectUniversidad").on("change", function() {
             var idUni = $("#selectUniversidad").val();
             getCarreras(idUni);
-            
+
             /*
              * PRIMER FILTRADO DE APUNTES POR UNIVERSIDAD
              */
-            
+
         });
-        
-        $("#selectUniversidad").on("change", function () {
+
+        $("#selectUniversidad").on("change", function() {
             var idCar = $("#selectCarrera").val();
-            
+
             /*
              * SEGUNDO FILTRADO DE APUNTES POR CARRERA
              */
-            
+
         });
-        
+
     });
 
     function getCarreras(id) {
         $("#selectCarrera").html("");
-        if(id != 0){
-            $.post("../servicios/usuarioHandler.php?action=getCarreras", {idUniversidad: id}, function (data) {
-            $("#selectCarrera").append("<option value='0' > -- </option>");
-            for (i = 0; i < data.length; i++) {
-                $("#selectCarrera").append("<option value='" + data[i]["id"] + "'>" + data[i]["nombre"] + "</option>");
-            }
-        }, "json");
+        if (id != 0) {
+            $.post("../servicios/usuarioHandler.php?action=getCarreras", {idUniversidad: id}, function(data) {
+                $("#selectCarrera").append("<option value='0' > -- </option>");
+                for (i = 0; i < data.length; i++) {
+                    $("#selectCarrera").append("<option value='" + data[i]["id"] + "'>" + data[i]["nombre"] + "</option>");
+                }
+            }, "json");
         }
         else {
             $("#selectCarrera").append("<option class='carrera' value='0' selected=''>Todas</option>");
         }
     }
 
+    $(document).on("ready", function() {
+        $(".eliminar").on("click", function() {
+            var r = confirm("¿Está seguro?");
+            if (r == true) {
+                id= $(this).attr('id').substring(1);
+                window.location = "../servicios/adminHandler.php?action=removeApunte&id="+id;
+            }
+        });
+    });
 </script>
 
 <?php

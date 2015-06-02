@@ -17,7 +17,7 @@ ob_start();
 </p>
 <div class="col-3">
     <h3>Cifras:</h3>
-    <div class="fila">
+    <div class="fila ">
         <div class="col-8">
             <ul class="no-style-list">
                 <li><strong>Nº universidades</strong></li>

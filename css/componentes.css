@@ -422,7 +422,7 @@ input[disabled=""]{
 
 .no-style-list{
     list-style-type: none;
-    font-size: 1.3em;
+    font-size: 1.1em;
     padding: 0;
 }
 
@@ -449,7 +449,8 @@ input[disabled=""]{
 }
 
 .cosa-verde{
-    background-color: #6fd06f;
+    background-color: #46B552;
+    color: #FFFFFF;
 }
 
 #load-carrera{
