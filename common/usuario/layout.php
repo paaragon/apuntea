@@ -16,6 +16,13 @@
         <script type="text/javascript" src="../js/perfect-scrollbar.jquery.min.js"></script>
         <script type="text/javascript" src="../js/perfect-scrollbar.min.js"></script>
         <?php
+        if (isset($styles)) {
+            foreach ($styles as $style) {
+                echo $style;
+            }
+        }
+        ?>
+        <?php
         if (isset($scripts)) {
             foreach ($scripts as $script) {
                 echo $script;
@@ -36,7 +43,7 @@
             <div id="statusdiv" class="alert alert-success alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <?php
-                echo $_SESSION["exito"];
+                echo $_SESSION["exito"]." ";
                 unset($_SESSION["exito"]);
                 ?>
             </div>
@@ -44,7 +51,7 @@
             <div id="statusdiv" class="alert alert-danger alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <?php
-                echo $_SESSION["error"];
+                echo $_SESSION["error"]." ";
                 unset($_SESSION["error"])
                 ?>
             </div>
