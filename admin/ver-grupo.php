@@ -21,7 +21,7 @@ ob_start();
                           <p>
                           <img src='../img/usuarios/perfil/" . $m->avatar . "' class='profile-img'>
                           </p>
-                          <h4><a href='usuarios-detalles.php'>" . $m->nick . "</a></h4>
+                          <h4><a href='usuarios-detalles.php?id=" . $m->id . "'>" . $m->nick . "</a></h4>
                           </div>";
                 }
             }
@@ -31,9 +31,24 @@ ob_start();
     <div class="clear"></div>
 
     <div>
-        <h3>
-            <br>Aportaciones
-        </h3>
+        <h3>Aportaciones</h3>
+        <div>
+            <?php foreach ($variables["aportaciones"] as $ap): ?>
+                <div class="fila">
+                    <p>
+                        <span class="col-9">
+                            <span class="fa fa-file-text-o"></span>
+                            <strong><a href="ver-apunte.php?id=<?php echo $ap->id ?>"><?php echo $ap->titulo ?></a></strong>
+                        </span>
+                        <span class="col-1"><span class="fa fa-thumbs-o-up"></span> <?php echo $ap->likes ?></span>
+                        <span class="col-1"><span class="fa fa-thumbs-o-down"></span> <?php echo $ap->dislikes ?></span>
+                        <span class="col-1"><span class="fa fa-eye"></span> <?php echo $ap->visualizaciones ?></span>
+
+                    </p>
+                    <div class="clear"></div>
+                </div>
+            <?php endforeach; ?>
+        </div>
     </div>
     <div id="comentarios-apuntes">
         <h3>
@@ -43,7 +58,7 @@ ob_start();
         foreach ($variables['comentarios'] as $c) {
             $autor = $c->usuario->nick;
             echo "<div class='fila'>
-                        <h3>" . $c->titulo . "<small> [ " . $autor . " - " . date("d/m/Y", strtotime($c->fecha) ) . " ] </small></h3>
+                        <h3>" . $c->titulo . "<small> [ " . $autor . " - " . date("d/m/Y", strtotime($c->fecha)) . " ] </small></h3>
                             <p>" . $c->texto . "</p>
                   </div>";
         }
@@ -53,15 +68,15 @@ ob_start();
 
 <script>
 
-    $(document).on("ready", function() {
-        $("#eliminar").on("click", function() {
+    $(document).on("ready", function () {
+        $("#eliminar").on("click", function () {
             var r = confirm("¿Está seguro?");
             if (r == true) {
                 window.location = "../servicios/adminHandler.php?action=removeGrupo&id=<?php echo $variables['grupo']->id; ?>";
             }
         });
-        
-        $("#mensaje").on("click", function() {
+
+        $("#mensaje").on("click", function () {
             window.location = "../servicios/adminHandler.php?action=sendToAdmin&id=<?php echo $variables['grupo']->id; ?>";
         });
     });

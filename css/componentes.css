@@ -162,29 +162,14 @@ p{
 }
 
 .navbar-default ul li a:hover{
-    background-color: #2E7636;
-    text-decoration: none;
-    animation-duration: 0.5s;
-    animation-name: head-nav-in;
-}
-
-.navbar-default ul li a span:hover{
+    background-color: #2E7636!important;
     color: #18411D;
     text-shadow: 1px 1px 0px #54995A;
+    text-decoration: none;
 }
 
 .navbar-default ul li a span{
     font-size: 1.3em;
-}
-
-@keyframes head-nav-in {
-    from {
-        background-color: transparent;
-    }
-
-    to {
-        background-color: #2E7636;
-    }
 }
 
 
@@ -446,11 +431,6 @@ input[disabled=""]{
     top: 65px;
     max-width: 255px;
     z-index: 99;
-}
-
-.cosa-verde{
-    background-color: #46B552;
-    color: #FFFFFF;
 }
 
 #load-carrera{

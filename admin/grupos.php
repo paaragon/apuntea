@@ -15,38 +15,18 @@ ob_start();
             <input id="buscador" type="search" class="campo-formulario" placeholder="Busqueda por nombre">
         </span>
     </div>
-    <div>
-        <form action="apuntes.php" method="post">
-            <!-- <label>Nombre:</label> <input type="search" name="nombre" placeholder="Busqueda por nombre" class="campo-formulario"> -->
-            <!-- <span class="col-3"><label><span class="fa fa-university"></span> Universidad:</label></span>
-            <span class="col-9">
-                <select id="selectUniversidad" name="universidad" class="campo-formulario">
-                    <?php
-                 /*   foreach ($variables["universidades"] as $uni) {
-                        echo "<option value='$uni->id'>$uni->nombre</option>";
-                    }*/
-                    ?>
-                </select>
-            </span>
-            <span class="col-3"><label><span class="fa fa-graduation-cap"></span> Carrera:</label></span>
-            <span class="col-9">
-                <select id="selectCarrera" name="carrera" class="campo-formulario"></select>
-            </span> -->
-        </form>
 
-    </div>
-
-    <div>
-        <form>
-            <span class="campo-formulario col-12" id="grupo-boton">
-                <?php
-                foreach ($variables["grupos"] as $gru) {
-                    //echo "<a class='btn btn-primary col-xs-12 grupo' href='ver-grupos.php'>$gru->nombre</a>";
-                    echo "<a class='btn btn-primary col-xs-12 grupo' href='ver-grupo.php?idGrupo=" . $gru->id . "'>$gru->nombre</a>";
-                }
-                ?>
-            </span>
-        </form>
+    <div class="campo-formulario col-12" id="grupo-boton">
+        <?php
+        if (count($variables["grupos"]) > 0) {
+            foreach ($variables["grupos"] as $gru) {
+                //echo "<a class='btn btn-primary col-xs-12 grupo' href='ver-grupos.php'>$gru->nombre</a>";
+                echo "<a class='btn btn-primary col-xs-12 grupo' href='ver-grupo.php?idGrupo=" . $gru->id . "'>$gru->nombre</a>";
+            }
+        } else {
+            echo "<blockquote>No hay grupos.</blockquote>";
+        }
+        ?>
     </div>
 
 </div>
@@ -59,14 +39,7 @@ ob_start();
 </div>
 
 <script>
-    $(document).on("ready", function() {
-        //quitado -> futuro uso?
-        //getCarreras($("#selectUniversidad").val());
-        
-        //quitado -> futuro uso?
-        //$("#selectUniversidad").on("change", function() {
-        //    getCarreras($("#selectUniversidad").val());
-        //});
+    $(document).on("ready", function () {
 
         $("#buscador").on("keyup", function () {
             consulta = $(this).val();
@@ -79,19 +52,8 @@ ob_start();
                 }
             });
         });
-            
-     });
-                    
-    //quitado -> futuro uso?
-    //function getCarreras(id) {
-    //    $("#selectCarrera").html("");
-    //    $.post("../servicios/adminHandler.php?action=getCarreras", {idUniversidad: id}, function(data) {
-    //        $("#selectCarrera").append("<option value='0'> Todos </option>");
-    //        for (i = 0; i < data.length; i++) {
-    //            $("#selectCarrera").append("<option value='" + data[i]["id"] + "'>" + data[i]["nombre"] + "</option>");
-    //        }
-    //    }, "json");
-    //}
+
+    });
 </script>
 
 <?php

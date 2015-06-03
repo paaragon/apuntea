@@ -9,15 +9,23 @@ ob_start();
     <span class="fa fa-home"></span> Inicio
 </h2>
 <hr>
-<p>
-    <img class="col-4" src="../img/line-graph.gif" class="img-responsive mini-logo">
-    <img class="col-4" src="../img/line-graph.gif" class="img-responsive mini-logo">
-    <img class="col-4" src="../img/line-graph.gif" class="img-responsive mini-logo">
-    <span class="clear"></span>
-</p>
+<div class="row">
+    <div class="col-md-4">
+        <canvas id="myChart1"></canvas>
+        <h4 class="text-center"><strong>Gráfica 1</strong></h4>
+    </div>
+    <div class="col-md-4">
+        <canvas id="myChart2"></canvas>
+        <h4 class="text-center"><strong>Gráfica 2</strong></h4>
+    </div>
+    <div class="col-md-4">
+        <canvas id="myChart3"></canvas>
+        <h4 class="text-center"><strong>Gráfica 3</strong></h4>
+    </div>
+</div>
 <div class="col-3">
     <h3>Cifras:</h3>
-    <div class="fila ">
+    <div class="fila">
         <div class="col-8">
             <ul class="no-style-list">
                 <li><strong>Nº universidades</strong></li>
@@ -96,6 +104,77 @@ ob_start();
     </div>
 </div>
 <div class="clear"></div>
+<script>
+    $(document).on("ready", function () {
+
+        var canvas1 = document.getElementById("myChart1");
+        var canvas2 = document.getElementById("myChart2");
+        var canvas3 = document.getElementById("myChart3");
+
+        canvas1.width = $("#main").width() / 3 - 25;
+        canvas1.height = 240;
+        canvas2.width = $("#main").width() / 3 - 25;
+        canvas2.height = 240;
+        canvas3.width = $("#main").width() / 3 - 25;
+        canvas3.height = 240;
+
+        //Gráfica 1----------------------------------------------------
+        var data1 = {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [
+                {
+                    label: "My First dataset",
+                    fillColor: "rgba(70, 181, 82, 0.2)",
+                    strokeColor: "rgba(59, 152, 68, 0.5)",
+                    pointColor: "rgba(59, 152, 68, 0.6)",
+                    pointStrokeColor: "rgba(59, 152, 68, 0.8)",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: [65, 59, 80, 81, 56, 55, 40]
+                }
+            ]
+        };
+        var ctx = document.getElementById("myChart1").getContext("2d");
+        var myLineChart1 = new Chart(ctx).Line(data1);
+
+        //Gráfica 2----------------------------------------------------
+        var data2 = {
+            labels: ["January", "February", "March", "April", "May", "June"],
+            datasets: [
+                {
+                    label: "My First dataset",
+                    fillColor: "rgba(70, 181, 82, 0.2)",
+                    strokeColor: "rgba(59, 152, 68, 0.5)",
+                    highlightFill: "rgba(220,220,220,0.75)",
+                    highlightStroke: "rgba(220,220,220,1)",
+                    data: [65, 59, 80, 81, 56, 55]
+                }
+            ]
+        };
+
+        var ctx = document.getElementById("myChart2").getContext("2d");
+        var myLineChart1 = new Chart(ctx).Bar(data2);
+
+        //Gráfica 3----------------------------------------------------
+        var data3 = {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [
+                {
+                    label: "My First dataset",
+                    fillColor: "rgba(70, 181, 82, 0.2)",
+                    strokeColor: "rgba(59, 152, 68, 0.5)",
+                    pointColor: "rgba(59, 152, 68, 0.6)",
+                    pointStrokeColor: "rgba(59, 152, 68, 0.8)",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: [50, 200, 70, 100, 15, 250, 200, 220]
+                }
+            ]
+        };
+        var ctx = document.getElementById("myChart3").getContext("2d");
+        var myLineChart1 = new Chart(ctx).Line(data3);
+    });
+</script>
 <?php
 $contenido = ob_get_clean();
 require "../common/admin/layout.php";

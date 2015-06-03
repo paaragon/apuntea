@@ -9,7 +9,81 @@ class ServiciosAdmin {
     public function __construct() {
         apunteaSec\checkAdmin();
     }
-    
+
+    public function anadirCarrera() {
+
+        $nombre = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES);
+        $idUniversidad = filter_input(INPUT_POST, "universidad", FILTER_SANITIZE_NUMBER_INT);
+        $rama = filter_input(INPUT_POST, "rama", FILTER_SANITIZE_MAGIC_QUOTES);
+
+        $this->setUpDatabase();
+
+        $carrera = R::dispense('carrera');
+        $carrera->nombre = $nombre;
+        $carrera->universidad_id = $idUniversidad;
+        $carrera->rama = $rama;
+
+
+        try {
+
+            $idCarrera = R::store($carrera);
+            $_SESSION["exito"] = "Carrera insertada con éxito";
+            $return = "admin/perfil-carrera.php?id=" . $idCarrera;
+        } catch (Exception $e) {
+
+            $_SESSION["error"] = "Error al insertar carrera";
+            $return = "admin/anadir-carrera.php";
+        }
+
+        R::close();
+
+        return $return;
+    }
+
+    //Añadimos la carrera
+    public function anadirAsignatura() {
+
+        $idCarrera = filter_input(INPUT_POST, "carrera", FILTER_SANITIZE_MAGIC_QUOTES);
+        $curso = filter_input(INPUT_POST, "curso", FILTER_SANITIZE_NUMBER_INT);
+        $nombre = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES);
+        $apellidos = filter_input(INPUT_POST, "apellidos", FILTER_SANITIZE_MAGIC_QUOTES);
+
+        /*
+          Necesitmoas el ide de la univiserdad para saber
+         * a que carrera pertenece ?? pero la tabla
+         * no tiene este id?
+         * 
+         * y en descripcion que se pone ?
+         *          */
+        //$idUniversidad = filter_input(INPUT_POST, "universidad", FILTER_SANITIZE_NUMBER_INT);
+        //Conectamos a bd
+        $this->setUpDatabase();
+
+        //Obtenemos la asignatura
+        $asignatura = R::dispense('asignatura');
+
+        $asignatura->carrera_id = $idCarrera;
+        $asignatura->curso = $curso;
+        $asignatura->nombre = $nombre;
+        $asignatura->apellidos = $apellidos;
+
+
+        try {
+
+            $idAsignatura = R::store($asignatura);
+            $_SESSION["exito"] = "Asignatura insertada con éxito";
+            $return = "admin/asignatura.php?id=" . $idAsignatura;
+        } catch (Exception $e) {
+
+            $_SESSION["error"] = "Error al insertar asignatura";
+            $return = "admin/asignturas-nuevas.php";
+        }
+
+        R::close();
+
+        return $return;
+    }
+
     public function removeGrupo() {
         $idGrupo = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
         $this->setUpDatabase();
@@ -38,78 +112,14 @@ class ServiciosAdmin {
         return "admin/mensajes.php?id=" . $usuariogrupo->usuario_id;
     }
 
-    public function anadirCarrera() {
-        $nombre = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES);
-        $idUniversidad = filter_input(INPUT_POST, "universidad", FILTER_SANITIZE_NUMBER_INT);
-        $rama = filter_input(INPUT_POST, "rama", FILTER_SANITIZE_MAGIC_QUOTES);
-
-        $this->setUpDatabase();
-
-        $carrera = R::dispense('carrera');
-        $carrera->nombre = $nombre;
-        $carrera->universidad_id = $idUniversidad;
-        $carrera->rama = $rama;
-        try {
-            $idCarrera = R::store($carrera);
-            $_SESSION["exito"] = "Carrera insertada con éxito";
-            $return = "admin/perfil-carrera.php?id=" . $idCarrera;
-        } catch (Exception $e) {
-            $_SESSION["error"] = "Error al insertar carrera";
-            $return = "admin/anadir-carrera.php";
-        }
-        R::close();
-        return $return;
-    }
-
-    //Añadimos la carrera
-    public function anadirAsignatura() {
-
-        $idCarrera = filter_input(INPUT_POST, "carrera", FILTER_SANITIZE_MAGIC_QUOTES);
-        $curso = filter_input(INPUT_POST, "curso", FILTER_SANITIZE_NUMBER_INT);
-        $nombre = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES);
-        $apellidos = filter_input(INPUT_POST, "apellidos", FILTER_SANITIZE_MAGIC_QUOTES);
-
-        /*
-          Necesitmoas el ide de la univiserdad para saber
-         * a que carrera pertenece ?? pero la tabla
-         * no tiene este id?
-         * 
-         * y en descripcion que se pone ?
-         *          */
-        //$idUniversidad = filter_input(INPUT_POST, "universidad", FILTER_SANITIZE_NUMBER_INT);
-        //Conectamos a bd
-          $this->setUpDatabase();
-
-        //Obtenemos la asignatura
-          $asignatura = R::dispense('asignatura');
-
-          $asignatura->carrera_id = $idCarrera;
-          $asignatura->curso = $curso;
-          $asignatura->nombre = $nombre;
-          $asignatura->apellidos = $apellidos;
-
-
-          try {
-            $idAsignatura = R::store($asignatura);
-            $_SESSION["exito"] = "Asignatura insertada con éxito";
-            $return = "admin/asignatura.php?id=" . $idAsignatura;
-        } catch (Exception $e) {
-
-            $_SESSION["error"] = "Error al insertar asignatura";
-            $return = "admin/asignturas-nuevas.php";
-        }
-
-        R::close();
-
-        return $return;
-    }
-
     public function borrarAsignatura($parametros) {
+
+
         /*
           usar parametros obtenemos el id por este parametro
          *          */
 
-          try {
+        try {
             $this->setUpDatabase();
 
             //Ceamos un bean
@@ -137,7 +147,7 @@ class ServiciosAdmin {
           usar parametros obtenemos el id por este parametro
          *          */
 
-          try {
+        try {
             $this->setUpDatabase();
 
             //CReamos un bean
@@ -158,36 +168,27 @@ class ServiciosAdmin {
 
         return $return;
     }
-    
-    public function getCarreras() {
-        $idUni = filter_input(INPUT_POST, "idUniversidad", FILTER_SANITIZE_NUMBER_INT);
+
+    public function getCarrerasFromUni($params) {
+
+        //Obtengo el id de la universidad
+        $idUniversidad = $params["id"];
+
+        //Conexcion a bd
         $this->setUpDatabase();
-        $carreras = R::findAll("carrera", " universidad_id = ? ORDER BY nombre", [$idUni]);
+
+        //Consulta de las carreras con el idUniveridad
+        $carreras = ($idUniversidad != "") ? R::find("carrera", " universidad_id = " . $idUniversidad) : R::findAll("carrera");
 
         R::close();
+
+        /*
+          Tengo qu devolver un jSon para que se entienda con el cliente
+         * R::exportAll= array de php(lo que va necesitar el cliente)
+         * json_encode = codificamos a jSon(para que se estandar)
+         * 
+         *          */
         return json_encode(R::exportAll($carreras));
-    }
-    
-    public function getGrupos() {
-        $this->setUpDatabase();
-        $grupos = R::findAll("grupo");
-        R::close();
-        return json_encode(R::exportAll($grupos));
-    }
-/*
-    public function getGruposCon($cad) {/////////////////////////////////////////
-        $this->setUpDatabase();
-        $grupos = R::findAll("grupo", "nombre LIKE %?% ", [$cad]);
-        R::close();
-        return json_encode(R::exportAll($grupos));
-    }
-*/
-    public function getAsignaturas() {
-        $idCar = filter_input(INPUT_POST, "idCarrera", FILTER_SANITIZE_NUMBER_INT);
-        $this->setUpDatabase();
-        $asignaturas = R::findAll("asignatura", " carrera_id = ? ORDER BY nombre", [$idCar]);
-        R::close();
-        return json_encode(R::exportAll($asignaturas));
     }
 
     public function cambiarConfiguracion() {
@@ -229,7 +230,9 @@ class ServiciosAdmin {
             $return = "admin/editar-admin.php";
         }
 
+
         R::close();
+
 
         return $return;
     }
