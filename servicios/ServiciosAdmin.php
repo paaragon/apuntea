@@ -29,7 +29,7 @@ class ServiciosAdmin {
         $_SESSION['exito'] = "Apunte eliminado con éxito";
         return "admin/apuntes.php";
     }
-    
+
     public function sendToAdmin() {
         $idGrupo = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
         $this->setUpDatabase();
@@ -37,7 +37,7 @@ class ServiciosAdmin {
         R::close();
         return "admin/mensajes.php?id=" . $usuariogrupo->usuario_id;
     }
-    
+
     public function anadirCarrera() {
         $nombre = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES);
         $idUniversidad = filter_input(INPUT_POST, "universidad", FILTER_SANITIZE_NUMBER_INT);
@@ -78,18 +78,18 @@ class ServiciosAdmin {
          *          */
         //$idUniversidad = filter_input(INPUT_POST, "universidad", FILTER_SANITIZE_NUMBER_INT);
         //Conectamos a bd
-        $this->setUpDatabase();
+          $this->setUpDatabase();
 
         //Obtenemos la asignatura
-        $asignatura = R::dispense('asignatura');
+          $asignatura = R::dispense('asignatura');
 
-        $asignatura->carrera_id = $idCarrera;
-        $asignatura->curso = $curso;
-        $asignatura->nombre = $nombre;
-        $asignatura->apellidos = $apellidos;
+          $asignatura->carrera_id = $idCarrera;
+          $asignatura->curso = $curso;
+          $asignatura->nombre = $nombre;
+          $asignatura->apellidos = $apellidos;
 
 
-        try {
+          try {
             $idAsignatura = R::store($asignatura);
             $_SESSION["exito"] = "Asignatura insertada con éxito";
             $return = "admin/asignatura.php?id=" . $idAsignatura;
@@ -109,7 +109,7 @@ class ServiciosAdmin {
           usar parametros obtenemos el id por este parametro
          *          */
 
-        try {
+          try {
             $this->setUpDatabase();
 
             //Ceamos un bean
@@ -137,7 +137,7 @@ class ServiciosAdmin {
           usar parametros obtenemos el id por este parametro
          *          */
 
-        try {
+          try {
             $this->setUpDatabase();
 
             //CReamos un bean
