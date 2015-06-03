@@ -2,7 +2,7 @@
 require "controladores/ControladorEstandar.php";
 
 $controlador = new ControladorEstandar();
-$variables = $controlador->apunte();
+$variables = $controlador->verApunte();
 
 ob_start();
 ?>
@@ -10,7 +10,7 @@ ob_start();
     <h1><?php echo $variables["apunte"]->titulo ?></h1>
 </section>
 <ul class="breadcrumb">
-    <li><a href="index">Apuntea</a></li>
+    <li><a href="index.php">Apuntea</a></li>
     <li><a href="universidad.php?id=<?php echo $variables["apunte"]->asignatura->carrera->universidad->id ?>"><?php echo $variables["apunte"]->asignatura->carrera->universidad->siglas ?></a></li>
     <li><a href="carrera.php?id=<?php echo $variables["apunte"]->asignatura->carrera->id ?>"><?php echo $variables["apunte"]->asignatura->carrera->nombre ?></a></li>
     <li><a href="asignatura.php?id=<?php echo $variables["apunte"]->asignatura->id ?>"><?php echo $variables["apunte"]->asignatura->nombre ?></a></li>
@@ -29,14 +29,24 @@ ob_start();
     <div class="col-sm-6 panel upload-perfil">
         <img src="img/no-user.jpg" class="img-responsive img-circle">
         <p>
-            <a><?php echo $variables["apunte"]->usuario->nombre . " " . $variables["apunte"]->usuario->apellidos ?></a><br>
-            <a><?php echo $variables["apunte"]->usuario->carrera->nombre ?></a><br>
-            <a><?php echo $variables["apunte"]->usuario->carrera->universidad->nombre ?></a>
+            <?php echo $variables["apunte"]->usuario->nombre . " " . $variables["apunte"]->usuario->apellidos ?> @<?php echo $variables["apunte"]->usuario->nick ?><br>
+            <?php echo $variables["apunte"]->usuario->carrera->nombre ?><br>
+            <?php echo $variables["apunte"]->usuario->carrera->universidad->nombre ?>
         </p>
     </div>
     <div class="clear"></div>
     <div class="panel info-apuntes">
-        <div class="col-xs-2"><p><span><i class="fa fa-globe"></i></span></p></div>
+        <div class="col-xs-2">
+            <p>
+                <span>
+                    <?php if ($variables["apunte"]->permisovisualizacion == 2): ?>
+                        <span class="fa fa-globe"></span>
+                    <?php else: ?>
+                        <span class="fa fa-lock"></span>
+                    <?php endif; ?>
+                </span>
+            </p>
+        </div>
         <div class="col-xs-5"><p><span><strong><?php echo $variables["apunte"]->titulo ?></strong></span></p></div>
         <div class="col-xs-12 col-sm-5">
             <p>
@@ -48,7 +58,17 @@ ob_start();
         <div class="clearfix"></div>
     </div>
     <div>
-        <p><a class="boton campo-formulario" href="ver-apunte.php?id=<?php echo $variables["apunte"]->id ?>">Ver apuntes</a></p>
+        <?php if ($variables["apunte"]->permisovisualizacion == 2): ?>
+            <p><a class="boton campo-formulario" href="ver-apunte.php?id=<?php echo $variables["apunte"]->id ?>">Ver apuntes</a></p>
+        <?php else: ?>
+            <div class="alerta alerta-error">
+                <p>
+                    El contenido de estos apuntes es privado.
+                    <strong><a href="registrarse.php">Regístrese</a></strong>
+                    para poder pedir permisos de visualización.
+                </p>
+            </div>
+        <?php endif; ?>
     </div>
 </section>
 <?php

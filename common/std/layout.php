@@ -12,6 +12,13 @@
         <script type="text/javascript" src="js/jquery-2.1.1.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/cropper.js"></script>
+        <?php
+        if (isset($scripts)) {
+            foreach ($scripts as $script) {
+                echo $script;
+            }
+        }
+        ?>
     </head>
     <body>
 
@@ -22,7 +29,7 @@
             <div id="statusdiv" class="alert alert-success alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <?php
-                echo $_SESSION["exito"];
+                echo $_SESSION["exito"]." ";
                 unset($_SESSION["exito"]);
                 ?>
             </div>
@@ -30,7 +37,7 @@
             <div id="statusdiv" class="alert alert-danger alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <?php
-                echo $_SESSION["error"];
+                echo $_SESSION["error"]." ";
                 unset($_SESSION["error"])
                 ?>
             </div>
