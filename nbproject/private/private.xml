@@ -5,8 +5,8 @@
         <group>
             <file>file:/C:/xampp/htdocs/apuntea/controladores/ControladorUsuario.php</file>
             <file>file:/C:/xampp/htdocs/apuntea/servicios/ServiciosUsuario.php</file>
-            <file>file:/C:/xampp/htdocs/apuntea/servicios/usuarioHandler.php</file>
-            <file>file:/C:/xampp/htdocs/apuntea/usuario/ver-apunte.php</file>
+            <file>file:/C:/xampp/htdocs/apuntea/usuario/mi-configuracion.php</file>
+            <file>file:/C:/xampp/htdocs/apuntea/usuario/subir-apuntes.php</file>
         </group>
     </open-files>
 </project-private>

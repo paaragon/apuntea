@@ -56,32 +56,6 @@ class ControladorEstandar {
         return $this->variables;
     }
 
-    public function resultadoBusqueda() {
-
-        try {
-            $this->setUpDatabase();
-
-            $consulta = filter_input(INPUT_POST, "consulta", FILTER_SANITIZE_MAGIC_QUOTES);
-            $opcion = filter_input(INPUT_POST, "opcion", FILTER_SANITIZE_MAGIC_QUOTES);
-            if ($opcion === "universidades") {
-                $this->variables["universidades"] = R::findAll('universidad', " LOWER(nombre) LIKE ? OR REPLACE(LOWER(siglas),'.','') LIKE ?", ['%' . strtolower($consulta) . '%', '%' . strtolower($consulta) . '%']);
-                $this->variables["opcion"] = $opcion;
-            } else if ($opcion === "carreras") {
-                $this->variables["carreras"] = R::findAll('carrera', " LOWER(nombre) LIKE ? ", ['%' . strtolower($consulta) . '%']);
-                $this->variables["opcion"] = $opcion;
-            } else if ($opcion === "asignaturas") {
-                $this->variables["asignaturas"] = R::findAll('asignatura', " LOWER(nombre) LIKE ? ", ['%' . strtolower($consulta) . '%']);
-                $this->variables["opcion"] = $opcion;
-            }
-            $this->variables["consulta"] = $consulta;
-            R::close();
-
-            return $this->variables;
-        } catch (Exception $e) {
-            $this->errorPage();
-        }
-    }
-
     public function carrera() {
 
         $this->setUpDatabase();
@@ -120,7 +94,7 @@ class ControladorEstandar {
         return $this->variables;
     }
 
-    public function verApunte() {
+    public function apunte() {
 
         $this->setUpDatabase();
 
@@ -148,42 +122,6 @@ class ControladorEstandar {
         return $this->variables;
     }
 
-    public function asignaturas() {
-
-        $this->setUpDatabase();
-
-        $this->variables["universidades"] = R::findAll('universidad');
-
-        $asignaturas = R::getAll('SELECT asignatura.* FROM asignatura, carrera WHERE carrera_id = carrera.id ORDER BY rama');
-
-        $this->variables["ramas"] = array("Artes y humanidades" => "fa-paint-brush", "Ciencias" => "fa-rocket", "Ciencias de la salud" => "fa-user-md", "Ingeniería y arquitectura" => "fa-cogs", "Ciencias sociales y jurídicas" => "fa-gavel");
-
-        $this->variables["asignaturas"] = R::convertToBeans('asignatura', $asignaturas);
-
-        $this->variables["universidades"] = R::findAll('universidad');
-
-        R::close();
-        return $this->variables;
-    }
-
-    public function listaApuntes() {
-
-        $this->setUpDatabase();
-
-        $this->variables["universidades"] = R::findAll('universidad');
-
-        $asignaturas = R::getAll('SELECT apunte.* FROM apunte, asignatura, carrera WHERE asignatura_id = asignatura.id AND carrera_id = carrera.id ORDER BY rama');
-
-        $this->variables["ramas"] = array("Artes y humanidades" => "fa-paint-brush", "Ciencias" => "fa-rocket", "Ciencias de la salud" => "fa-user-md", "Ingeniería y arquitectura" => "fa-cogs", "Ciencias sociales y jurídicas" => "fa-gavel");
-
-        $this->variables["apuntes"] = R::convertToBeans('apunte', $asignaturas);
-
-        $this->variables["universidades"] = R::findAll('universidad');
-
-        R::close();
-        return $this->variables;
-    }
-
     public function registrarse() {
 
         $this->setUpDatabase();
@@ -202,12 +140,6 @@ class ControladorEstandar {
     private function setUpDatabase() {
         R::setup('mysql:host=' . DbConfig::$dbHost . ';dbname=' . DbConfig::$dbName, DbConfig::$dbUser, DbConfig::$dbPassword);
         $this->cargarComunes();
-    }
-
-    private function errorPage() {
-        $_SESSION["error"] = "ERROR inesperado.";
-        header("location: index.php");
-        exit();
     }
 
 }

@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . "/../controladores/ControladorUsuario.php";
+require "../controladores/ControladorUsuario.php";
 $controlador = new ControladorUsuario();
 
 $variables = $controlador->inicio();
@@ -12,50 +12,62 @@ ob_start();
     </h2>
     <hr>
     <div>
-        <!-- NUEVOS AMIGOS -->
-        <?php foreach ($variables["nuevosAmigos"] as $amigo): ?>
-            <div class="fila">
-                <p>
-                    <span class="col-10">
-                        <span class="fa fa-users"></span>
-                        <strong><a href="perfil-usuario.php?id=<?php echo $amigo->id ?> "><?php echo $amigo->nombre . " " . $amigo->apellidos ?> @<?php echo $amigo->nick ?></a></strong> se ha añadido a tu lista de amigos
-                    </span>
-                </p>
-                <div class="clear"></div>
-            </div>
-        <?php endforeach; ?>
+        <div class="fila">
+            <p>
+                <span class="col-10">
+                    <span class="fa fa-users"></span>
+                    <strong><em>serfati</em> se ha añadido a tu lista de amigos</strong>
+                </span>
+                <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
+                <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
+            </p>
+            <div class="clear"></div>
+        </div>
+        <div class="fila">
+            <p>
+                <span class="col-10">
+                    <span class="fa fa-pencil-square"></span>
+                    <strong> <em>irepas01</em> ha modificado el archivo <em> Tema 1</em></strong>
+                </span>
+                <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
+                <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
+            </p>
+            <div class="clear"></div>
+        </div>
+        <div class="fila">
+            <p>
+                <span class="col-10">
+                    <span class="fa fa-plus-square"></span>
+                    <strong> <em>MrSlide22</em> ha añadido el archivo <em> Tema 3</em></strong>
+                </span>
+                <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
+                <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
+            </p>
+            <div class="clear"></div>
+        </div>
+        <div class="fila">
+            <p>
+                <span class="col-10">
+                    <span class="fa fa-file-text-o"></span>
+                    <strong> <em> Kherdu </em> forma parte del grupo <em> Apuntes Aplicaciones Web</em></strong>
+                </span>
+                <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
+                <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
+            </p>
+            <div class="clear"></div>
+        </div>
+        <div class="fila">
+            <p>
+                <span class="col-10">
+                    <span class="fa fa-user-plus"></span>
+                    <strong> <em> McMachote </em> te ha incluido en el grupo <em> Proyecto AW</em></strong>
+                </span>
+                <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
+                <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
+            </p>
+            <div class="clear"></div>
+        </div>
 
-        <!-- NUEVOS CONTACTOS EN TUS GRUPOS -->
-        <?php
-        foreach ($variables["nuevosContactosGrupo"] as $contacto):
-            $grupo = R::findOne("grupo", "id = ?", [$contacto->grupo_id]);
-            ?>
-            <div class="fila">
-                <p>
-                    <span class="col-10">
-                        <span class="fa fa-users"></span>
-                        <strong><em><a href="perfil-usuario.php?id=<?php echo $contacto->id ?>">@<?php echo $contacto->nick ?></a></em> se ha añadido a tu grupo <a href="ver-grupo.php?id=<?php echo $grupo->id ?>"><?php echo $grupo->nombre ?></a></strong>
-                    </span>
-                </p>
-                <div class="clear"></div>
-            </div>
-        <?php endforeach; ?>
-
-        <!-- NUEVOS APUNTES SUBIDOS POR TUS AMIGOS -->
-        <?php
-        foreach ($variables["nuevosApuntes"] as $nuevoApunte) :
-            $amigoApunte = R::findOne("usuario", "id = ?", [$nuevoApunte->usuario_id]);
-            ?>     
-            <div class="fila">
-                <p>
-                    <span class="col-10">
-                        <span class="fa fa-user-plus"></span>
-                        <strong><em><a href="perfil-usuario.php?id=<?php echo $amigoApunte->id ?>">@<?php echo $amigoApunte->nick ?></a></em> ha añadido un nuevo apunte <em><a href="ver-apunte.php?id=<?php echo $nuevoApunte->id ?>"><?php echo $nuevoApunte->titulo ?></a></em></strong>
-                    </span>  
-                </p>
-                <div class="clear"></div>
-            </div>
-        <?php endforeach; ?>
     </div>
 </div>
 <div class="col-3">

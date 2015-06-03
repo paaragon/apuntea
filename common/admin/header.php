@@ -9,7 +9,7 @@
                 <span class="icon-bar"></span>
             </button>
             <p class="logo col-1">
-                <a href="inicio.php"><img src="../img/logo-inv.png"></a>
+                <a href="index.php"><img src="../img/logo-inv.png"></a>
             </p>
         </div>
 

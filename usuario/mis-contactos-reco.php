@@ -43,11 +43,11 @@ ob_start();
                     <div class="col-7">
                         <p>
                             <strong class="nombre"><?php echo $contacto->nombre ?></strong> 
-                            <small><a href="perfil-usuario.php?id=<?php echo $contacto->id ?>" class="color-green nick">@<?php echo $contacto->nick ?></a></small>
+                            <small><a href="perfil-usuario.php" class="color-green nick">@<?php echo $contacto->nick ?></a></small>
                         </p>
                         <blockquote>
                             <p>
-                                <?php echo $contacto->estado ?>
+        <?php echo $contacto->estado ?>
                             </p>
                         </blockquote>
                         <p>

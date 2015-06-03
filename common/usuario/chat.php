@@ -41,6 +41,7 @@
                 </div>
             </div>
         </div>
+        <p><a href="#">Ocultar chat</a></p>
     </div>
 </div>
 <!--<scirpt src="../js/emoji.js"></scirpt>-->

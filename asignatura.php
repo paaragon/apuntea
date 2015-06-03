@@ -17,30 +17,26 @@ ob_start();
 </ul>
 <hr>
 <section>
-    <?php if (count($variables["apuntes"]) > 0): ?>
-        <?php foreach ($variables["apuntes"] as $apunte): ?>
-            <div class="fila">
-                <div class="col-5">
-                    <p><?php echo $apunte->titulo ?></p>
-                </div>
-                <div class="col-6">
-                    <p>
-                        <span class="fa fa-thumbs-up"></span> <span class="badge"><?php echo $apunte->likes ?></span>
-                        <span class="fa fa-thumbs-down"></span> <span class="badge"><?php echo $apunte->dislikes ?></span>
-                        <span class="fa fa-eye"></span> <span class="badge"><?php echo $apunte->visualizaciones ?></span>
-                    </p>
-                </div>
-                <div class="col-1">
-                    <p>
-                        <a href="apuntes.php?id=<?php echo $apunte->id ?>"><span class="fa fa-chevron-circle-right"></span></a>
-                    </p>
-                </div>
-                <div class="clear"></div>
+    <?php foreach ($variables["apuntes"] as $apunte): ?>
+        <div class="fila">
+            <div class="col-5">
+                <p><?php echo $apunte->titulo ?></p>
             </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <blockquote>Esta asignatura no tiene apuntes públicos</blockquote>
-    <?php endif; ?>
+            <div class="col-6">
+                <p>
+                    <span class="fa fa-thumbs-up"></span> <span class="badge"><?php echo $apunte->likes ?></span>
+                    <span class="fa fa-thumbs-down"></span> <span class="badge"><?php echo $apunte->dislikes ?></span>
+                    <span class="fa fa-eye"></span> <span class="badge"><?php echo $apunte->visualizaciones ?></span>
+                </p>
+            </div>
+            <div class="col-1">
+                <p>
+                    <a href="apuntes.php?id=<?php echo $apunte->id ?>"><span class="fa fa-chevron-circle-right"></span></a>
+                </p>
+            </div>
+            <div class="clear"></div>
+        </div>
+    <?php endforeach; ?>
 </section>
 <?php
 $contenido = ob_get_clean();

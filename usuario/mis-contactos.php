@@ -46,11 +46,11 @@ ob_start();
                     <div class="col-7">
                         <p>
                             <strong class="nombre"><?php echo $contacto->nombre ?></strong> 
-                            <small><a href="perfil-usuario.php?id=<?php echo $contacto->id ?>" class="color-green nick">@<?php echo $contacto->nick ?></a></small>
+                            <small><a href="perfil-usuario.php" class="color-green nick">@<?php echo $contacto->nick ?></a></small>
                         </p>
                         <blockquote>
                             <p>
-                                <?php echo ($contacto->estado != "") ? $contacto->estado : "Sin estado" ?>
+                                <?php echo $contacto->estado ?>
                             </p>
                         </blockquote>
                         <p>
@@ -62,7 +62,7 @@ ob_start();
                                 ?>
 
                             </span> Amigos<br><br>
-                            <a href="mis-mensajes.php?id=<?php echo $contacto->id ?>" class="boton">Enviar mensaje</a>
+                            <a href="mis-mensajes.php" class="boton">Enviar mensaje</a>
                         </p>
                     </div>
                     <div class="clear"></div>
@@ -89,9 +89,9 @@ ob_start();
 
                 var nombre = $(this).find(".nombre").text();
                 var nick = $(this).find(".nick").text();
-                if (quitaAcentos(nombre.toLowerCase()).indexOf(quitaAcentos(consulta.toLowerCase())) !== -1 || quitaAcentos(nick.toLowerCase()).indexOf(quitaAcentos(consulta.toLowerCase())) !== -1) {
+                if (quitaAcentos(nombre.toLowerCase()).indexOf(quitaAcentos(consulta.toLowerCase())) !== -1 || quitaAcentos(nick.toLowerCase()).indexOf(quitaAcentos(consulta.toLowerCase())) !== -1){
                     $(this).show();
-                } else {
+                }else{
                     $(this).hide();
                 }
             });

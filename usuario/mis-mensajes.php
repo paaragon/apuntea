@@ -2,7 +2,7 @@
 require "../controladores/ControladorUsuario.php";
 $controlador = new ControladorUsuario();
 
-$variables = $controlador->misMensajes();
+$variables = $controlador->inicio();
 
 ob_start();
 ?>
@@ -14,51 +14,95 @@ ob_start();
     <h3>Conversaciones recientes: </h3>
     <div id="conversaciones-recientes">
         <div>
-            <?php foreach ($variables["contactos"] as $contacto): ?>
-                <div class="picture fila">
-                    <p>
-                        <img src="../img/usuarios/perfil/<?php echo $contacto->avatar ?>" class="profile-img">
-                    </p>
-                    <h4><a href="mis-mensajes.php?id=<?php echo $contacto->id ?>"><?php echo $contacto->nombre . " " . $contacto->apellidos ?></a></h4>
-                </div>
-            <?php endforeach; ?>
+            <div class="picture fila">
+                <p>
+                    <img src="../img/no-user.jpg" class="profile-img">
+                </p>
+                <div class="status status-red"></div>
+                <h4><a href="perfil-usuario.php">[Usuario]</a></h4>
+                <p><small>Último mensaje: Domingo</small><p>
+            </div>
+            <div class="picture fila">
+                <p>
+                    <img src="../img/no-user.jpg" class="profile-img">
+                </p>
+                <div class="status status-green"></div>
+                <h4><a href="perfil-usuario.php">[Usuario]</a></h4>
+                <p><small>Último mensaje: Domingo</small><p>
+            </div>
+            <div class="picture fila">
+                <p>
+                    <img src="../img/no-user.jpg" class="profile-img">
+                </p>
+                <div class="status status-red"></div>
+                <h4><a href="perfil-usuario.php">[Usuario]</a></h4>
+                <p><small>Último mensaje: Domingo</small><p>
+            </div>
+            <div class="picture fila">
+                <p>
+                    <img src="../img/no-user.jpg" class="profile-img">
+                </p>
+                <div class="status status-red"></div>
+                <h4><a href="perfil-usuario.php">[Usuario]</a></h4>
+                <p><small>Último mensaje: Domingo</small><p>
+            </div>
+            <div class="picture fila">
+                <p>
+                    <img src="../img/no-user.jpg" class="profile-img">
+                </p>
+                <div class="status status-red"></div>
+                <h4><a href="perfil-usuario.php">[Usuario]</a></h4>
+                <p><small>Último mensaje: Domingo</small><p>
+            </div>
+            <div class="picture fila">
+                <p>
+                    <img src="../img/no-user.jpg" class="profile-img">
+                </p>
+                <div class="status status-green"></div>
+                <h4><a href="perfil-usuario.php">[Usuario]</a></h4>
+                <p><small>Último mensaje: Domingo</small><p>
+            </div>
+            <div class="picture fila">
+                <p>
+                    <img src="../img/no-user.jpg" class="profile-img">
+                </p>
+                <div class="status status-red"></div>
+                <h4><a href="perfil-usuario.php">[Usuario]</a></h4>
+                <p><small>Último mensaje: Domingo</small><p>
+            </div>
+            <div class="picture fila">
+                <p>
+                    <img src="../img/no-user.jpg" class="profile-img">
+                </p>
+                <div class="status status-red"></div>
+                <h4><a href="perfil-usuario.php">[Usuario]</a></h4>
+                <p><small>Último mensaje: Domingo</small><p>
+            </div>
         </div>
     </div>
     <div class="clear"></div>
-    <?php if ($variables["contacto"] != null): ?>
-        <h3>Conversación con <a href="perfil-usuario.php?id=<?php echo $variables["contacto"]->id ?>"><?php echo $variables["contacto"]->nombre . " " . $variables["contacto"]->apellidos ?></a>:</h3>
-        <div class="panel" id="conversacion">
-            <?php foreach ($variables["mensajes"] as $mensaje): ?>
-                <?php if ($mensaje->emisor_id == $variables["contacto"]->id): ?>
-                    <p class="msg msg-amigo"><?php echo $controlador->buscarEmoji($mensaje->texto) ?></p>
-                <?php else: ?>
-                    <p class="msg msg-propio"><?php echo $controlador->buscarEmoji($mensaje->texto) ?></p>
-                <?php endif; ?>
-            <?php endforeach; ?><div class="clear"></div>
-        </div>
-        <div>
-            <form action="../servicios/usuarioHandler.php?action=enviarMensaje&redirect=<?php echo $variables["contacto"]->id ?>" method="post" id="enviarMensajeForm">
-                <textarea class="campo-formulario" placeholder="Escribe aquí tu mensaje" id="textArea" required></textarea>
-                <input type="hidden" value="<?php echo $variables["contacto"]->id ?>" name="idContacto" required>
-                <input type="hidden" value="" name="texto" id="texto">
-                <input type="submit" class="campo-formulario" value="Enviar" id="enviarMensajeBtn">
-            </form>
-        </div>
-        <script>
-            $(document).on("ready", function () {
-                
-                var objDiv = document.getElementById("conversacion");
-                objDiv.scrollTop = objDiv.scrollHeight;
-
-                $("#enviarMensajeBtn").on("click", function (e) {
-
-                    e.preventDefault();
-                    $("#texto").val(buscarEmoji($("#textArea").val()));
-                    $("#enviarMensajeForm").submit();
-                });
-            });
-        </script>
-    <?php endif; ?>
+    <h3>Conversación con <a href="perfil-usuario.php">[Usuario]</a>:</h3>
+    <div class="panel" id="conversacion">
+        <p class="msg msg-amigo">adrt lsrg lgwpser jndzfg</p>
+        <p class="msg msg-propio">señorigj f osij psorgjpoier rm owr ñsldfmg ñsdf spob dñ</p>
+        <p class="msg msg-amigo">s rtdfg g sldrgf sxcbn sc fxg</p>
+        <p class="msg msg-amigo">sdñfgij dfg</p>
+        <p class="msg msg-amigo">dgfdlcgs</p>
+        <p class="msg msg-propio">dbñ oij pjg po spo jdog dfvm dlksv slreng pe epirj p speov po nerg ps bpsgn rpb epg sfpo bnsrepov epo ipoiej poei gpeosb nsepob</p>
+        <p class="msg msg-amigo">adrt lsrg lgwpser jndzfg</p>
+        <p class="msg msg-propio">señorigj f osij psorgjpoier rm owr ñsldfmg ñsdf spob dñ</p>
+        <p class="msg msg-amigo">s rtdfg g sldrgf sxcbn sc fxg</p>
+        <p class="msg msg-amigo">sdñfgij dfg</p>
+        <p class="msg msg-amigo">dgfdlcgs</p>
+        <p class="msg msg-propio">dbñ oij pjg po spo jdog dfvm dlksv slreng pe epirj p speov po nerg ps bpsgn rpb epg sfpo bnsrepov epo ipoiej poei gpeosb nsepob</p>
+        <div class="clear"></div>
+    </div>
+    <div>
+        <form action="#" method="post">
+            <textarea class="campo-formulario" placeholder="Escribe aquí tu mensaje"></textarea>
+            <input type="submit" class="campo-formulario" value="Enviar">
+        </form>
+    </div>
 </div>
 <?php
 $contenido = ob_get_clean();
