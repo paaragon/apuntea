@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . "/../controladores/ControladorAdmin.php";
 $controlador = new ControladorAdmin();
-$variables = $controlador->anadirCarrera();
+$variables = $controlador->asignatura();
 
 ob_start();
 ?>

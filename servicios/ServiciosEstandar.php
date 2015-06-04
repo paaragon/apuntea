@@ -17,7 +17,7 @@ class ServiciosEstandar {
         $this->setUpDatabase();
         $usuario = R::findOne('usuario', ' nick = "' . $username . '"');
 
-        if ($usuario == NULL || !password_verify($password . "pimienta_de_la_güena", $usuario->password)) {
+        if ($usuario == NULL || !password_verify($password . "pimienta_de_la_buena", $usuario->password)) {
             echo "Mal";
             $_SESSION["login-error"] = "Usuario o contraseña incorrectos";
             return "index.php";
@@ -106,7 +106,7 @@ class ServiciosEstandar {
                 $usuario->nombre = $nombre;
                 $usuario->apellidos = $apellidos;
                 $usuario->nick = $alias;
-                $usuario->password = password_hash($password . "pimienta_de_la_güena", PASSWORD_DEFAULT);
+                $usuario->password = password_hash($password . "pimienta_de_la_buena", PASSWORD_DEFAULT);
                 $usuario->email = $email;
 
 
@@ -169,16 +169,17 @@ class ServiciosEstandar {
     }
 
     public function getCarreras() {
-
-        $id = filter_input(INPUT_POST, "idUniversidad", FILTER_SANITIZE_NUMBER_INT);
-
+        $idUni = filter_input(INPUT_POST, "idUniversidad", FILTER_SANITIZE_NUMBER_INT);
         $this->setUpDatabase();
-
-        $carreras = R:: findAll('carrera', ' universidad_id = ?', [$id]);
-
+        $carreras = R::findAll("carrera", " universidad_id = ? ORDER BY nombre", [$idUni]);
         R::close();
 
-        return json_encode(R::exportAll($carreras));
+        $arrCar = array();
+        foreach ($carreras as $car) {
+            $arrCar[] = $car->export();
+        }
+
+        return json_encode($arrCar);
     }
 
     public function getAsignaturas() {

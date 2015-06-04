@@ -358,7 +358,7 @@ class ControladorUsuario {
 
         $contacto = R::findOne('contacto', ' (alice_id = ? AND bob_id = ? OR bob_id = ? AND alice_id = ?) AND admitido = 1', [$currentUser, $idUsuario, $currentUser, $idUsuario]);
 
-        return $contacto != null;
+        return $contacto != null || $currentUser == $idUsuario;
     }
 
     public function verApunte() {
