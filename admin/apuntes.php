@@ -184,15 +184,12 @@ foreach ($chart2 as $elem) {
     function getCarreras(id) {
         $("#selectCarrera").html("<option value='0' selected=''>Todas</option>");
         if (id != 0) {
-            $.post("../servicios/usuarioHandler.php?action=getCarreras", {idUniversidad: id}, function (data) {
+            $.post("../servicios/adminHandler.php?action=getCarreras", {idUniversidad: id}, function (data) {
 
                 for (i = 0; i < data.length; i++) {
                     $("#selectCarrera").append("<option value='" + data[i]["id"] + "'>" + data[i]["nombre"] + "</option>");
                 }
             }, "json");
-        }
-        else {
-            $("#selectCarrera").append("<option class='carrera' value='0' selected=''>Todas</option>");
         }
     }
 

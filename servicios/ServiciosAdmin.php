@@ -235,6 +235,20 @@ class ServiciosAdmin {
         return json_encode(R::exportAll($carreras));
     }
 
+    public function getCarreras() {
+        $idUni = filter_input(INPUT_POST, "idUniversidad", FILTER_SANITIZE_NUMBER_INT);
+        $this->setUpDatabase();
+        $carreras = R::findAll("carrera", " universidad_id = ? ORDER BY nombre", [$idUni]);
+        R::close();
+
+        $arrCar = array();
+        foreach ($carreras as $car) {
+            $arrCar[] = $car->export();
+        }
+        
+        return json_encode($arrCar);
+    }
+    
     public function cambiarConfiguracion() {
 
         $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
