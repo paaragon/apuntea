@@ -7,6 +7,16 @@ require __DIR__ . "/../DB/DbConfig.php";
 class ControladorAdmin {
 
     private $variables = array();
+    private $emojis = array(
+        array("char" => "XD", "alias" => "laughing", "class" => "twa twa-laughing"),
+        array("char" => ":*", "alias" => "kissing_heart", "class" => "twa twa-kissing-heart"),
+        array("char" => ":D", "alias" => "smile", "class" => "twa twa-smile"),
+        array("char" => ";)", "alias" => "wink", "class" => "twa twa-wink"),
+        array("char" => ":_(", "alias" => "cry", "class" => "twa twa-cry"),
+        array("char" => "¬¬", "alias" => "unamused", "class" => "twa twa-unamused"),
+        array("char" => "zzz", "alias" => "sleeping", "class" => "twa twa-sleeping"),
+        array("char" => "^^", "alias" => "blush", "class" => "twa twa-blush"),
+        array("char" => "<3", "alias" => "heart", "class" => "twa twa-heart"));
 
     public function __construct() {
         apunteaSec\checkAdmin();
@@ -108,11 +118,23 @@ class ControladorAdmin {
         return $this->variables;
     }
 
+    public function buscarEmoji($texto) {
+
+
+        foreach ($this->emojis as $emoji) {
+
+            $texto = str_replace('[' . $emoji["alias"] . ']', '<span class="' . $emoji["class"] . ' twa-lg"></span>', $texto);
+        }
+
+        return $texto;
+    }
+
     public function mensajes() {
 
         $this->setUpDatabase();
 
         $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+        echo $idUsuario;
         $idContacto = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
 
         $contactos = R::getAll("SELECT usuario.* FROM usuario, mensaje WHERE usuario.id = receptor_id AND emisor_id = ? OR usuario.id = emisor_id AND receptor_id = ? GROUP BY usuario.id", [$idUsuario, $idUsuario]);
@@ -178,8 +200,8 @@ class ControladorAdmin {
     }
 
     private function cargarComunes() {
-
-        $this->variables["usuario-actual"] = R::load('usuario', $_SESSION["idUsuario"]);
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+        $this->variables["usuario-actual"] = R::load('usuario', $idUsuario);
     }
 
     private function setUpDatabase() {

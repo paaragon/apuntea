@@ -141,6 +141,36 @@ class ServiciosAdmin {
         return $return;
     }
 
+    public function enviarMensaje($params) {
+
+        $idContacto = filter_input(INPUT_POST, "idContacto", FILTER_SANITIZE_NUMBER_INT);
+        $texto = filter_input(INPUT_POST, "texto", FILTER_SANITIZE_MAGIC_QUOTES);
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+
+        $this->setUpDatabase();
+
+        $mensaje = R::dispense('mensaje');
+        $mensaje->emisor_id = $idUsuario;
+        $mensaje->receptor_id = $idContacto;
+        $mensaje->texto = $texto;
+        $mensaje->fecha = date("Y-m-d H:i:s", time());
+        $mensaje->visto = 0;
+
+        try {
+            R::store($mensaje);
+
+            if (!isset($params["redirect"])) {
+                echo json_encode($mensaje->export());
+            } else {
+                return "admin/mensajes.php?id=" . $params["redirect"];
+            }
+        } catch (Exception $e) {
+            echo $e;
+        }
+
+        R::close();
+    }
+
     public function borrarCarrera() {
         $this->setUpDatabase();
 

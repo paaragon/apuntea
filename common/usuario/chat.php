@@ -43,5 +43,4 @@
         </div>
     </div>
 </div>
-<!--<scirpt src="../js/emoji.js"></scirpt>-->
 <script src="../js/chat.js"></script>

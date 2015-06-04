@@ -19,7 +19,7 @@ ob_start();
                     <p>
                         <img src="../img/usuarios/perfil/<?php echo $contacto->avatar ?>" class="profile-img">
                     </p>
-                    <h4><a href="mis-mensajes.php?id=<?php echo $contacto->id ?>"><?php echo $contacto->nombre . " " . $contacto->apellidos ?></a></h4>
+                    <h4><a href="mensajes.php?id=<?php echo $contacto->id ?>"><?php echo $contacto->nombre . " " . $contacto->apellidos ?></a></h4>
                 </div>
             <?php endforeach; ?>
             <?php else: ?>
@@ -29,7 +29,7 @@ ob_start();
     </div>
     <div class="clear"></div>
     <?php if ($variables["contacto"] != null): ?>
-        <h3>Conversación con <a href="perfil-usuario.php?id=<?php echo $variables["contacto"]->id ?>"><?php echo $variables["contacto"]->nombre . " " . $variables["contacto"]->apellidos ?></a>:</h3>
+        <h3>Conversación con <a href="usuarios-detalles.php?id=<?php echo $variables["contacto"]->id ?>"><?php echo $variables["contacto"]->nombre . " " . $variables["contacto"]->apellidos ?></a>:</h3>
         <div class="panel" id="conversacion">
             <?php foreach ($variables["mensajes"] as $mensaje): ?>
                 <?php if ($mensaje->emisor_id == $variables["contacto"]->id): ?>
@@ -40,7 +40,7 @@ ob_start();
             <?php endforeach; ?><div class="clear"></div>
         </div>
         <div>
-            <form action="../servicios/usuarioHandler.php?action=enviarMensaje&redirect=<?php echo $variables["contacto"]->id ?>" method="post" id="enviarMensajeForm">
+            <form action="../servicios/adminHandler.php?action=enviarMensaje&redirect=<?php echo $variables["contacto"]->id ?>" method="post" id="enviarMensajeForm">
                 <textarea class="campo-formulario" placeholder="Escribe aquí tu mensaje" id="textArea" required></textarea>
                 <input type="hidden" value="<?php echo $variables["contacto"]->id ?>" name="idContacto" required>
                 <input type="hidden" value="" name="texto" id="texto">
@@ -64,5 +64,6 @@ ob_start();
     <?php endif; ?>
 </div>
 <?php
+$scripts[] = '<script src="../js/chat.js"></script>';
 $contenido = ob_get_clean();
 require "../common/admin/layout.php";

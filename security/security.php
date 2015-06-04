@@ -9,10 +9,10 @@ function checkAdmin() {
     header("Cache-Control: no-store, no-cache, must-revalidate");
     header("Cache-Control: post-check=0, pre-check=0", false);
     header("Pragma: no-cache");
-    if (!isset($_SESSION["idUsuario"]) && $_SESSION["tipoUsuario"] != "usuario") {
-        logout();
-        header("location: /index.php");
-        exit();
+    if (!isset($_SESSION["idUsuario"]) || $_SESSION["tipoUsuario"] != "admin") {
+//        logout();
+//        header("location: /index.php");
+//        exit();
     }
 }
 
@@ -25,7 +25,7 @@ function checkUsuario() {
     header("Cache-Control: post-check=0, pre-check=0", false);
     header("Pragma: no-cache");
 
-    if (!isset($_SESSION["idUsuario"]) && $_SESSION["tipoUsuario"] != "usuario") {
+    if (!isset($_SESSION["idUsuario"]) || $_SESSION["tipoUsuario"] != "usuario") {
         logout();
         header("location: /index.php");
         exit();
