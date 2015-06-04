@@ -14,6 +14,13 @@
         <script type="text/javascript" src="../js/perfect-scrollbar.jquery.min.js"></script>
         <script type="text/javascript" src="../js/perfect-scrollbar.min.js"></script>
         <script type="text/javascript" src="../js/Chart.js"></script>
+        <?php
+        if (isset($scripts)) {
+            foreach ($scripts as $script) {
+                echo $script;
+            }
+        }
+        ?>
     </head>
     <body>
 

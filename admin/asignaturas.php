@@ -3,7 +3,7 @@ require __DIR__ . "/../controladores/ControladorAdmin.php";
 
 $controlador = new ControladorAdmin();
 
-$variables = $controlador->asignatura();
+$variables = $controlador->asignaturas();
 
 ob_start();
 ?>
