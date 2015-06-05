@@ -61,8 +61,24 @@ class ControladorAdmin {
 
     public function usuarios() {
         $this->setUpDatabase();
+        setlocale(LC_ALL, 'esp');
+        
+        $this->variables["usuarios"] = R::findAll('usuario', " usuario.tipo != 2 ");
+        
+        //Gráfica 1
+        $month = time();
+        for ($i = 1; $i <= 7; $i++) {
+            $month = strtotime('last month', $month);
+            $months[] = array("name" => strftime("%B", $month), "number" => strftime("%m", $month));
+        }
 
-        $this->variables["usuarios"] = R::findAll('usuario', " tipo != 2 ");
+        foreach ($months as $m) {
+            $this->variables["chart1"][$m["name"]] = R::count('usuario', 'MONTH(fecha) = ? AND TIMESTAMPDIFF(MONTH, NOW(), fecha) >= -6', [$m["number"]]);
+        }
+        
+        $this->variables["chart2"] = R::getAll("SELECT nick, COUNT(*) as num FROM usuario, apunte WHERE usuario.id = apunte.usuario_id GROUP BY nick ORDER BY num DESC limit 5");
+
+        
 
         R::close();
 
@@ -70,11 +86,24 @@ class ControladorAdmin {
     }
 
     public function usuario() {
-
         $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
 
         $this->setUpDatabase();
+        setlocale(LC_ALL, 'esp');
+        
+         //Gráfica 1  
+        $month = time();
+        for ($i = 1; $i <= 2; $i++) {
+            $month = strtotime('last month', $month);
+            $months[] = array("name" => strftime("%B", $month), "number" => strftime("%m", $month));
+        }
 
+        foreach ($months as $m) {
+            $this->variables["chart1"][$m["name"]] = R::count('apunte', 'usuario_id = ? AND MONTH(fecha) = ? AND TIMESTAMPDIFF(MONTH, NOW(), fecha) >= -1', [$id, $m["number"]]); 
+        }
+
+         $this->variables["chart2"] = R::getAll("SELECT apunte.titulo, apunte.likes FROM apunte, usuario WHERE apunte.usuario_id = usuario.id AND usuario_id = ? ORDER BY apunte.likes DESC limit 5", [$id]);
+        
         //Usuario
         $this->variables["usuario"] = R::findOne("usuario", "id = ?", [$id]);
 
@@ -109,7 +138,8 @@ class ControladorAdmin {
             $this->variables["amigos"][$contacto->nombre] = $contacto;
         }
 
-        usort($this->variables["amigos"], array("self", "cmp"));
+       // usort($this->variables["amigos"], array("self", "cmp"));
+
 
         R::close();
 
@@ -288,6 +318,7 @@ class ControladorAdmin {
 
     private function cargarComunes() {
         $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+
         $this->variables["usuario-actual"] = R::load('usuario', $idUsuario);
     }
 

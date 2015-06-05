@@ -56,6 +56,8 @@ ob_start();
                 </p>
             </div>
 
+            <?php if (isset($variables["amigos"])): ?>
+                    
             <?php
             foreach ($variables["amigos"] as $amigo):
                 $apuntes = R::findAll("apunte", "usuario_id = ?", [$amigo->id]);
@@ -67,17 +69,19 @@ ob_start();
                             <strong class="col-10"><a href="usuarios-detalles.php?id=<?php echo $amigo->id ?>"> <?php echo $amigo->nombre ?></a></strong>
                         </span>
                         <span class="col-4">
-                            <?php
-                            $carreraAmigo = R::findOne("carrera", "id = " . $amigo->carrera_id);
-                            $universidadAmigo = R::findOne("universidad", "id = " . $carreraAmigo->universidad_id);
-                            ?>
-                            <a href="perfil-universidad.php?id=<?php echo $universidadAmigo->id ?>"> <?php echo $universidadAmigo->nombre ?></a>
+                            
+                            <?php if ($amigo->carrera != null) : ?>
+                            <a href="perfil-universidad.php?id=<?php echo $amigo->carrera->universidad->id ?>"> <?php echo $amigo->carrera->universidad->nombre ?></a>
+                            <?php endif; ?>
                         </span>
                         <span class="col-2"><span class="fa fa-file"></span> <?php echo count($apuntes) ?> </span>
                     </p>
                     <div class="clear"></div>
                 </div>
-            <?php endforeach; ?>         
+            <?php endforeach; ?>  
+            <?php else: ?>
+            <blockquote>Este usuario aún no tiene contactos</blockquote>
+            <?php endif;?>
 
     </div>
     <div class="fila">
@@ -89,12 +93,92 @@ ob_start();
     </div>
 </div>
 <div class="col-3">
-    <p>
-        <img src="../img/line-graph.gif" class="img-responsive">
-        <img src="../img/line-graph.gif" class="img-responsive">
-        <img src="../img/line-graph.gif" class="img-responsive">
-    </p>
+    <br><br><br><br><br>
+    <canvas id="myChart1"></canvas>
+    <h4 class="text-center"><strong>Nº apuntes subidos en los 2 últimos meses</strong></h4>
+    <hr>
+    <canvas id="myChart2"></canvas
+    <h4 class="text-center"><strong>Apuntes más populares</strong></h4>
 </div>
+
+<script>
+<?php
+    $chart1 = array_reverse($variables["chart1"]);
+
+    $primer_mes = key($chart1);
+    $primer_valor = array_shift($chart1);
+
+    $etiquetas1 = '"' . $primer_mes . '"';
+    $valores1 = $primer_valor;
+
+    foreach ($chart1 as $month => $value) {
+
+        $etiquetas1 .= ', "' . $month . '"';
+        $valores1 .=', ' . $value;
+    }
+
+    $chart2 = $variables["chart2"];
+
+$primer_elemento = array_shift($chart2);
+
+$etiquetas2 = '"' . $primer_elemento["titulo"] . '"';
+$valores2 = $primer_elemento["likes"];
+
+foreach ($chart2 as $elem) {
+
+    $etiquetas2 .= ', "' . $elem["titulo"] . '"';
+    $valores2 .=', ' . $elem["likes"];
+}
+?>
+
+
+        var canvas1 = document.getElementById("myChart1");
+
+        canvas1.width = $("#myChart1").width() - 50;
+        canvas1.height = 200;
+        
+        //Gráfica 1----------------------------------------------------
+        var data1 = {
+            labels: [<?php echo $etiquetas1 ?>],
+            datasets: [
+                {
+                    fillColor: "rgba(70, 181, 82, 0.2)",
+                    strokeColor: "rgba(59, 152, 68, 0.5)",
+                    pointColor: "rgba(59, 152, 68, 0.6)",
+                    pointStrokeColor: "rgba(59, 152, 68, 0.8)",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: [<?php echo $valores1 ?>]
+                }
+            ]
+        };
+
+        var ctx = document.getElementById("myChart1").getContext("2d");
+        var myLineChart1 = new Chart(ctx).Line(data1);
+        
+         //Gráfica 2----------------------------------------------------
+        var data2 = {
+            labels: [<?php echo $etiquetas2 ?>],
+            datasets: [
+                {
+                    fillColor: "rgba(70, 181, 82, 0.2)",
+                    strokeColor: "rgba(59, 152, 68, 0.5)",
+                    pointColor: "rgba(59, 152, 68, 0.6)",
+                    pointStrokeColor: "rgba(59, 152, 68, 0.8)",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: [<?php echo $valores2 ?>]
+                }
+            ]
+        };
+
+        var canvas2 = document.getElementById("myChart2");
+        canvas2.width = $("#myChart2").width() - 50;
+        canvas2.height = 200;
+
+        var ctx = document.getElementById("myChart2").getContext("2d");
+        var myLineChart2 = new Chart(ctx).Bar(data2);
+</script>
 
 <?php
 $contenido = ob_get_clean();

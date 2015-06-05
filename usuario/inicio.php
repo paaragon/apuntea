@@ -42,20 +42,23 @@ ob_start();
             <?php endforeach; ?>
 
         <!-- NUEVOS APUNTES SUBIDOS POR TUS AMIGOS -->
-<?php
-foreach ($variables["nuevosApuntes"] as $nuevoApunte) :
-    $amigoApunte = R::findOne("usuario", "id = ?", [$nuevoApunte->usuario_id]);
-    ?>     
-            <div class="fila">
-                <p>
-                    <span class="col-10">
-                        <span class="fa fa-user-plus"></span>
-                        <strong><em><a href="perfil-usuario.php?id=<?php echo $amigoApunte->id ?>">@<?php echo $amigoApunte->nick ?></a></em> ha añadido un nuevo apunte <em><a href="ver-apunte.php?id=<?php echo $nuevoApunte->id ?>"><?php echo $nuevoApunte->titulo ?></a></em></strong>
-                    </span>  
-                </p>
-                <div class="clear"></div>
-            </div>
-<?php endforeach; ?>
+        <?php
+        foreach ($variables["nuevosApuntes"] as $nuevoApunte) :
+            $amigoApunte = R::findOne("usuario", "id = ?", [$nuevoApunte->usuario_id]);
+            ?>     
+                    <div class="fila">
+                        <p>
+                            <span class="col-10">
+                                <span class="fa fa-user-plus"></span>
+                                <strong><em><a href="perfil-usuario.php?id=<?php echo $amigoApunte->id ?>">@<?php echo $amigoApunte->nick ?></a></em> ha añadido un nuevo apunte <em><a href="ver-apunte.php?id=<?php echo $nuevoApunte->id ?>"><?php echo $nuevoApunte->titulo ?></a></em></strong>
+                            </span>  
+                        </p>
+                        <div class="clear"></div>
+                    </div>
+        <?php endforeach; ?>
+        
+        <?php if ($variables["nuevosAmigos"] == null) echo "No tienes actividad reciente"?>
+        
     </div>
 </div>
 <div class="col-3">
