@@ -1,4 +1,10 @@
-<?php ob_start(); ?>
+<?php
+require __DIR__ . "/../controladores/ControladorAdmin.php";
+$controlador = new ControladorAdmin();
+$variables = $controlador->asignatura();
+
+ob_start();
+?>
 
 <div class="col-9">
     <section>

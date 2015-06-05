@@ -80,15 +80,9 @@ ob_start(); ?>
         </section>
         <div class="fila">
             <h3>Opciones de administrador:</h3>
-
-            <h4>Enviar mensaje al usuario:</h4>
-            <form action="usuarios-detalles.php" method="post">
-                <textarea class="campo-formulario"></textarea>
-                <input type="submit" class="campo-formulario">
-            </form>
             <p>
+                <a href="mensajes.php?id=<?php echo $usuario->id ?>" class="boton campo-formulario">Enviar mensaje al usuario</a>
                 <a href="../servicios/adminHandler.php?action=borrarUsuario&idUsuario=<?php echo $usuario->id ?>" class="boton campo-formulario">Eliminar usuario</a>
-
             </p>
         </div>
     </div>

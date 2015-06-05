@@ -1,11 +1,12 @@
 <?php
-    require __DIR__ . "/../controladores/ControladorAdmin.php";
-    $controlador = new ControladorAdmin();
-    $variables = $controlador->usuario();
-    $usuario = $variables["usuario"];
-    $carrera = $variables["carrera"];
-    $universidad = $variables["universidad"];
-ob_start(); ?>
+require __DIR__ . "/../controladores/ControladorAdmin.php";
+$controlador = new ControladorAdmin();
+$variables = $controlador->usuario();
+$usuario = $variables["usuario"];
+$carrera = $variables["carrera"];
+$universidad = $variables["universidad"];
+ob_start();
+?>
 <div class="col-9" id="principal">
     <div class="fila profile">
         <!--Div para el fondo del perfil-->
@@ -29,7 +30,7 @@ ob_start(); ?>
         <hr>
         <blockquote>
             <p> 
-               <?php echo $usuario->estado ?>
+                <?php echo $usuario->estado ?>
             </p>
         </blockquote>
     </div><br>
@@ -49,20 +50,21 @@ ob_start(); ?>
         <section>
             <div>
                 <p>
-                    <a href="usuarios-detalles.php?id=<?php echo $usuario->id ?>" class="boton boton-activo">Apuntes</a>
+                    <a href="usuarios-detalles.php?id=<?php echo $usuario->id ?>" class="boton">Apuntes</a>
                     <a href="usuarios-detalles-grupos.php?id=<?php echo $usuario->id ?>" class="boton">Grupos</a>
-                    <a href="usuarios-detalles-amigos.php?id=<?php echo $usuario->id ?>" class="boton">Amigos</a>
+                    <a href="usuarios-detalles-amigos.php?id=<?php echo $usuario->id ?>" class="boton boton-activo">Amigos</a>
                 </p>
             </div>
-            
-            <?php foreach($variables["amigos"] as $amigo):
+
+            <?php
+            foreach ($variables["amigos"] as $amigo):
                 $apuntes = R::findAll("apunte", "usuario_id = ?", [$amigo->id]);
-            ?>
+                ?>
                 <div class="fila">
                     <p>
                         <span class="col-6">
-                            <img class="col-1" src="../img/usuarios/perfil/<?php echo $amigo->avatar ?>" class="img-responsive mini-logo">
-                            <strong><a href="usuarios-detalles.php?id=<?php echo $amigo->id ?>"> <?php echo $amigo->nombre?></a></strong>
+                            <img class="col-2" src="../img/usuarios/perfil/<?php echo $amigo->avatar ?>" class="img-responsive mini-logo">
+                            <strong class="col-10"><a href="usuarios-detalles.php?id=<?php echo $amigo->id ?>"> <?php echo $amigo->nombre ?></a></strong>
                         </span>
                         <span class="col-4">
                             <?php
@@ -76,20 +78,13 @@ ob_start(); ?>
                     <div class="clear"></div>
                 </div>
             <?php endforeach; ?>         
-    
+
     </div>
     <div class="fila">
         <h3>Opciones de administrador:</h3>
-
-        <h4>Enviar mensaje al usuario:</h4>
-        <form action="usuarios-detalles.php" method="post">
-            <textarea class="campo-formulario"></textarea>
-            <input type="submit" class="campo-formulario" value="Enviar mensaje">
-        </form>
         <p>
-            
-           <a href="../servicios/adminHandler.php?action=borrarUsuario&idUsuario=<?php echo $usuario->id ?>" class="boton campo-formulario">Eliminar usuario</a>
-         
+            <a href="mensajes.php?id=<?php echo $usuario->id ?>" class="boton campo-formulario">Enviar mensaje al usuario</a>
+            <a href="../servicios/adminHandler.php?action=borrarUsuario&idUsuario=<?php echo $usuario->id ?>" class="boton campo-formulario">Eliminar usuario</a>
         </p>
     </div>
 </div>

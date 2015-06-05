@@ -1,4 +1,11 @@
-<?php ob_start(); ?>
+<?php
+require "../controladores/ControladorUsuario.php";
+$controlador = new ControladorUsuario();
+
+$variables = $controlador->inicio();
+
+ob_start();
+?>
 <section>
     <h1><span class="fa fa-key"></span> Pedir permisos para entrar a un grupo</h1>
 </section>

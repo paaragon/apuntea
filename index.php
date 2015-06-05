@@ -9,7 +9,8 @@ ob_start();
 <section>
     <div class="col-sm-4"><img src="img/logo.png" class="img-responsive"></div>
     <div class="col-sm-8">
-        <h3>Bienvenido a <strong>Apuntea</strong> tu red social para compartir apuntes.</h3>
+        <h3>Bienvenido a <strong>Apuntea</strong></h3>
+        <h3 class="text-center">Tu red social para compartir apuntes.</h3>
     </div>
     <div class="clearfix"></div>
 </section>
@@ -53,16 +54,9 @@ ob_start();
         <h3>Top Asignaturas</h3>
         <hr>
         <ul>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
+            <?php foreach ($variables["asignaturas"] as $asignatura): ?>
+                <li><a href="asignatura.php?id=<?php echo $asignatura->id ?>"><?php echo $asignatura->nombre ?></a></li>
+            <?php endforeach; ?>
         </ul>
         <p><a href="asignaturas.php"><span class="etiqueta"><span class="fa fa-plus"></span> Ver todas</span></a></p>
     </section>
@@ -70,16 +64,9 @@ ob_start();
         <h3>Top Apuntes</h3>
         <hr>
         <ul>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
+            <?php foreach ($variables["apuntes"] as $apunte): ?>
+                <li><a href="ver-apunte.php?id=<?php echo $apunte->id ?>"><?php echo $apunte->titulo ?></a></li>
+            <?php endforeach; ?>
         </ul>
         <p><a href="lista-apuntes.php"><span class="label label-primary"><span class="fa fa-plus"></span> Ver todas</span></a></p>
     </section>
