@@ -19,11 +19,12 @@ ob_start();
             <label> Universidad:</label> 
             <select class="campo-formulario campo-en-linea" id="universidad-select">
                 <option value="todas" selected="">Todas</option>
-                <?php foreach ($variables["universidades"] as $universidad): ?>
-                    <option value="<?php echo $universidad->id ?>"><?php echo $universidad->siglas ?></option>
+                <?php foreach ($variables["universidades"] as $uni): ?>
+                    <?php $selected = ($universidad == $uni->id) ? "selected=''" : "" ?>
+                    <option value="<?php echo $uni->id ?>" <?php echo $selected ?>><?php echo $uni->siglas ?></option>
                 <?php endforeach; ?>
             </select>
-            <!-- aqui hay que añadir que si vuelve a ser todas las vuelva a poner-->
+            
 
         </div>
         <div>
@@ -40,8 +41,8 @@ ob_start();
                             <a href="perfil-universidad.php?id=<?php echo $carrera->universidad->id ?>"><?php echo $carrera->universidad->siglas ?></a></small></strong>
                 </span>
                 <span class="col-1"><span class="fa fa-user"></span><strong><?php echo count($carrera->ownUsuarioList) ?></strong></span>
-                <span class="col-1"><span class="fa fa-file"></span> <strong><?php if (isset($variables['carapuntes'][$carrera->id])) echo $variables['carapuntes'][$carrera->id] ?></strong></span>
-                <span class="col-1"><span id="f<?php echo $carrera->id.'-'.$carrera->nombre; ?>" class="fa fa-trash"></span></span>
+                <span class="col-1"><span class="fa fa-file"></span><strong><?php if (isset($variables['carapuntes'][$carrera->id])) echo $variables['carapuntes'][$carrera->id]?></strong></span>
+                <span class="col-1"><span id="f<?php echo $carrera->id . '-' . $carrera->nombre; ?>" class="fa fa-trash"></span></span>
             </p> 
             <div class="clear"></div>
         </div>
@@ -60,17 +61,15 @@ ob_start();
         $("#universidad-select").on("change", function () {
             window.location = "carreras.php?universidad=" + $(this).val();
         });
-        
-    $('.fa-trash').on("click", function () {
-        
-            id = $(this).attr("id").substring(1).split('-');  
-            
-            var r = confirm("Seguro que quieres borrar esta carrera " + id[1] +'?');
+
+        $('.fa-trash').on("click", function () {
+
+            id = $(this).attr("id").substring(1).split('-');
+
+            var r = confirm("Seguro que quieres borrar esta carrera " + id[1] + '?');
             if (r == true) {
-               
-                $.post('../servicios/adminHandler.php?action=borrarCarrera', {id: id[0]}, function (data) {
-                    alert(data);
-                });
+
+                window.location.href = '../servicios/adminHandler.php?action=borrarCarrera&id=' + id[0];
             }
         });
     });
