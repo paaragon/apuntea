@@ -22,8 +22,15 @@ ob_start();
             <span class="col-9"><input type="text" name="nombre" class="campo-formulario" placeholder="Introduzca su nombre de usuario" required="" value="<?php echo $variables["usuario"]->nombre ?>"></span>
             <span class="col-3"><label>Apellido:</label></span>
             <span class="col-9"><input type="text" name="apellidos" class="campo-formulario" placeholder="Introduzca su nombre de usuario" required="" value="<?php echo $variables["usuario"]->apellidos ?>"></span>
-            <span class="col-3"><label>Email:</label></span>
-            <span class="col-9"><input type="email" name="mail" class="campo-formulario" placeholder="Introduzca su nuevo e-mail" required="" value="<?php echo $variables["usuario"]->email ?>"></span>
+            <?php if (isset($variables["usuario"]->email)): ?>
+                <span class="col-3"><label>Email:</label></span>
+                <span class="col-9"><input type="email" name="mail" class="campo-formulario" placeholder="Introduzca su nuevo e-mail" required="" value="<?php echo $variables["usuario"]->email ?>"></span>
+            <?php else: ?>
+                <div class="has-error">
+                    <span class="col-3"><label class="control-label">Email:</label></span>
+                    <span class="col-9"><input type="email" name="mail" class="campo-formulario form-control" placeholder="Introduzca su nuevo e-mail" required="" value="<?php echo $variables["usuario"]->email ?>"></span>
+                </div>
+            <?php endif; ?>
             <span class="col-3"><label>Universidad:</label></span>
             <span class="col-9">
                 <select id="selectUniversidad" name="universidad" class="campo-formulario">
@@ -38,10 +45,23 @@ ob_start();
                     ?>
                 </select>
             </span>
-            <span class="col-3"><label>Carrera:</label></span>
-            <span class="col-9">
-                <select id="selectCarrera" name="carrera" class="campo-formulario"></select>
-            </span>
+            <?php if (isset($variables["usuario"]->carrera_id)): ?>
+                <span class="col-3"><label>Carrera:<img src="../img/loading.GIF" id="load-carrera"></label></span>
+                <span class="col-9">
+                    <select id="selectCarrera" name="carrera" class="campo-formulario">
+                        <option value="" selected="">Todas</option>
+                    </select>
+                </span>
+            <?php else: ?>
+                <div class="has-error">
+                    <span class="col-3"><label class="control-label">Carrera:<img src="../img/loading.GIF" id="load-carrera"></label></span>
+                    <span class="col-9">
+                        <select id="selectCarrera" name="carrera" class="campo-formulario form-control">
+                            <option value="" selected="">Todas</option>
+                        </select>
+                    </span>
+                </div>
+            <?php endif; ?>
             <div class="clearfix"></div>
             <br><br>
             <label>Imagen de perfil:</label>
@@ -67,7 +87,7 @@ ob_start();
             <span class="col-9"><input type="password" name="pwd2" class="campo-formulario" ></span>
             <span class="col-3"><label>Repetir contraseña:</label></span>
             <span class="col-9"><input type="password" name="pwd3" class="campo-formulario" ></span>
-<div class="clearfix"></div>
+            <div class="clearfix"></div>
             <br><br>
             <legend>Privacidad: </legend>
             ¿Quién puede ver mi perfil? <br>
@@ -177,7 +197,9 @@ ob_start();
         });
     });
     function getCarreras(id) {
+        $("#load-carrera").show();
         $("#selectCarrera").html("");
+        $("#selectCarrera").append('<option value="" selected="">Todas</option>');
         $.post("../servicios/usuarioHandler.php?action=getCarreras", {idUniversidad: id}, function (data) {
             for (i = 0; i < data.length; i++) {
                 if (data[i]["id"] ==<?php echo ($variables["usuario"]->carrera_id == NULL) ? -1 : $variables["usuario"]->carrera_id ?>) {
@@ -187,6 +209,7 @@ ob_start();
                     $("#selectCarrera").append("<option value='" + data[i]["id"] + "'>" + data[i]["nombre"] + "</option>");
                 }
             }
+            $("#load-carrera").hide();
         }, "json");
     }
 

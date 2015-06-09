@@ -11,7 +11,7 @@ ob_start();
     <h1>Registrarse:</h1>
 </section>
 <section>
-    
+
     <form action="servicios/standarHandler.php?action=registrarse" method="post" id="formRegistrar" enctype="multipart/form-data">
         <label>Nombre:</label>
         <input type="text" name="nombre" class="campo-formulario" required="">
@@ -29,13 +29,18 @@ ob_start();
         <select name="carrera" class="campo-formulario" id="carreras" required>
         </select>
         <br><br><br>
-        <label>Alias de usuario:</label>
-        <input type="text" name="alias" class="campo-formulario" required="">
-        <label>Contraseña:</label>
-        <input type="password" name="password" class="campo-formulario" required="">
+        <label>Alias de usuario:<span id="nickStatus"></span></label>
+        <input type="text" name="alias" class="campo-formulario" required="" id="nick">
+        <label>Contraseña: <a id="passTooltip" tabindex="0" class="badge" role="button" data-toggle="popover" data-trigger="focus" title="Para generar una contraseña segura esta debe contener:" data-content="<ul><li>Más de 8 caracteres.</li><li>Mayúsculas y minúsculas.</li><li>Caracteres especiales.</li></ul>">?</a></label>
+        <input type="password" name="password" class="campo-formulario" required="" id="password">
+        <div class="progress">
+            <div id="passwordStrength" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                <span class="sr-only">40% Complete (success)</span>
+            </div>
+        </div>
         <label>Repita la contraseña:</label>
         <input type="password" name="password2" class="campo-formulario" required="">
-        
+
         <br><br><br>
         <label>Imagen de perfil:</label>
         <input type="file" name="img-perfil" class="campo-formulario" required="" id="fileImgPerfil">
@@ -64,6 +69,87 @@ ob_start();
     </blockquote>
 </section>
 <script>
+
+    function checkPassword() {
+
+        var pass = $("#password").val();
+        var strength = 0;
+        var length = 0;
+
+        if (pass.length > 0 && pass.length < 6) {
+
+            length = 10;
+            strength += 10;
+        } else if (pass.length >= 6 && pass.length <= 8) {
+
+            length = 20;
+            strength += 20;
+        } else if (pass.length > 8) {
+
+            length = 40;
+            strength += 40;
+        }
+
+        var upper = false;
+        var lower = false;
+        var specialChar = false;
+        var eChars = "~`!#$%^&*+=-_@[]\\\';,/{}|\":<>?";
+
+        var i = 0;
+        while (i < pass.length) {
+            var c = pass.charAt(i);
+            if (eChars.indexOf(c) !== -1) {
+                specialChar = true;
+            } else {
+                if (c === c.toUpperCase()) {
+                    upper = true;
+                } else if (c === c.toLowerCase()) {
+                    lower = true;
+                }
+            }
+            i++;
+        }
+
+        if (upper && lower) {
+
+            strength += 20;
+        }
+
+        if (specialChar) {
+            if (length == 10) {
+                strength += 10;
+            } else if (length == 20) {
+                strength += 20;
+            } else if (length == 40) {
+                strength += 40;
+            }
+        }
+
+        $("#passwordStrength").attr("aria-valuenow", strength);
+        $("#passwordStrength").css("width", strength + '%');
+
+        if (strength < 33) {
+            $("#passwordStrength").attr("class", "progress-bar progress-bar-danger");
+        } else if (strength >= 33 && strength < 66) {
+            $("#passwordStrength").attr("class", "progress-bar progress-bar-warning");
+        } else {
+            $("#passwordStrength").attr("class", "progress-bar progress-bar-success");
+        }
+    }
+
+    function checkUserName() {
+
+        var input = $("#nick");
+        var nick = input.val();
+        $.post("servicios/standarHandler.php?action=userNameExist", {name: nick}, function (data) {
+            if (data === true) {
+                $("#nickStatus").text(" Alias disponible").removeClass("text-danger").addClass("text-success");
+            } else {
+                $("#nickStatus").text(" Alias no disponible").removeClass("text-success").addClass("text-danger");
+            }
+        }, "json");
+    }
+
     function readURL(input, img, options, src) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -94,6 +180,11 @@ ob_start();
     }
 
     $(document).on("ready", function () {
+
+        $('#passTooltip').popover({html: true});
+
+        $("#password").on("keyup", checkPassword);
+        $("#nick").on("keyup", checkUserName);
 
         cargarCarreras();
 

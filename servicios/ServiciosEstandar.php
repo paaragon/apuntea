@@ -39,42 +39,42 @@ class ServiciosEstandar {
     public function registrarse() {
 
         require __DIR__ . "/../util/CropAvatar.php";
-        $response = json_decode(file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LcTwgcTAAAAAAIYyE8EBBWc1A4k8OPFIQfzVw8i&response=" . $_POST['g-recaptcha-response'] . "&remoteip=" . $_SERVER['REMOTE_ADDR']), true);
 
-        if ($response["success"] == 1) {
-            if (isset($_SESSION["fbid"])) {
+        if (isset($_SESSION["fbid"])) {
 
-                $this->setUpDatabase();
+            $this->setUpDatabase();
 
-                $alias = filter_var($_SESSION["alias"], FILTER_SANITIZE_MAGIC_QUOTES);
-                $nombre = filter_var($_SESSION["nombre"], FILTER_SANITIZE_MAGIC_QUOTES);
-                $apellidos = filter_var($_SESSION["apellidos"], FILTER_SANITIZE_MAGIC_QUOTES);
-                $fbid = filter_var($_SESSION["fbid"], FILTER_SANITIZE_NUMBER_INT);
-                $fbavatar = $_SESSION["avatar"];
-                $fbcover = $_SESSION["cover"];
+            $alias = filter_var($_SESSION["alias"], FILTER_SANITIZE_MAGIC_QUOTES);
+            $nombre = filter_var($_SESSION["nombre"], FILTER_SANITIZE_MAGIC_QUOTES);
+            $apellidos = filter_var($_SESSION["apellidos"], FILTER_SANITIZE_MAGIC_QUOTES);
+            $fbid = filter_var($_SESSION["fbid"], FILTER_SANITIZE_NUMBER_INT);
+            $fbavatar = $_SESSION["avatar"];
+            $fbcover = $_SESSION["cover"];
 
-                $usuario = R::dispense('usuario');
-                $usuario->nombre = $nombre;
-                $usuario->apellidos = $apellidos;
-                $usuario->nick = $alias;
-                $usuario->fbid = $fbid;
+            $usuario = R::dispense('usuario');
+            $usuario->nombre = $nombre;
+            $usuario->apellidos = $apellidos;
+            $usuario->nick = $alias;
+            $usuario->fbid = $fbid;
 
-                $avatar = imagecreatefromjpeg($fbavatar);
-                $avatarname = $alias . "_" . rand(0, 2048);
-                imagejpeg($avatar, '../img/usuarios/perfil/' . $avatarname . '.jpg');
-                $usuario->avatar = $avatarname . '.jpg';
+            $avatar = imagecreatefromjpeg($fbavatar);
+            $avatarname = $alias . "_" . rand(0, 2048);
+            imagejpeg($avatar, '../img/usuarios/perfil/' . $avatarname . '.jpg');
+            $usuario->avatar = $avatarname . '.jpg';
 
-                $portada = imagecreatefromjpeg($fbcover);
-                $portadaname = $alias . "_" . rand(0, 2048);
-                imagejpeg($portada, '../img/usuarios/portada/' . $portadaname . '.jpg');
-                $usuario->imagenportada = $portadaname . '.jpg';
+            $portada = imagecreatefromjpeg($fbcover);
+            $portadaname = $alias . "_" . rand(0, 2048);
+            imagejpeg($portada, '../img/usuarios/portada/' . $portadaname . '.jpg');
+            $usuario->imagenportada = $portadaname . '.jpg';
 
 
-                R::store($usuario);
-                $_SESSION["exito"] = "Registro completado. Enra en la página a través de la sección \"Acceder\" del panel lateral.";
-                return "index.php";
-            } else {
+            R::store($usuario);
+            $_SESSION["exito"] = "Registro completado. Enra en la página a través de la sección \"Acceder\" del panel lateral.";
+            return "index.php";
+        } else {
+            $response = json_decode(file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LcTwgcTAAAAAAIYyE8EBBWc1A4k8OPFIQfzVw8i&response=" . $_POST['g-recaptcha-response'] . "&remoteip=" . $_SERVER['REMOTE_ADDR']), true);
 
+            if ($response["success"] == 1) {
                 $alias = filter_input(INPUT_POST, "alias", FILTER_SANITIZE_MAGIC_QUOTES);
                 $nombre = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES);
                 $apellidos = filter_input(INPUT_POST, "apellidos", FILTER_SANITIZE_MAGIC_QUOTES);
@@ -142,15 +142,14 @@ class ServiciosEstandar {
                 $_SESSION["exito"] = "Registro completado. Revisa tu email para activar tu cuenta.";
 
                 return "index.php";
+            } else {
+                $_SESSION["error"] = "Error al registrar usuario.";
+                return "registrarse.php";
             }
-        } else {
-            $_SESSION["error"] = "Error al registrar usuario.";
-            return "registrarse.php";
         }
     }
 
     public function confirmarEmail() {
-
         $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
         $codigo = filter_input(INPUT_GET, "codigo", FILTER_SANITIZE_SPECIAL_CHARS);
 
@@ -179,11 +178,12 @@ class ServiciosEstandar {
             $arrCar[] = $car->export();
         }
 
-        return json_encode($arrCar);
+        return
+
+                json_encode($arrCar);
     }
 
     public function getAsignaturas() {
-
         $id = filter_input(INPUT_POST, "idCarrera", FILTER_SANITIZE_NUMBER_INT);
 
         $this->setUpDatabase();
@@ -192,7 +192,9 @@ class ServiciosEstandar {
 
         R::close();
 
-        return json_encode(R::exportAll($asignaturas));
+        return json_encode(R::
+
+                exportAll($asignaturas));
     }
 
     public function notFound() {
@@ -201,7 +203,8 @@ class ServiciosEstandar {
     }
 
     private function setUpDatabase() {
-        R::setup('mysql:host=' . DbConfig::$dbHost . ';dbname=' . DbConfig::$dbName, DbConfig::$dbUser, DbConfig::$dbPassword);
+        R::setup('mysql:host=' . DbConfig:: $dbHost . ';dbname=' . DbConfig::$dbName, DbConfig::$dbUser, DbConfig::$dbPassword);
+        R::freeze(TRUE);
     }
 
     private function sendEmail($emailDest, $destinatario, $cuerpo, $params) {
@@ -234,7 +237,21 @@ class ServiciosEstandar {
         if (!$mail->send()) {
             return false;
         } else {
+
             return true;
+        }
+    }
+
+    function userNameExist() {
+
+        $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_MAGIC_QUOTES);
+
+        $this->setUpDatabase();
+        $n = R::count('usuario', 'nick = ?', [$name]);
+        if ($n == 0) {
+            return json_encode(true);
+        } else {
+            return json_encode(false);
         }
     }
 

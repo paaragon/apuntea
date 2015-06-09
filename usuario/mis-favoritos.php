@@ -48,7 +48,7 @@ ob_start();
 
             <?php } ?>
         <?php else: ?>
-            <blockquote><h4>No tienes ningún apunte favorito.</h4></blockquote>
+            <blockquote><h3>No tienes ningún apunte favorito.</h3></blockquote>
         <?php endif; ?>
     </div>
 </div>

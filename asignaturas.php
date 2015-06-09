@@ -29,30 +29,33 @@ ob_start();
     </select>
 </form>
 <section>
+    <?php if (count($variables["asignaturas"]) > 0): ?>
+        <?php
+        $i = 0;
+        echo '<div class="rama-conocimiento">';
+        echo "<h2><span class='fa " . $variables['ramas'][array_values($variables["asignaturas"])[0]->carrera->rama] . "'></span>" . array_values($variables["asignaturas"])[0]->carrera->rama . "</h2>";
+        echo '<hr>';
+        echo '<ul>';
+        $rama = array_values($variables["asignaturas"])[0]->carrera->rama;
 
-    <?php
-    $i = 0;
-    echo '<div class="rama-conocimiento">';
-    echo "<h2><span class='fa " . $variables['ramas'][array_values($variables["asignaturas"])[0]->carrera->rama] . "'></span>" . array_values($variables["asignaturas"])[0]->carrera->rama . "</h2>";
-    echo '<hr>';
-    echo '<ul>';
-    $rama = array_values($variables["asignaturas"])[0]->carrera->rama;
-
-    foreach ($variables["asignaturas"] as $asignatura) {
-        if ($asignatura->carrera->rama != $rama) {
-            echo "</ul>";
-            echo "</div>";
-            echo '<div class="rama-conocimiento">';
-            echo "<h2><span class='fa " . $variables['ramas'][$asignatura->carrera->rama] . "'></span>" . $asignatura->carrera->rama . "</h2>";
-            echo '<hr>';
-            echo '<ul>';
-            $rama = $asignatura->carrera->rama;
+        foreach ($variables["asignaturas"] as $asignatura) {
+            if ($asignatura->carrera->rama != $rama) {
+                echo "</ul>";
+                echo "</div>";
+                echo '<div class="rama-conocimiento">';
+                echo "<h2><span class='fa " . $variables['ramas'][$asignatura->carrera->rama] . "'></span>" . $asignatura->carrera->rama . "</h2>";
+                echo '<hr>';
+                echo '<ul>';
+                $rama = $asignatura->carrera->rama;
+            }
+            echo '<li class="asignatura"><a href="asignatura.php?id=' . $asignatura->id . '" class="nombre">' . $asignatura->nombre . '</a> - <a href="carrera.php?id=' . $asignatura->carrera->id . '" class="carrera">' . $asignatura->carrera->nombre . '</a> / <a href="universidad.php?id=' . $asignatura->carrera->universidad->id . '" class="universidad">' . $asignatura->carrera->universidad->siglas . '</a></li>';
         }
-        echo '<li class="asignatura"><a href="asignatura.php?id=' . $asignatura->id . '" class="nombre">' . $asignatura->nombre . '</a> - <a href="carrera.php?id=' . $asignatura->carrera->id . '" class="carrera">' . $asignatura->carrera->nombre . '</a> / <a href="universidad.php?id=' . $asignatura->carrera->universidad->id . '" class="universidad">' . $asignatura->carrera->universidad->siglas . '</a></li>';
-    }
-    echo "</ul>";
-    echo "</div>";
-    ?>
+        echo "</ul>";
+        echo "</div>";
+        ?>
+    <?php else: ?>
+        <blockquote><h3>No hay asignaturas.</h3></blockquote>
+    <?php endif; ?>
 </section>
 <script>
     $(document).on("ready", function () {
@@ -64,7 +67,7 @@ ob_start();
         $("#selectUniversidad").on("change", function () {
             buscar();
         });
-        
+
         $("#form").on("change", "#selectCarrera", function () {
             buscar();
         });
@@ -92,7 +95,7 @@ ob_start();
             var uni = $(this).children(".universidad").text();
             var car = $(this).children(".carrera").text();
             var con = $(this).children(".nombre").text();
-            
+
             if ((universidad.indexOf(uni) !== -1 || universidad === "") && (carrera.indexOf(car) !== -1 || carrera === "") && (quitaAcentos(con.toLowerCase()).indexOf(quitaAcentos(consulta.toLowerCase())) > -1)) {
                 $(this).show();
             } else {

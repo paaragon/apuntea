@@ -12,18 +12,22 @@ ob_start();
     </h2>
     <hr>
     <div>
-        <?php foreach ($variables["peticiones"] as $peticion): ?>
-            <?php $usuario = $peticion->fetchAs("usuario")->alice ?>
-            <div class="fila">
-                <p>
-                    <span class="col-8">
-                        <a href="perfil-usuario.php?id=<?php echo $usuario->id ?>"><?php echo $usuario->nombre ?> @<?php echo $usuario->nick ?></a> Quiere ser tu amigo
-                    </span>
-                    <span class="col-4"><a href="../servicios/usuarioHandler.php?action=aceptarPeticion&user=<?php echo $usuario->id ?>">Aceptar</a></span>
-                </p>
-                <div class="clear"></div>
-            </div>
-        <?php endforeach; ?>
+        <?php if (count($variables["peticiones"]) > 0): ?>
+            <?php foreach ($variables["peticiones"] as $peticion): ?>
+                <?php $usuario = $peticion->fetchAs("usuario")->alice ?>
+                <div class="fila">
+                    <p>
+                        <span class="col-8">
+                            <a href="perfil-usuario.php?id=<?php echo $usuario->id ?>"><?php echo $usuario->nombre ?> @<?php echo $usuario->nick ?></a> Quiere ser tu amigo
+                        </span>
+                        <span class="col-4"><a href="../servicios/usuarioHandler.php?action=aceptarPeticion&user=<?php echo $usuario->id ?>">Aceptar</a></span>
+                    </p>
+                    <div class="clear"></div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <blockquote><h3>No tienes peticiones de amistad.</h3></blockquote>
+        <?php endif; ?>
     </div>
 </div>
 <?php

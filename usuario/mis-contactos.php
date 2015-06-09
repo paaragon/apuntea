@@ -37,7 +37,7 @@ ob_start();
     recorremos el array 
     -->
     <?php
-    if (count($variables["contactosUsuario"]) > 0):
+    if (isset($variables["contactosUsuario"]) && count($variables["contactosUsuario"]) > 0):
         foreach ($variables["contactosUsuario"] as $contacto):
             ?>
             <div class="col-6 contacto">
@@ -71,7 +71,7 @@ ob_start();
             <?php
         endforeach;
     else:
-        echo "No tienes ningun contacto";
+        echo "<blockquote><h3>No tienes ningún contacto</h3></blockquote>";
     endif;
     ?>
 

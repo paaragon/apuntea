@@ -13,6 +13,13 @@
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/cropper.js"></script>
         <?php
+        if (isset($styles)) {
+            foreach ($styles as $style) {
+                echo $style;
+            }
+        }
+        ?>
+        <?php
         if (isset($scripts)) {
             foreach ($scripts as $script) {
                 echo $script;

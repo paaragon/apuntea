@@ -28,9 +28,9 @@ ob_start();
             }
             ?>
         </select>
-        <label id="labelCarrera"><span class="fa fa-graduation-cap"></span>Carrera:</label>
+        <label id="labelCarrera"><span class="fa fa-graduation-cap"></span>Carrera:<img src="../img/loading.GIF" id="load-carrera"></label>
         <select id="selectCarrera" name="carrera" class="campo-formulario" required=""></select>
-        <label><span class="fa fa-graduation-cap"></span>Asignatura:</label>
+        <label><span class="fa fa-graduation-cap"></span>Asignatura:<img src="../img/loading.GIF" id="load-asignatura" class="loader"></label>
         <select id="selectAsignatura" name="asignatura" class="campo-formulario" required=""></select>
         <hr>
         <h3><span class="fa fa-key"></span>Permisos:</h3>
@@ -158,6 +158,7 @@ ob_start();
     });
 
     function getCarreras(id) {
+        $("#load-carrera").show();
         $("#selectCarrera").html("");
         $.post("../servicios/usuarioHandler.php?action=getCarreras", {idUniversidad: id}, function (data) {
             for (i = 0; i < data.length; i++) {
@@ -169,10 +170,12 @@ ob_start();
                     $("#selectCarrera").append("<option value='" + data[i]["id"] + "'>" + data[i]["nombre"] + "</option>");
                 }
             }
+            $("#load-carrera").hide();
         }, "json");
     }
 
     function getAsignaturas(id) {
+        $("#load-asignatura").show();
         $("#selectAsignatura").html("");
         $.post("../servicios/usuarioHandler.php?action=getAsignaturas", {idCarrera: id}, function (data) {
 
@@ -182,8 +185,10 @@ ob_start();
                     $("#selectAsignatura").append("<option value='" + data[i]["id"] + "'>" + data[i]["nombre"] + "</option>");
                 }
             } else {
+                $("#spanCarrera").remove();
                 $("#labelCarrera").append(" <span id='spanCarrera' class='text-warning'>Esta carrera aún no tiene asignaturas</span>");
             }
+            $("#load-asignatura").hide();
         }, "json");
 
     }

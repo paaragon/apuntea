@@ -68,7 +68,7 @@ ob_start();
             <?php
         endforeach;
     else:
-        echo "No hay recomendacion de contactos";
+        echo "<blockquote><h3>No hay recomendacion de contactos</h3></blockquote>";
     endif;
     ?>
 </div>

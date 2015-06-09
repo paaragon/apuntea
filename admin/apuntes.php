@@ -28,12 +28,12 @@ ob_start();
                 <option class='carrera' value='0' selected=''>Todas</option>
             </select>
         </form>
-    </div >
+    </div>
 
-
-    <?php
-    foreach ($variables["apuntes"] as $a) {
-        echo "<div class='fila apunte'>
+    <?php if (count($variables["apuntes"]) > 0): ?>
+        <?php
+        foreach ($variables["apuntes"] as $a) {
+            echo "<div class='fila apunte'>
                         <span class='nombre hide'>" . $a->titulo . "</span>
                         <span class='carrera hide'>" . $a->asignatura->carrera->id . "</span>
                         <span class='universidad hide'>" . $a->asignatura->carrera->universidad->id . "</span>
@@ -52,8 +52,11 @@ ob_start();
                         </p>
                         <div class='clear'></div>
                     </div>";
-    }
-    ?>
+        }
+        ?>
+    <?php else: ?>
+        <blockquote><h3>No hay apuntes.</h3></blockquote>
+    <?php endif; ?>
 </div>
 <div class="col-3">
     <h4 class="text-center"><strong>Apuntes en los últimos 7 meses</strong></h4>
@@ -113,10 +116,10 @@ foreach ($chart2 as $elem) {
         var canvas1 = document.getElementById("myChart1");
         canvas1.width = $("#myChart1").width() - 50;
         canvas1.height = 200;
-        
+
         var ctx = document.getElementById("myChart1").getContext("2d");
         var myLineChart2 = new Chart(ctx).Line(data1);
-        
+
         //Gráfica 2----------------------------------------------------
         var data2 = {
             labels: [<?php echo $etiquetas2 ?>],

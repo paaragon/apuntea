@@ -46,7 +46,7 @@ ob_start();
 
             idUniversidad = $("#select-universidad").val();
 
-            $.post("../servicios/adminHandler.php?action=getCarrerasFromUni&id=" + idUniversidad, function (data) {
+            $.post("../servicios/adminHandler.php?action=getCarreras", {idUniversidad: idUniversidad}, function (data) {
 
                 //Borramos su html interno
                 $("#select-carrera").html("");

@@ -44,7 +44,7 @@ ob_start();
         echo "</div>";
         ?>
     <?php else: ?>
-        <blockquote>Esta carrera todavía no tiene ninguna asignatura</blockquote>
+        <blockquote><h3>Esta carrera todavía no tiene ninguna asignatura</h3></blockquote>
     <?php endif; ?>
 </section>
 <script>

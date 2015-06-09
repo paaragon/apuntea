@@ -4,6 +4,7 @@ $controlador = new ControladorUsuario();
 
 $variables = $controlador->editarApunte();
 ob_start();
+
 if ($variables["apunte"] != null):
     ?>
     <form action="../servicios/usuarioHandler.php?action=guardarApunte" method="post" id="formulario">
@@ -94,7 +95,19 @@ if ($variables["apunte"] != null):
         <?php endif; ?>
     </form>
     <script>
+
+        function editando() {
+            $.post("../servicios/usuarioHandler.php?action=editando", {idApunte: <?php echo $variables["apunte"]->id ?>}, function (data) {
+
+            });
+        }
+
         $(document).on("ready", function () {
+
+            timer = setInterval(function () {
+                editando();
+            }, 2000);
+
             CKEDITOR.replace('area-apunte');
 
             if ($("#visAlgunos").is(':checked')) {
@@ -172,7 +185,7 @@ if ($variables["apunte"] != null):
     </script>
     <?php
 else:
-    echo '<div class="alert alert-warning">Este apunte no existe</div>';
+    echo '<div class="alert alert-warning">Este apunte no existe o está siendo editado en este momento por otro usuario.</div>';
 endif;
 $contenido = ob_get_clean();
 $scripts[] = '<script type="text/javascript" src="../util/ckeditor/ckeditor.js"></script>';

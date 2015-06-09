@@ -15,7 +15,7 @@ ob_start();
                 <div class="panel-body">
                     <div class="col-1">
                         <p>
-                            <img src="../img/universidades/<?php echo ($uni->imagenperfil != NULL) ? $uni->imagenperfil : "university.png" ?>" class="imagen-responsive">
+                            <img src="../img/universidades/perfil/<?php echo ($uni->imagenperfil != NULL) ? $uni->imagenperfil : "university.png" ?>" class="imagen-responsive">
                         </p>
                     </div>
                     <div class="col-7">

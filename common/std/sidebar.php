@@ -17,7 +17,6 @@
             <h4>Inicia sesión con una de estas redes sociales:</h4>
             <h1>
                 <a href="util/1353/fbconfig.php"><i class="fa fa-facebook-square"></i></a>
-                <a href="registrado.php"><i class="fa fa-twitter-square"></i></a>
             </h1>
         </blockquote>
         <hr>

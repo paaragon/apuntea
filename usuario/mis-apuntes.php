@@ -38,7 +38,6 @@ ob_start();
                         <span class="col-1"><?php echo $like->generateLike(); ?></span>
                         <span class="col-1"><?php echo $dislike->generateDislike(); ?></span>
                         <span class="col-1"><span class="fa fa-eye"></span> <?php echo $apunte["visualizaciones"] ?></span>
-                        <!--poner la clase en funcion de si es favorito o no   -->
                         <span class="col-1"><?php echo $fav->generateFav(); ?></span>
 
                         <span class="col-1"><span id="f<?php echo $apunte->id; ?>" class="fa fa-trash-o"></span></span>
@@ -48,7 +47,7 @@ ob_start();
 
             <?php } ?>
         <?php else: ?>
-            <blockquote><h4>No has subido ningún apunte.</h4></blockquote>
+            <blockquote><h3>No has subido ningún apunte.</h3></blockquote>
         <?php endif; ?>
     </div>
 </div>

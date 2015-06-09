@@ -18,7 +18,7 @@ ob_start();
                 <p>
                     <span class="col-10">
                         <span class="fa fa-users"></span>
-                        <strong><a href="perfil-usuario.php?id=<?php echo $amigo->id ?> "><?php echo $amigo->nombre . " " . $amigo->apellidos ?> @<?php echo $amigo->nick ?></a></strong> se ha añadido a tu lista de amigos
+                        <strong><em><a href="perfil-usuario.php?id=<?php echo $amigo->id ?> ">@<?php echo $amigo->nick ?></a></em> se ha añadido a tu lista de amigos</strong>
                     </span>
                 </p>
                 <div class="clear"></div>
@@ -56,6 +56,9 @@ ob_start();
                 <div class="clear"></div>
             </div>
         <?php endforeach; ?>
+
+        <?php if ($variables["nuevosAmigos"] == null) echo "<blockquote><h3>No tienes actividad reciente</h3></blockquote>" ?>
+
     </div>
 </div>
 <div class="col-3">

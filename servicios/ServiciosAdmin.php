@@ -84,6 +84,139 @@ class ServiciosAdmin {
         return $return;
     }
 
+    public function editarUniversidad() {
+
+        require __DIR__ . "/../util/CropAvatar.php";
+
+        $idUniversidad = filter_input(INPUT_POST, "idUniversidad", FILTER_SANITIZE_MAGIC_QUOTES);
+        $nombre = filter_input(INPUT_POST, "universidad", FILTER_SANITIZE_MAGIC_QUOTES);
+        $siglas = filter_input(INPUT_POST, "siglas", FILTER_SANITIZE_MAGIC_QUOTES);
+        $imgPerfil = $_FILES["img-perfil"];
+        $perfilData = filter_input(INPUT_POST, "img-perfil-data", FILTER_SANITIZE_MAGIC_QUOTES);
+        $perfilSrc = filter_input(INPUT_POST, "img-perfil-src", FILTER_SANITIZE_MAGIC_QUOTES);
+        $imgPortada = $_FILES["img-portada"];
+        $portadaData = filter_input(INPUT_POST, "img-portada-data", FILTER_SANITIZE_MAGIC_QUOTES);
+        $portadaSrc = filter_input(INPUT_POST, "img-portada-src", FILTER_SANITIZE_MAGIC_QUOTES);
+
+        $this->setUpDatabase();
+        $universidad = R::findOne('universidad', 'id=?', [$idUniversidad]);
+
+        $universidad->nombre = $nombre;
+        $universidad->siglas = $siglas;
+
+        if ($imgPerfil["name"] != "") {
+            $crop = new CropAvatar($perfilSrc, $perfilData, $imgPerfil, "universidades/perfil");
+
+            $namearr = explode("/", $crop->getResult());
+            unlink(__DIR__ . "/../img/universidades/perfil/" . $universidad->imagenperfil);
+            $universidad->imagenperfil = $namearr[4];
+        }
+
+        if ($imgPortada["name"] != "") {
+            $crop2 = new CropAvatar($portadaSrc, $portadaData, $imgPortada, "universidades/portada");
+
+            $namearr2 = explode("/", $crop2->getResult());
+            unlink(__DIR__ . "/../img/universidades/portada/" . $universidad->imagenportada);
+            $universidad->imagenportada = $namearr2[4];
+        }
+
+        try {
+            R::store($universidad);
+            $return = "admin/universidades.php";
+        } catch (Exception $e) {
+            $_SESSION["error"] = $e->getMessage();
+            $return = "admin/universidades.php";
+        }
+        R::close();
+        return $return;
+    }
+
+    public function borrarUniversidad() {
+
+        $idUniversidad = filter_input(INPUT_GET, "idUniversidad", FILTER_SANITIZE_MAGIC_QUOTES);
+
+        try {
+            $this->setUpDatabase();
+            //Ceamos un bean
+            $universidad = R::load('universidad', $idUniversidad);
+            //Borramos 
+            R::trash($universidad);
+            $_SESSION["exito"] = $universidad->nombre . "  borrada con éxito";
+            $return = "admin/universidades.php";
+        } catch (Exception $ex) {
+            $_SESSION["error"] = "Error al borrar la universidad elegida";
+            $return = "admin/universidades.php";
+        }
+        R::close();
+        return $return;
+    }
+
+    public function anadirUniversidad() {
+        require __DIR__ . "/../util/CropAvatar.php";
+        $nombre = filter_input(INPUT_POST, "universidad", FILTER_SANITIZE_MAGIC_QUOTES);
+        $siglas = filter_input(INPUT_POST, "siglas", FILTER_SANITIZE_MAGIC_QUOTES);
+        $imgPerfil = $_FILES["img-perfil"];
+        $perfilData = filter_input(INPUT_POST, "img-perfil-data", FILTER_SANITIZE_MAGIC_QUOTES);
+        $perfilSrc = filter_input(INPUT_POST, "img-perfil-src", FILTER_SANITIZE_MAGIC_QUOTES);
+        $imgPortada = $_FILES["img-portada"];
+        $portadaData = filter_input(INPUT_POST, "img-portada-data", FILTER_SANITIZE_MAGIC_QUOTES);
+        $portadaSrc = filter_input(INPUT_POST, "img-portada-src", FILTER_SANITIZE_MAGIC_QUOTES);
+
+        $this->setUpDatabase();
+
+        $universidad = R::dispense('universidad');
+        $universidad->nombre = $nombre;
+        $universidad->siglas = $siglas;
+
+        if ($imgPerfil["name"] != "") {
+            $crop = new CropAvatar($perfilSrc, $perfilData, $imgPerfil, "universidades/perfil");
+
+            $namearr = explode("/", $crop->getResult());
+            $universidad->imagenperfil = $namearr[4];
+        }
+
+        if ($imgPortada["name"] != "") {
+            $crop2 = new CropAvatar($portadaSrc, $portadaData, $imgPortada, "universidades/portada");
+
+            $namearr2 = explode("/", $crop2->getResult());
+            $universidad->imagenportada = $namearr2[4];
+        }
+
+        try {
+            $idUniversidad = R::store($universidad);
+            $_SESSION["exito"] = "Universidad insertada con éxito";
+            $return = "admin/perfil-universidad.php?id=" . $idUniversidad;
+        } catch (Exception $e) {
+            $_SESSION["error"] = $e->getMessage();
+            unlink(__DIR__ . "/../img/universidades/perfil/" . $universidad->imagenperfil);
+            unlink(__DIR__ . "/../img/universidades/portada/" . $universidad->imagenportada);
+            $return = "admin/universidad-nueva.php";
+        }
+        R::close();
+        return $return;
+    }
+
+    public function borrarUsuario($parametros) {
+
+        try {
+            $this->setUpDatabase();
+            $idUsuario = filter_input(INPUT_GET, "idUsuario", FILTER_SANITIZE_NUMBER_INT);
+            //Ceamos un bean
+            $usuario = R::findOne('usuario', 'id=?', [$idUsuario]);
+            unlink(__DIR__ . "/../img/usuarios/perfil/" . $usuario->avatar);
+            unlink(__DIR__ . "/../img/usuarios/portada/" . $usuario->imagenportada);
+            //Borramos 
+            R::trash($usuario);
+            $_SESSION["exito"] = "@" . $usuario->nick . "  borrado con éxito";
+            $return = "admin/usuarios.php";
+        } catch (Exception $ex) {
+            $_SESSION["error"] = "Error al borrar usuario";
+            $return = "admin/usuario.php";
+        }
+        R::close();
+        return $return;
+    }
+
     public function removeGrupo() {
         $idGrupo = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
         $this->setUpDatabase();
@@ -213,26 +346,18 @@ class ServiciosAdmin {
         return $return;
     }
 
-    public function getCarrerasFromUni($params) {
-
-        //Obtengo el id de la universidad
-        $idUniversidad = $params["id"];
-
-        //Conexcion a bd
+    public function getCarreras() {
+        $idUni = filter_input(INPUT_POST, "idUniversidad", FILTER_SANITIZE_NUMBER_INT);
         $this->setUpDatabase();
-
-        //Consulta de las carreras con el idUniveridad
-        $carreras = ($idUniversidad != "") ? R::find("carrera", " universidad_id = " . $idUniversidad) : R::findAll("carrera");
-
+        $carreras = R::findAll("carrera", " universidad_id = ? ORDER BY nombre", [$idUni]);
         R::close();
 
-        /*
-          Tengo qu devolver un jSon para que se entienda con el cliente
-         * R::exportAll= array de php(lo que va necesitar el cliente)
-         * json_encode = codificamos a jSon(para que se estandar)
-         * 
-         *          */
-        return json_encode(R::exportAll($carreras));
+        $arrCar = array();
+        foreach ($carreras as $car) {
+            $arrCar[] = $car->export();
+        }
+
+        return json_encode($arrCar);
     }
 
     public function cambiarConfiguracion() {
@@ -288,6 +413,7 @@ class ServiciosAdmin {
 
     private function setUpDatabase() {
         R::setup('mysql:host=' . DbConfig::$dbHost . ';dbname=' . DbConfig::$dbName, DbConfig::$dbUser, DbConfig::$dbPassword);
+        R::freeze(TRUE);
     }
 
 }

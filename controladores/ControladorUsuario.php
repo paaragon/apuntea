@@ -43,10 +43,9 @@ class ControladorUsuario {
         $this->variables["amigos"] = array();
         $pruebaAmigos = array();
 
-        $misBob = $usuario->alias('alice')->ownContactoList;
+        $misBob = R::findAll('contacto', 'alice_id = ? AND admitido = 1', [$idUsuario]);
         foreach ($misBob as $b) {
             $contacto = $b->fetchAs('usuario')->bob;
-            $this->variables["amigos"] = $contacto;
             $pruebaAmigos[] = $contacto;
             $datetime = strtotime($b->fecha);
             $current = strtotime('now');
@@ -55,10 +54,9 @@ class ControladorUsuario {
             }
         }
 
-        $misAlice = $usuario->alias('bob')->ownContactoList;
+        $misAlice = R::findAll('contacto', 'bob_id = ? AND admitido = 1', [$idUsuario]);
         foreach ($misAlice as $a) {
             $contacto = $a->fetchAs('usuario')->alice;
-            $this->variables["amigos"] = $contacto;
             $pruebaAmigos[] = $contacto;
             $datetime = strtotime($a->fecha);
             $current = strtotime('now');
@@ -87,7 +85,7 @@ class ControladorUsuario {
 
         $resultado = R::getAll(' SELECT *
                                   FROM usuario, usuariogrupo
-                                  WHERE TIMESTAMPDIFF(HOUR, NOW(), fecha) >= -24 and
+                                  WHERE TIMESTAMPDIFF(HOUR, NOW(), usuariogrupo.fecha) >= -24 and
                                   usuariogrupo.usuario_id != ? and usuario.id = usuariogrupo.usuario_id
                                   and usuariogrupo.grupo_id IN (SELECT usuariogrupo.grupo_id
                                                                 FROM usuariogrupo
@@ -98,6 +96,118 @@ class ControladorUsuario {
 
         R::close();
         return $this->variables;
+    }
+
+    public function misGrupos() {
+
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+
+        $this->setUpDatabase();
+
+        $grupos = R::findAll("usuariogrupo", " usuario_id = " . $idUsuario . " AND admitido = 1");
+
+        $this->variables["gruposUsuario"] = $grupos;
+
+        R::close();
+
+        return $this->variables;
+    }
+
+    public function countMiembros($idGrupo) {
+        return R::count('usuariogrupo', ' grupo_id = ? AND admitido = 1', [$idGrupo]);
+    }
+
+    public function misGruposSug() {
+
+
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+
+        $this->setUpDatabase();
+
+        $this->variables["gruposSugeridos"] = array();
+
+        $grupos = R::getAll('SELECT grupo.* FROM grupo WHERE id NOT IN (SELECT grupo_id FROM usuariogrupo WHERE usuario_id = ?) AND privacidad != 0', [$idUsuario]);
+
+        $this->variables["gruposSugeridos"] = $grupos;
+
+        R::close();
+
+        return $this->variables;
+    }
+
+    public function grupo() {
+
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+        $this->setUpDatabase();
+        $idGrupo = (isset($_GET["id"])) ? filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT) : "";
+
+        $this->variables["grupo"] = R::findOne('grupo', " id=? AND (privacidad=2 OR id IN (SELECT grupo_id FROM usuariogrupo WHERE usuario_id = ? AND admitido = 1))", [$idGrupo, $idUsuario]);
+        $grupo = $this->variables["grupo"];
+
+        $usuarios = R::findAll("usuariogrupo", " grupo_id = " . $idGrupo . " AND admitido = 1");
+        $this->variables["usuarios"] = $usuarios;
+
+        $apuntesGrupo = R::findAll("apuntegrupo", " grupo_id=? ", [$idGrupo]);
+
+        if (isset($apuntesGrupo)) {
+            foreach ($apuntesGrupo as $apunte) {
+                $apuntes = R::find("apunte", " id =? ", [$apunte->apunte_id]);
+            }
+        }
+        if (isset($apuntes)) {
+            $this->variables["apuntes"] = $apuntes;
+        } else {
+            $this->variables["apuntes"] = array();
+        }
+
+        $this->variables["misapuntes"] = array();
+        $this->variables["misapuntes"] = R::findAll('apunte', ' usuario_id = ? AND id NOT IN(SELECT apunte_id FROM apuntegrupo WHERE grupo_id = ?)', [$idUsuario, $idGrupo]);
+
+
+        $comentarios = R::findAll('comentariogrupo', " grupo_id =? ", [$idGrupo]);
+        $this->variables["comentarios"] = $comentarios;
+
+
+        R::close();
+        return $this->variables;
+    }
+
+    public function grupoAdmin() {
+
+
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+        $idGrupo = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
+
+        $this->setUpDatabase();
+
+        if (isset($_GET["id"])) {
+
+            $this->variables["grupo"] = R::findOne('grupo', " id =? AND id IN (SELECT grupo_id FROM usuariogrupo WHERE usuario_id = ? AND isadmin = 1)", [$idGrupo, $idUsuario]);
+
+            $usuarios = R::findAll("usuariogrupo", " grupo_id = " . $idGrupo . " AND admitido = 1");
+            $this->variables["usuarios"] = $usuarios;
+
+            $apuntesGrupo = R::findAll("apuntegrupo", " grupo_id =? ", [$idGrupo]);
+
+            $this->variables["apuntes"] = array();
+            if (isset($apuntesGrupo)) {
+                foreach ($apuntesGrupo as $apunte) {
+                    $this->variables["apuntes"][] = R::findOne("apunte", " id =? ", [$apunte->apunte_id]);
+                }
+            }
+            $this->variables["misapuntes"] = array();
+            $this->variables["misapuntes"] = R::findAll('apunte', ' usuario_id = ? AND id NOT IN(SELECT apunte_id FROM apuntegrupo WHERE grupo_id = ?)', [$idUsuario, $idGrupo]);
+
+            $comentarios = R::findAll("comentariogrupo", " grupo_id =? ", [$idGrupo]);
+            $this->variables["comentarios"] = $comentarios;
+
+            $peticiones = R::findAll("usuariogrupo", " grupo_id = " . $idGrupo . " AND admitido = 0");
+            $this->variables["peticiones"] = $peticiones;
+            R::close();
+            return $this->variables;
+        } else {
+            return $this->variables;
+        }
     }
 
     public function resultadoBusqueda() {
@@ -119,6 +229,7 @@ class ControladorUsuario {
 
         $resultadocarreras = R::find('carrera', ' LOWER(carrera.nombre) LIKE :nombre OR LOWER(carrera.rama) LIKE :rama', array(':nombre' => '%' . strtolower($busqueda) . '%', ':rama' => '%' . strtolower($busqueda) . '%'));
 
+        $carapuntes = array();
         foreach ($resultadocarreras as $car) {
             $acum = 0;
             $asig = $car->ownAsignaturaList;
@@ -148,6 +259,8 @@ class ControladorUsuario {
         $resultadouniversidades = R::findAll('universidad', 'LOWER(universidad.nombre) LIKE :nombre OR LOWER(universidad.descripcion) LIKE :desc '
                         . 'OR LOWER(universidad.siglas) LIKE :siglas', array(':nombre' => '%' . strtolower($busqueda) . '%', ':desc' => $busqueda, ':siglas' => $busqueda));
 
+        $uniapun = array();
+        $unialum = array();
         foreach ($resultadouniversidades as $uni) {
             $acumal = 0;
             $acumapun = 0;
@@ -203,8 +316,10 @@ class ControladorUsuario {
             $this->variables["contactosUsuario"][$contacto->nombre] = $contacto;
         }
 
-        //Ordenamos los contactos del array
-        usort($this->variables["contactosUsuario"], "cmp2");
+        if (isset($this->variables["contactosUsuario"])) {
+            //Ordenamos los contactos del array
+            usort($this->variables["contactosUsuario"], "cmp2");
+        }
 
         //Cerramos conexioon
         R::close();
@@ -231,7 +346,20 @@ class ControladorUsuario {
         $idApunte = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
         $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
 
-        $this->variables["apunte"] = R::findOne("apunte", ' id = ? AND (usuario_id = ? OR id IN (SELECT apunte_id FROM usuariointeractuaapunte WHERE usuario_id = ? AND permiso > 1))', [$idApunte, $idUsuario, $idUsuario]);
+        $this->variables["apunte"] = R::findOne("apunte", ' id = ? '
+                . 'AND ('
+                    . 'usuario_id = ? '
+                    . 'OR id IN ('
+                        . 'SELECT apunte_id '
+                        . 'FROM usuariointeractuaapunte '
+                        . 'WHERE usuario_id = ? '
+                        . 'AND permiso > 1)'
+                . ') '
+                . 'AND ('
+                    . 'TIMESTAMPDIFF(SECOND, ultimaedicion, NOW()) >= 15 '
+                    . 'OR TIMESTAMPDIFF(SECOND, ultimaedicion, NOW()) < 15 AND ultimoeditor = ?'
+                . ')', [$idApunte, $idUsuario, $idUsuario, $idUsuario]);
+        
         $this->variables["usuario"] = R::findOne('usuario', 'id=?', [$idUsuario]);
 
         $this->variables["interaccion"] = R::findOne('usuariointeractuaapunte', ' usuario_id = ? AND apunte_id = ?', [$idUsuario, $idApunte]);
@@ -269,6 +397,17 @@ class ControladorUsuario {
         $this->variables["mensajes"] = R::findAll('mensaje', ' receptor_id = ? AND emisor_id = ? OR emisor_id = ? AND receptor_id = ? ORDER BY fecha', [$idUsuario, $idContacto, $idUsuario, $idContacto]);
         $this->variables["contacto"] = R::findOne('usuario', ' id = ?', [$idContacto]);
 
+        foreach ($this->variables["mensajes"] as $m) {
+            $m->visto = 1;
+            R::store($m);
+        }
+
+        $this->variables["mensajes-sin-leer"] = array();
+        foreach ($this->variables["contactos"] as $contacto) {
+
+            $this->variables["mensajes-sin-leer"][$contacto->id] = R::count('mensaje', 'receptor_id = ? AND emisor_id = ? AND visto = 0', [$idUsuario, $contacto->id]);
+        }
+        R::close();
         return $this->variables;
     }
 
@@ -342,7 +481,7 @@ class ControladorUsuario {
         $currentUser = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
         $idUsuario = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
         $this->setUpDatabase();
-        $this->variables["usuario"] = R::findOne('usuario', ' (privacidadperfil = 1 OR id IN (SELECT bob_id FROM contacto WHERE alice_id = ?) OR id IN (SELECT alice_id FROM contacto WHERE bob_id = ?)) AND id = ?', [$currentUser, $currentUser, $idUsuario]);
+        $this->variables["usuario"] = R::findOne('usuario', ' (id = ? OR privacidadperfil = 1 OR id IN (SELECT bob_id FROM contacto WHERE alice_id = ?) OR id IN (SELECT alice_id FROM contacto WHERE bob_id = ?)) AND id = ?', [$currentUser, $currentUser, $currentUser, $idUsuario]);
         $this->variables["apuntes"] = R::findAll('apunte', ' usuario_id = ? AND (permisovisualizacion = 2 OR id IN (SELECT apunte_id FROM usuariointeractuaapunte WHERE usuario_id = ? AND permiso != 0))', [$idUsuario, $currentUser]);
 
         $this->variables["currentuser"] = $currentUser;
@@ -368,39 +507,42 @@ class ControladorUsuario {
 
             $this->setUpDatabase();
 
-            $apunte = R::load('apunte', $idApunte);
-            $usuario = R::load('usuario', $idUsuario);
+            $apunte = R::findOne('apunte', ' id = ? AND (usuario_id = ? OR id IN (SELECT apunte_id FROM usuariointeractuaapunte WHERE permiso > 0 AND usuario_id = ?))', [$idApunte, $idUsuario, $idUsuario]);
 
-            if ($apunte->usuario_id != $usuario->id) {
+            if ($apunte != null) {
+                $usuario = R::load('usuario', $idUsuario);
 
-                $interaccion = R::findOne('usuariointeractuaapunte', ' usuario_id = ? AND apunte_id = ?', [$idUsuario, $idApunte]);
+                if ($apunte->usuario_id != $usuario->id) {
 
-                if ($interaccion == null) {
+                    $interaccion = R::findOne('usuariointeractuaapunte', ' usuario_id = ? AND apunte_id = ?', [$idUsuario, $idApunte]);
 
-                    $interaccion = R::dispense('usuariointeractuaapunte');
+                    if ($interaccion == null) {
 
-                    $interaccion->usuario_id = $idUsuario;
-                    $interaccion->apunte_id = $idApunte;
-                    $interaccion->visto = 1;
-                    $apunte->visualizaciones++;
+                        $interaccion = R::dispense('usuariointeractuaapunte');
 
-                    R::store($interaccion);
-                    R::store($apunte);
-                } else if ($interaccion->visto == 0) {
+                        $interaccion->usuario_id = $idUsuario;
+                        $interaccion->apunte_id = $idApunte;
+                        $interaccion->visto = 1;
+                        $apunte->visualizaciones++;
 
-                    $interaccion->visto = 1;
-                    $apunte->visualizaciones++;
+                        R::store($interaccion);
+                        R::store($apunte);
+                    } else if ($interaccion->visto == 0) {
 
-                    R::store($interaccion);
-                    R::store($apunte);
+                        $interaccion->visto = 1;
+                        $apunte->visualizaciones++;
+
+                        R::store($interaccion);
+                        R::store($apunte);
+                    }
+
+                    $this->variables["interaccion"] = $interaccion;
                 }
 
-                $this->variables["interaccion"] = $interaccion;
+
+                $this->variables["apunte"] = $apunte;
+                $this->variables["comentarios"] = R::findAll('comentarioapunte', 'apunte_id = ? ORDER BY fecha DESC', [$idApunte]);
             }
-
-            $this->variables["apunte"] = $apunte;
-            $this->variables["comentarios"] = R::findAll('comentarioapunte', 'apunte_id = ? ORDER BY fecha DESC', [$idApunte]);
-
             R::close();
             return $this->variables;
         } catch (Exception $e) {
@@ -535,7 +677,7 @@ class ControladorUsuario {
             $this->variables["carreras"] = R::findAll('carrera', ' universidad_id = ? ORDER BY rama, nombre ASC', [$id]);
         }
 
-        $this->variables["ramas"] = array(array("Artes y humanidades", "fa-paint-brush"), array("Ciencias", "fa-rocket"), array("Ciencias de la salud", "fa-user-md"), array("Ingeniería y arquitectura", "fa-cogs"), array("Ciencias sociales y jurídicas", "fa-gavel"));
+        $this->variables["ramas"] = array("Artes y humanidades" => "fa-paint-brush", "Ciencias" => "fa-rocket", "Ciencias de la salud" => "fa-user-md", "Ingeniería y arquitectura" => "fa-cogs", "Ciencias sociales y jurídicas" => "fa-gavel");
         R::close();
         return $this->variables;
     }
@@ -588,15 +730,21 @@ class ControladorUsuario {
 
         $this->variables["usuario-actual"] = R::load('usuario', $_SESSION["idUsuario"]);
         $this->variables["n-peticiones"] = R::count('contacto', ' bob_id = ? AND admitido = 0', [$_SESSION["idUsuario"]]);
+        $this->variables["n-mensajes"] = R::count('mensaje', 'receptor_id = ? AND visto = 0', [$_SESSION["idUsuario"]]);
 
         if ($this->variables["usuario-actual"]->carrera_id == "" || $this->variables["usuario-actual"]->email == "") {
             $_SESSION["error"] = "Su perfil no contiene toda la información necesaria para mostrar toda la funcionalidad de apuntea. Por favor, entra en \"Mi configuración\" para completar tu perfil";
+            if (!strpos($_SERVER['REQUEST_URI'], "mi-configuracion.php")) {
+                header("location: mi-configuracion.php");
+                exit();
+            }
         }
     }
 
     private function setUpDatabase() {
-        R::setup('mysql:host=' . DbConfig::$dbHost . ';dbname=' . DbConfig::$dbName, DbConfig::$dbUser, DbConfig::$dbPassword);
-        $this->cargarComunes();
+            R::setup('mysql:host=' . DbConfig::$dbHost . ';dbname=' . DbConfig::$dbName, DbConfig::$dbUser, DbConfig::$dbPassword);
+            R::freeze(TRUE);
+            $this->cargarComunes();
     }
 
     private function errorPage() {

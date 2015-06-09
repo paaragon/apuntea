@@ -25,31 +25,34 @@ ob_start();
     </select>
 </form>
 <section>
+    <?php if (count($variables["universidades"]) > 0): ?>
+        <?php
+        $i = 0;
+        echo '<div class="rama-conocimiento">';
+        echo "<h2><span class='fa " . $variables['ramas'][$i][1] . "'></span>" . $variables['ramas'][$i][0] . "</h2>";
+        echo '<hr>';
+        echo '<ul>';
+        $rama = $variables["ramas"][$i][0];
 
-    <?php
-    $i = 0;
-    echo '<div class="rama-conocimiento">';
-    echo "<h2><span class='fa " . $variables['ramas'][$i][1] . "'></span>" . $variables['ramas'][$i][0] . "</h2>";
-    echo '<hr>';
-    echo '<ul>';
-    $rama = $variables["ramas"][$i][0];
-
-    foreach ($variables["carreras"] as $carrera) {
-        if ($carrera->rama != $rama) {
-            $i++;
-            echo "</ul>";
-            echo "</div>";
-            echo '<div class="rama-conocimiento">';
-            echo "<h2><span class='fa " . $variables['ramas'][$i][1] . "'></span>" . $carrera->rama . "</h2>";
-            echo '<hr>';
-            echo '<ul>';
-            $rama = $carrera->rama;
+        foreach ($variables["carreras"] as $carrera) {
+            if ($carrera->rama != $rama) {
+                $i++;
+                echo "</ul>";
+                echo "</div>";
+                echo '<div class="rama-conocimiento">';
+                echo "<h2><span class='fa " . $variables['ramas'][$i][1] . "'></span>" . $carrera->rama . "</h2>";
+                echo '<hr>';
+                echo '<ul>';
+                $rama = $carrera->rama;
+            }
+            echo '<li class="carrera"><a class="universidad" href="universidad.php?id=' . $carrera->universidad_id . '">' . $carrera->universidad->siglas . '</a> / <a class="car" href="carrera.php?id=' . $carrera->id . '">' . $carrera->nombre . '</a></li>';
         }
-        echo '<li class="carrera"><a class="universidad" href="universidad.php?id=' . $carrera->universidad_id . '">' . $carrera->universidad->siglas . '</a> / <a class="car" href="carrera.php?id=' . $carrera->id . '">' . $carrera->nombre . '</a></li>';
-    }
-    echo "</ul>";
-    echo "</div>";
-    ?>
+        echo "</ul>";
+        echo "</div>";
+        ?>
+    <?php else: ?>
+        <blockquote><h3>No hay carreras.</h3></blockquote>
+    <?php endif; ?>
 </section>
 <script>
     $(document).on("ready", function () {

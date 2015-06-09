@@ -6,48 +6,56 @@ $variables = $controlador->carrera();
 
 ob_start();
 ?>
-<section>
-    <h1><?php echo $variables["carrera"]->nombre ?></h1>
-</section>
-<ul class="breadcrumb">
-    <li><a href="index.php">Apuntea</a></li>
-    <li><a href="universidad.php?id=<?php echo $variables["carrera"]->universidad_id ?>"><?php echo $variables["carrera"]->universidad->siglas ?></a></li>
-    <li><?php echo $variables["carrera"]->nombre ?></li>
-</ul>
-<hr>
-<form action="carrera.php" method="post">
-    <input class="campo-formulario" name="buscar" type="text" placeholder="Buscar asignatura..." id="buscar">
-</form>
-<section>
-    <?php if (count($variables["asignaturas"]) > 0): ?>
-        <?php
-        $i = array_values($variables["asignaturas"])[0]->curso;
-        echo '<div>';
-        echo "<h2>" . $i . "º Curso</h2>";
-        echo '<hr>';
-        echo '<ul>';
-        $curso = $i;
+<?php if (isset($variables["carrera"])): ?>
+    <section>
+        <h1><?php echo $variables["carrera"]->nombre ?></h1>
+    </section>
+    <ul class="breadcrumb">
+        <li><a href="index.php">Apuntea</a></li>
+        <li><a href="universidad.php?id=<?php echo $variables["carrera"]->universidad_id ?>"><?php echo $variables["carrera"]->universidad->siglas ?></a></li>
+        <li><?php echo $variables["carrera"]->nombre ?></li>
+    </ul>
+    <hr>
+    <form action="carrera.php" method="post">
+        <input class="campo-formulario" name="buscar" type="text" placeholder="Buscar asignatura..." id="buscar">
+    </form>
+    <section>
+        <?php if (count($variables["asignaturas"]) > 0): ?>
+            <?php
+            $i = array_values($variables["asignaturas"])[0]->curso;
+            echo '<div>';
+            echo "<h2>" . $i . "º Curso</h2>";
+            echo '<hr>';
+            echo '<ul>';
+            $curso = $i;
 
-        foreach ($variables["asignaturas"] as $asignatura) {
-            if ($asignatura->curso != $curso) {
-                $i++;
-                echo "</ul>";
-                echo "</div>";
-                echo '<div>';
-                echo "<h2><h2>" . $i . "º Curso</h2>";
-                echo '<hr>';
-                echo '<ul>';
-                $curso = $i;
+            foreach ($variables["asignaturas"] as $asignatura) {
+                if ($asignatura->curso != $curso) {
+                    $i++;
+                    echo "</ul>";
+                    echo "</div>";
+                    echo '<div>';
+                    echo "<h2><h2>" . $i . "º Curso</h2>";
+                    echo '<hr>';
+                    echo '<ul>';
+                    $curso = $i;
+                }
+                echo '<li class="asignatura"><a href="asignatura.php?id=' . $asignatura->id . '">' . $asignatura->nombre . '</a></li>';
             }
-            echo '<li class="asignatura"><a href="asignatura.php?id=' . $asignatura->id . '">' . $asignatura->nombre . '</a></li>';
-        }
-        echo "</ul>";
-        echo "</div>";
-        ?>
-    <?php else: ?>
-        <blockquote>Esta carrera todavía no tiene ninguna asignatura</blockquote>
-    <?php endif; ?>
-</section>
+            echo "</ul>";
+            echo "</div>";
+            ?>
+        <?php else: ?>
+            <blockquote>Esta carrera todavía no tiene ninguna asignatura</blockquote>
+        <?php endif; ?>
+    </section>
+<?php else: ?>
+    <ul class="breadcrumb">
+        <li><a href="index.php">Apuntea</a></li>
+    </ul>
+    <hr>
+    <blockquote><h3>Asignatura no encontrada.</h3></blockquote>
+<?php endif; ?>
 <script>
     $(document).on("ready", function () {
 

@@ -20,12 +20,12 @@ ob_start();
 <section>
     <?php if (count($variables["carreras"]) > 0): ?>
         <?php
-        $i = 0;
+        $primeraRama = current($variables["carreras"])->rama;
         echo '<div class="rama-conocimiento">';
-        echo "<h2><span class='fa " . $variables['ramas'][$i][1] . "'></span>" . $variables['ramas'][$i][0] . "</h2>";
+        echo "<h2><span class='fa " . $variables['ramas'][$primeraRama] . "'></span>" . $primeraRama . "</h2>";
         echo '<hr>';
         echo '<ul>';
-        $rama = $variables["ramas"][$i][0];
+        $rama = $primeraRama;
 
         foreach ($variables["carreras"] as $carrera) {
             if ($carrera->rama != $rama) {
@@ -33,7 +33,7 @@ ob_start();
                 echo "</ul>";
                 echo "</div>";
                 echo '<div class="rama-conocimiento">';
-                echo "<h2><span class='fa " . $variables['ramas'][$i][1] . "'></span>" . $carrera->rama . "</h2>";
+                echo "<h2><span class='fa " . $variables['ramas'][$carrera->rama] . "'></span>" . $carrera->rama . "</h2>";
                 echo '<hr>';
                 echo '<ul>';
                 $rama = $carrera->rama;

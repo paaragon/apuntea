@@ -49,51 +49,6 @@ ob_start();
                         <?php echo $variables["usuario"]->estado ?>
                     </p>
                 </blockquote>
-                <!--Principal social dentro del pefil-->
-                <div class="col-sm-7">
-                    <h2><i class="fa fa-child"></i> Social</h2>
-                    <hr>
-                    <div class="fila">
-                        <p>
-                            <span class="col-10">
-                                <span class="fa fa-smile-o"></span>
-                                <strong>Actividad social reciente hace unos momentos</strong>
-
-                            </span>
-                            <span class="col-2"><span class="fa fa-eye"></span> 999</span>
-                            <span class="clear"></span>
-                            <span class="activity-time">Hace unos minutos</span>
-                        </p>
-                    </div>
-                </div>
-                <!--Principal actividades dentro del perfil-->
-                <div class="col-sm-5">
-                    <h2><i class="fa fa-cogs"></i> Actividades</h2>
-                    <hr>
-
-
-                    <div class="fila">
-                        <p>
-                            <span class="col-10">
-                                <span class="fa fa-users"></span>
-                                <strong><a href="mis-contactos.php">Se ha hecho amigo de Pepito </a></strong>
-                            </span
-                            <span class="col-2"><span class="fa fa-eye"></span> 999</span>
-                            <span class="clear"></span>
-                        </p>
-                    </div>
-
-                    <div class="fila">
-                        <p>
-                            <span class="col-10">
-                                <span class="fa fa-file-text-o"></span>
-                                <strong><a href="ver-apunte.php">Publicacion de apuntes</a></strong>
-                            </span
-                            <span class="col-2"><span class="fa fa-eye"></span> 999</span>
-                            <span class="clear"></span>
-                        </p>
-                    </div>
-                </div>
                 <div class="clear"></div>
                 <div>
                     <h3><span class="fa fa-file-text-o"></span> Apuntes:</h3>

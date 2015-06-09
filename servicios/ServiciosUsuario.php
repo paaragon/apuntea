@@ -14,17 +14,49 @@ class ServiciosUsuario {
 
         $this->setUpDatabase();
         $id = filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
-        //borrar etiquetas
-        $etiquetas = R::find('etiquetaapunte', 'apunte_id= :idapunte', array(':idapunte' => $id));
-        R::trashAll($etiquetas);
-        //borrar interactuacion
-        $interactuacion = R::find('usuariointeractuaapunte', 'apunte_id= :idapunte', array(':idapunte' => $id));
-        R::trashAll($interactuacion);
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+//borrar interactuacion
+        $interaccion = R::find('usuariointeractuaapunte', 'apunte_id= :idapunte', array(':idapunte' => $id));
+        R::trashAll($interaccion);
 
-        //borrar apunte
-        $apunte = R::load('apunte', $id);
+//borrar apunte
+        $apunte = R::findOne('apunte', "id = ? AND usuario_id = ?", [$id, $idUsuario]);
 
         R::trash($apunte);
+
+        R::close();
+    }
+
+    public function editando() {
+
+        $idApunte = filter_input(INPUT_POST, "idApunte", FILTER_SANITIZE_NUMBER_INT);
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+
+        $this->setUpDatabase();
+
+        $apunte = R::findOne("apunte", ' id = ? '
+                        . 'AND ('
+                        . 'usuario_id = ? '
+                        . 'OR id IN ('
+                        . 'SELECT apunte_id '
+                        . 'FROM usuariointeractuaapunte '
+                        . 'WHERE usuario_id = ? '
+                        . 'AND permiso > 1)'
+                        . ') '
+                        . 'AND ('
+                        . 'TIMESTAMPDIFF(SECOND, ultimaedicion, NOW()) >= 15 '
+                        . 'OR TIMESTAMPDIFF(SECOND, ultimaedicion, NOW()) < 15 AND ultimoeditor = ?'
+                        . ')', [$idApunte, $idUsuario, $idUsuario, $idUsuario]);
+        print_r($apunte);
+        $apunte->ultimaedicion = date("Y-m-d H:i:s", time());
+        $apunte->ultimoeditor = $idUsuario;
+
+        try {
+            R::store($apunte);
+            return json_encode(true);
+        } catch (Exceptio $e) {
+            return json_encode(false);
+        }
 
         R::close();
     }
@@ -73,7 +105,7 @@ class ServiciosUsuario {
 
         $interaccion = R::findOne('usuariointeractuaapunte', ' usuario_id = ? AND apunte_id = ?', [$idUsuario, $idApunte]);
         if ($interaccion->permiso == 3 || $apunte->usuario_id == $idUsuario) {
-            //Elimino los permisos anteriores
+//Elimino los permisos anteriores
             $visualizaciones = R::findAll('usuariointeractuaapunte', 'apunte_id = ? AND permiso = 1', [$idApunte]);
             foreach ($visualizaciones as $visualizacion) {
                 $visualizacion->permiso = 0;
@@ -91,14 +123,14 @@ class ServiciosUsuario {
                 R::store($edicionpermisos);
             }
 
-            //Doy los nuevos permisos
+//Doy los nuevos permisos
             if ($permiso1 != 0 && $permiso1 != 2) {
                 $lectores = $_POST["lector"];
                 foreach ($lectores as $l) {
                     $idLector = filter_var($l, FILTER_SANITIZE_NUMBER_INT);
 
-                    if (R::count("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [ $idLector, $idApunte]) > 0) {
-                        $interaccion = R::findOne("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [ $idLector, $idApunte]);
+                    if (R::count("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [$idLector, $idApunte]) > 0) {
+                        $interaccion = R::findOne("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [$idLector, $idApunte]);
                     } else {
                         $interaccion = R::dispense("usuariointeractuaapunte");
                         $interaccion->apunte_id = $idApunte;
@@ -115,8 +147,8 @@ class ServiciosUsuario {
                 foreach ($modificadores as $m) {
                     $idModificador = filter_var($m, FILTER_SANITIZE_NUMBER_INT);
 
-                    if (R::count("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [ $idModificador, $idApunte]) > 0) {
-                        $interaccion = R::findOne("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [ $idModificador, $idApunte]);
+                    if (R::count("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [$idModificador, $idApunte]) > 0) {
+                        $interaccion = R::findOne("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [$idModificador, $idApunte]);
                     } else {
                         $interaccion = R::dispense("usuariointeractuaapunte");
                         $interaccion->apunte_id = $idApunte;
@@ -133,8 +165,8 @@ class ServiciosUsuario {
                 foreach ($permisores as $p) {
                     $idPermisor = filter_var($p, FILTER_SANITIZE_NUMBER_INT);
 
-                    if (R::count("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [ $idPermisor, $idApunte]) > 0) {
-                        $interaccion = R::findOne("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [ $idPermisor, $idApunte]);
+                    if (R::count("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [$idPermisor, $idApunte]) > 0) {
+                        $interaccion = R::findOne("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [$idPermisor, $idApunte]);
                     } else {
                         $interaccion = R::dispense("usuariointeractuaapunte");
                         $interaccion->apunte_id = $idApunte;
@@ -152,6 +184,242 @@ class ServiciosUsuario {
 
         $_SESSION["exito"] = "Apunte guardado con éxito";
         return "usuario/editar-apunte.php?id=" . $idApunte;
+    }
+
+    public function anadirComentarioGrupo($parametros) {
+
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+
+        $this->setUpDatabase();
+
+        $idGrupo = $parametros["idGrupo"];
+        $fecha = date("Y-m-d h:i:s", time());
+        $texto = filter_input(INPUT_POST, "comentario", FILTER_SANITIZE_MAGIC_QUOTES);
+        $admin = (isset($_POST["isAdmin"])) ? "-admin" : "";
+
+
+        $comentario = R::dispense('comentariogrupo');
+
+        $comentario->fecha = $fecha;
+        $comentario->usuario_id = $idUsuario;
+        $comentario->grupo_id = $idGrupo;
+        $comentario->texto = $texto;
+        R::store($comentario);
+        $_SESSION["exito"] = "Comentario publicado";
+        $return = "usuario/ver-grupo" . $admin . ".php?id=" . $idGrupo;
+
+        R::close();
+        return $return;
+    }
+
+    public function editarGrupo() {
+
+        $idGrupo = filter_input(INPUT_POST, "idGrupo", FILTER_SANITIZE_NUMBER_INT);
+        $privacidad = filter_input(INPUT_POST, "privacidad", FILTER_SANITIZE_NUMBER_INT);
+
+        $this->setUpDatabase();
+        try {
+            $grupo = R::findOne("grupo", 'id=?', [$idGrupo]);
+            $grupo->privacidad = $privacidad;
+            $_SESSION["exito"] = "Privacidad cambiada con éxito";
+            R::store($grupo);
+        } catch (Exception $e) {
+            $_SESSION["error"] = "Error modificando el grupo";
+        }
+
+
+        R::close();
+
+        return "usuario/ver-grupo-admin.php?id=" . $idGrupo;
+    }
+
+    public function peticionGrupo($params) {
+
+        $idGrupo = filter_var($params["idGrupo"], FILTER_SANITIZE_NUMBER_INT);
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+
+        $this->setUpDatabase();
+
+        $usuariogrupo = R::findOne('usuariogrupo', 'usuario_id = ? AND grupo_id = ?', [$idUsuario, $idGrupo]);
+
+        if (!isset($usuariogrupo)) {
+            $grupo = R::findOne("grupo", 'id=?', [$idGrupo]);
+
+            if ($grupo->privacidad == 1) {
+                $return = "usuario/permiso-grupo-pedido.php";
+                $admitido = 0;
+            } else if ($grupo->privacidad == 2) {
+                $return = "usuario/ver-grupo.php?id=" . $idGrupo;
+                $admitido = 1;
+            }
+
+            $usergrupo = R::dispense('usuariogrupo');
+
+            $usergrupo->fecha = date("Y-m-d h:i:s", time());
+            $usergrupo->usuario_id = $idUsuario;
+            $usergrupo->grupo_id = $idGrupo;
+            $usergrupo->admitido = $admitido;
+            $usergrupo->isadmin = 0;
+
+            try {
+                R::store($usergrupo);
+                $_SESSION["exito"] = "Peticion enviada";
+            } catch (Exception $e) {
+                $_SESSION["error"] = "Error al enviar la petición";
+                $return = "usuario/mis-grupos-sugeridos.php";
+            }
+            R::close();
+        } else {
+
+            $_SESSION["error"] = "Ya has realizado una petición a para entrar a este grupo.";
+            $return = "usuario/mis-grupos-sugeridos.php";
+        }
+        return $return;
+    }
+
+    public function anadirUsuarioGrupo($parametros) {
+
+        $nick = filter_input(INPUT_POST, "nick", FILTER_SANITIZE_MAGIC_QUOTES);
+        $idGrupo = $parametros["idGrupo"];
+        $this->setUpDatabase();
+        try {
+            $usuario = R::findOne('usuario', " nick=? ", [$nick]);
+            $usergrupo = R::dispense('usuariogrupo');
+            $usergrupo->grupo_id = $idGrupo;
+            $usergrupo->usuario_id = $usuario->id;
+            $usergrupo->isadmin = 0;
+            $usergrupo->admitido = 1;
+            R::store($usergrupo);
+            $_SESSION["exito"] = "Usuario añadido";
+            $return = "usuario/ver-grupo-admin.php?id=" . $idGrupo;
+        } catch (Exception $e) {
+            $_SESSION["error"] = "No es posible añadir este usuario al grupo";
+            $return = "usuario/ver-grupo-admin.php?id=" . $idGrupo;
+        }
+
+        return $return;
+    }
+
+    public function anadirApunteGrupo($parametros) {
+
+        $idGrupo = filter_var($parametros["idGrupo"], FILTER_SANITIZE_NUMBER_INT);
+        $idApunte = filter_input(INPUT_POST, "apunte", FILTER_SANITIZE_NUMBER_INT);
+        $isadmin = filter_input(INPUT_GET, "admin", FILTER_SANITIZE_NUMBER_INT);
+
+        $this->setUpDatabase();
+        if (R::count('apuntegrupo', 'apunte_id = ? AND grupo_id = ?', [$idApunte, $idGrupo]) == 0) {
+            $apunte = R::dispense('apuntegrupo');
+            $apunte->apunte_id = $idApunte;
+            $apunte->grupo_id = $idGrupo;
+            R::store($apunte);
+            $_SESSION["exito"] = "Apunte añadido al grupo.";
+        } else {
+            $_SESSION["error"] = "Apunte ya perteneciente al grupo.";
+        }
+        R::close();
+
+        $admin = ($isadmin == 1) ? "-admin" : "";
+
+        $return = "usuario/ver-grupo" . $admin . ".php?id=" . $idGrupo;
+
+        return $return;
+    }
+
+    public function aceptarPeticionGrupo($parametros) {
+
+        $this->setUpDatabase();
+        $idGrupo = $parametros["idGrupo"];
+        $idUsuario = $parametros["idUsuario"];
+
+        try {
+            $usuario = R::findOne('usuariogrupo', "grupo_id = " . $idGrupo . " AND usuario_id = " . $idUsuario);
+            $usuario->admitido = 1;
+            R::store($usuario);
+            $_SESSION["exito"] = "Usuario admitido en el grupo";
+            $return = "usuario/ver-grupo-admin.php?id=" . $idGrupo;
+        } catch (Exception $ex) {
+            $_SESSION["error"] = "Error al aceptar la petición";
+            $return = "usuario/peticiones-grupo.php?id=" . $idGrupo;
+        }
+
+        return $return;
+    }
+
+    public function borrarUsuarioGrupo($parametros) {
+
+        $this->setUpDatabase();
+        $idGrupo = $parametros["idGrupo"];
+        $idUsuario = $parametros["idUsuario"];
+        try {
+            $usuario = R::findOne('usuariogrupo', "grupo_id = " . $idGrupo . " AND usuario_id = " . $idUsuario);
+            R::trash($usuario);
+            $_SESSION["exito"] = $usuario->usuario->nombre . "  borrado con éxito";
+            $return = "usuario/ver-grupo-admin.php?id=" . $idGrupo;
+        } catch (Exception $ex) {
+            $_SESSION["error"] = "Error al borrar el usuario elegido";
+            $return = "usuario/ver-grupo-admin.php?id=" . $idGrupo;
+        }
+        R::close();
+        return $return;
+    }
+
+    public function eliminarAdminGrupo() {
+
+        $idGrupo = filter_input(INPUT_GET, "idGrupo", FILTER_SANITIZE_NUMBER_INT);
+        $idUsuario = filter_input(INPUT_GET, "idUsuario", FILTER_SANITIZE_NUMBER_INT);
+
+        $this->setupDatabase();
+        $nAdmin = R::count('usuariogrupo', 'grupo_id = ? AND isadmin = 1', [$idGrupo]);
+
+        if ($nAdmin == 1) {
+
+            $_SESSION["error"] = "No puede eliminar al último administrador de este grupo.";
+        } else {
+
+            $usuariogrupo = R::findOne('usuariogrupo', 'grupo_id = ? AND usuario_id = ?', [$idGrupo, $idUsuario]);
+            $usuariogrupo->isadmin = 0;
+            R::store($usuariogrupo);
+            $_SESSION["exito"] = "Administrador eliminado.";
+        }
+        R::close();
+        return "usuario/ver-grupo-admin.php?id=" . $idGrupo;
+    }
+
+    public function eliminarApunteGrupo() {
+
+        $idGrupo = filter_input(INPUT_GET, "idGrupo", FILTER_SANITIZE_NUMBER_INT);
+        $idApunte = filter_input(INPUT_GET, "idApunte", FILTER_SANITIZE_NUMBER_INT);
+
+        $this->setupDatabase();
+
+        $apuntegrupo = R::findOne('apuntegrupo', 'grupo_id = ? AND apunte_id = ?', [$idGrupo, $idApunte]);
+        R::trash($apuntegrupo);
+        $_SESSION["exito"] = "Apunte eliminado.";
+        R::close();
+
+        $isadmin = filter_input(INPUT_GET, "admin", FILTER_SANITIZE_NUMBER_INT);
+        $admin = ($isadmin == 1) ? "-admin" : "";
+        return "usuario/ver-grupo" . $admin . ".php?id=" . $idGrupo;
+    }
+
+    public function anadirAdminGrupo($parametros) {
+
+        $this->setUpDatabase();
+        $idGrupo = $parametros["idGrupo"];
+        $idUsuario = $parametros["idUsuario"];
+
+        try {
+            $usuario = R::findOne('usuariogrupo', "grupo_id = " . $idGrupo . " AND usuario_id = " . $idUsuario);
+            $usuario->isadmin = 1;
+            R::store($usuario);
+            $_SESSION["exito"] = $usuario->usuario->nombre . " es ahora administrador del grupo";
+            $return = "usuario/ver-grupo-admin.php?id=" . $idGrupo;
+        } catch (Exception $ex) {
+            $_SESSION["error"] = "Error al añadir un administrador";
+            $return = "usuario/ver-grupo-admin.php?id=" . $idGrupo;
+        }
+        R::close();
+        return $return;
     }
 
     public function comentarApunte() {
@@ -241,6 +509,7 @@ class ServiciosUsuario {
         $this->setUpDatabase();
         $peticion = R::findOne("contacto", " bob_id = ? AND alice_id = ?", [$idUsuario, $contacto]);
         $peticion->admitido = 1;
+        $peticion->fecha = date("Y-m-d h:i:s", time());
         R::store($peticion);
         R::close();
 
@@ -258,8 +527,32 @@ class ServiciosUsuario {
         foreach ($carreras as $car) {
             $arrCar[] = $car->export();
         }
-        
+
         return json_encode($arrCar);
+    }
+
+    public function crearGrupo() {
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+        $nombre = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES);
+        $privacidad = filter_input(INPUT_POST, "privacidad", FILTER_SANITIZE_NUMBER_INT);
+
+        $this->setUpDatabase();
+
+        $grupo = R::dispense('grupo');
+        $grupo->nombre = $nombre;
+        $grupo->privacidad = $privacidad;
+
+        $idGrupo = R::store($grupo);
+
+        $usuariogrupo = R::dispense('usuariogrupo');
+        $usuariogrupo->usuario_id = $idUsuario;
+        $usuariogrupo->admitido = 1;
+        $usuariogrupo->isadmin = 1;
+        $usuariogrupo->grupo_id = $idGrupo;
+        R::store($usuariogrupo);
+        R::close();
+        $_SESSION["exito"] = "Grupo creado con éxito";
+        return "usuario/ver-grupo-admin.php?id=" . $idGrupo;
     }
 
     public function getAsignaturas() {
@@ -480,7 +773,7 @@ class ServiciosUsuario {
         $usuario->privacidadactividad = $privacidadactividad;
         $usuario->privacidadbuscador = $privacidadbuscador;
 
-        if ($imgPerfil ["name"] != "") {
+        if ($imgPerfil["name"] != "") {
             $crop = new CropAvatar($perfilSrc, $perfilData, $imgPerfil, "usuarios/perfil");
 
             $namearr = explode("/", $crop->getResult());
@@ -489,7 +782,7 @@ class ServiciosUsuario {
             $usuario->avatar = $namearr[4];
         }
 
-        if ($imgPortada ["name"] != "") {
+        if ($imgPortada["name"] != "") {
             $crop2 = new CropAvatar($portadaSrc, $portadaData, $imgPortada, "usuarios/portada");
             $response2 = array(
                 'state' => 200,
@@ -504,7 +797,7 @@ class ServiciosUsuario {
 
         R::store($usuario);
 
-        //END TRANSACTION
+//END TRANSACTION
         R::close();
 
         $_SESSION["exito"] = "Configuración modificada correctamente";
@@ -544,8 +837,8 @@ class ServiciosUsuario {
             foreach ($lectores as $l) {
                 $idLector = filter_var($l, FILTER_SANITIZE_NUMBER_INT);
 
-                if (R::count("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [ $idLector, $idApunte]) > 0) {
-                    $interaccion = R::findOne("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [ $idLector, $idApunte]);
+                if (R::count("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [$idLector, $idApunte]) > 0) {
+                    $interaccion = R::findOne("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [$idLector, $idApunte]);
                 } else {
                     $interaccion = R::dispense("usuariointeractuaapunte");
                     $interaccion->apunte_id = $idApunte;
@@ -562,8 +855,8 @@ class ServiciosUsuario {
             foreach ($modificadores as $m) {
                 $idModificador = filter_var($m, FILTER_SANITIZE_NUMBER_INT);
 
-                if (R::count("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [ $idModificador, $idApunte]) > 0) {
-                    $interaccion = R::findOne("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [ $idModificador, $idApunte]);
+                if (R::count("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [$idModificador, $idApunte]) > 0) {
+                    $interaccion = R::findOne("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [$idModificador, $idApunte]);
                 } else {
                     $interaccion = R::dispense("usuariointeractuaapunte");
                     $interaccion->apunte_id = $idApunte;
@@ -581,8 +874,8 @@ class ServiciosUsuario {
             foreach ($permisores as $p) {
                 $idPermisor = filter_var($p, FILTER_SANITIZE_NUMBER_INT);
 
-                if (R::count("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [ $idPermisor, $idApunte]) > 0) {
-                    $interaccion = R::findOne("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [ $idPermisor, $idApunte]);
+                if (R::count("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [$idPermisor, $idApunte]) > 0) {
+                    $interaccion = R::findOne("usuariointeractuaapunte", " usuario_id = ? AND apunte_id = ?", [$idPermisor, $idApunte]);
                 } else {
                     $interaccion = R::dispense("usuariointeractuaapunte");
                     $interaccion->apunte_id = $idApunte;
@@ -598,8 +891,7 @@ class ServiciosUsuario {
 
         $_SESSION["exito"] = "Apunte creado correctamente";
 
-        return "usuario/editar-apunte.php?id=" .
-                $idApunte;
+        return "usuario/editar-apunte.php?id=" . $idApunte;
     }
 
     public function notFound() {
@@ -615,6 +907,7 @@ class ServiciosUsuario {
 
     private function setUpDatabase() {
         R::setup('mysql:host=' . DbConfig::$dbHost . ';dbname=' . DbConfig::$dbName, DbConfig::$dbUser, DbConfig::$dbPassword);
+        R::freeze(TRUE);
     }
 
 }

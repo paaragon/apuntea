@@ -395,6 +395,7 @@ input[disabled=""]{
     margin: 10px 0;
     padding: 10px;
     border-radius: 3px;
+    overflow: hidden;
 }
 
 .fila p span[class^="fa"]{
@@ -433,7 +434,7 @@ input[disabled=""]{
     z-index: 99;
 }
 
-#load-carrera{
+#load-carrera, .loader{
     display: none;
     width: 100px;
 }

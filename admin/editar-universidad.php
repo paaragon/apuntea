@@ -1,8 +1,7 @@
 <?php
 require __DIR__ . "/../controladores/ControladorAdmin.php";
 $controlador = new ControladorAdmin();
-$variables = $controlador->anadirCarrera();
-
+$variables = $controlador->universidad();
 ob_start();
 ?>
 <div id="principal">
@@ -10,22 +9,115 @@ ob_start();
         <span class="fa fa-university"></span> Editar universidad
     </h2>
     <hr>
-    <section class="col-9">
-        <form action="perfil-universidad.php" method="post">
-            <legend>Datos de la universidad:</legend>
-            <span class="col-3"><label>Universidad:</label></span>
-            <span class="col-9"><input type="text" name="universidad" class="campo-formulario" placeholder="Nombre de la universidad" required=""></span>
-            <span class="col-3"><label>Alias:</label></span>
-            <span class="col-9"><input type="email" name="alias" class="campo-formulario" placeholder="Alias de la universidad" required=""></span>
-            <span class="col-3"><label>E-mail de contacto:</label></span>
-            <span class="col-9"><input type="text" name="email" class="campo-formulario" placeholder="Email de contacto de la universidad"></span>
-            <span class="col-3"><label>Descripción:</label></span>
-            <span class="col-9"><textarea class="campo-formulario" placeholder="Breve descripción de la universidad"></textarea></span>
-            <span class="col-9"><label>Logo de la universidad: </label><input type="file" name="imagen_universidad" class="campo-formulario" ></span>
-            <input type="submit" value="Guardar universidad" class="campo-formulario ">
-        </form>
-    </section>
+    <?php if (isset($variables["universidad"])): ?>
+        <section>
+            <form action="../servicios/adminHandler.php?action=editarUniversidad" method="post" id="formEditar" enctype="multipart/form-data">
+                <label>Universidad:</label>
+                <input type="text" name="universidad" class="campo-formulario" value="<?php echo $variables["universidad"]->nombre ?>" required="">
+                <label>Siglas:</label>
+                <input type="text" name="siglas" class="campo-formulario" value="<?php echo $variables["universidad"]->siglas ?>" required="">
+
+                <label>Logo de la universidad:</label>
+                <input type="file" name="img-perfil" class="campo-formulario" id="fileImgPerfil">
+                <div class="campo-formulario img-registro">
+                    <img src="" alt="Imagen no seleccionada" id="imgperfil">
+                </div>
+                <input type="hidden" name="img-perfil-data" id="img-perfil-data">
+                <input type="hidden" name="img-perfil-src" id="img-perfil-src">
+                <label>Imagen de portada:</label>
+                <input type="file" name="img-portada" class="campo-formulario" id="fileImgPortada">
+                <div class="campo-formulario">
+                    <img src="" alt="Imagen no seleccionada" id="imgportada">
+                </div>
+                <input type="hidden" name="img-portada-data" id="img-portada-data">
+                <input type="hidden" name="img-portada-src" id="img-portada-src">
+
+                <input type="hidden" value="<?php echo $variables["universidad"]->id ?>" name="idUniversidad">
+                <input type="submit" value="Guardar universidad" class="campo-formulario " id="btnSubmit">
+            </form>
+        </section>
+    <?php else: ?>
+        <blockquote><h3>Universidad no encontrada.</h3></blockquote>
+    <?php endif; ?>
 </div>
+<script>
+
+    function readURL(input, img, options, src) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                loadImgPerfil(img, e, options, src);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function loadImgPerfil(img, e, options, imgSrc) {
+        var src = e.target.result;
+        imgSrc.val(src);
+        img.attr('src', src);
+        img.cropper(options);
+    }
+
+    $(document).on("ready", function () {
+
+        $("#fileImgPerfil").change(function () {
+            readURL(this, $('#imgperfil'), {
+                aspectRatio: 1,
+                autoCropArea: 1,
+                strict: false,
+                guides: false,
+                highlight: true,
+                dragCrop: true,
+                movable: true,
+                resizable: true,
+                done: function (data) {
+                    var json = [
+                        '{"x":' + data.x,
+                        '"y":' + data.y,
+                        '"height":' + data.height,
+                        '"width":' + data.width + "}"
+                    ].join();
+                }
+            }, $("#img-perfil-src"));
+        });
+
+        $("#fileImgPortada").change(function () {
+            readURL(this, $('#imgportada'), {
+                aspectRatio: 16 / 7,
+                autoCropArea: 1,
+                strict: false,
+                guides: false,
+                highlight: true,
+                dragCrop: true,
+                movable: true,
+                resizable: true,
+                done: function (data) {
+                    var json = [
+                        '{"x":' + data.x,
+                        '"y":' + data.y,
+                        '"height":' + data.height,
+                        '"width":' + data.width + "}"
+                    ].join();
+                }
+            }, $("#img-portada-src"));
+        });
+
+        $("#btnSubmit").on("click", function (e) {
+            e.preventDefault();
+
+            data = JSON.stringify($('#imgperfil').cropper("getData"));
+            $("#img-perfil-data").val(data);
+
+            data2 = JSON.stringify($('#imgportada').cropper("getData"));
+            $("#img-portada-data").val(data2);
+
+            $("#formEditar").submit();
+        });
+    });
+</script>
 <?php
 $contenido = ob_get_clean();
+$styles[] = '<link rel="stylesheet" type="text/css" href="../css/cropper.css" />';
+$scripts[] = '<script type="text/javascript" src="../js/cropper.js"></script>';
 require "../common/admin/layout.php";

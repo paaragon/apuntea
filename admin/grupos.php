@@ -16,19 +16,16 @@ ob_start();
         </span>
     </div>
 
-    <div class="campo-formulario col-12" id="grupo-boton">
-        <?php
-        if (count($variables["grupos"]) > 0) {
-            foreach ($variables["grupos"] as $gru) {
-                //echo "<a class='btn btn-primary col-xs-12 grupo' href='ver-grupos.php'>$gru->nombre</a>";
-                echo "<a class='btn btn-primary col-xs-12 grupo' href='ver-grupo.php?idGrupo=" . $gru->id . "'>$gru->nombre</a>";
-            }
-        } else {
-            echo "<blockquote>No hay grupos.</blockquote>";
+    <?php
+    if (count($variables["grupos"]) > 0) {
+        foreach ($variables["grupos"] as $gru) {
+            //echo "<a class='btn btn-primary col-xs-12 grupo' href='ver-grupos.php'>$gru->nombre</a>";
+            echo "<div class='fila'><a class='btn btn-primary col-xs-12 grupo' href='ver-grupo.php?idGrupo=" . $gru->id . "'>$gru->nombre</a></div>";
         }
-        ?>
-    </div>
-
+    } else {
+        echo "<blockquote><h3>No hay grupos.</h3></blockquote>";
+    }
+    ?>
 </div>
 <div class="col-3">
     <p>

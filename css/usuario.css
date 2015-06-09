@@ -207,14 +207,7 @@ textarea#area-apunte{
     height: 20px;
     border: 3px solid white;
     border-radius: 100%;  
-}
-/*Status on*/
-.status-red {
-    background-color: red;
-}
-/*Status off*/
-.status-green {
-    background-color: green;
+    background-color: #fff;
 }
 
 .teaser .panel .panel-cuerpo h3{
@@ -276,7 +269,7 @@ textarea#area-apunte{
     float: right;
 }
 
-#conversacion{
+#conversacion, #conversacion-2{
     overflow-y: scroll;
     height: 500px;
 }
@@ -552,7 +545,10 @@ img#loading{
 }
 
 .cosa-verde{
-    background-color: #6fd06f;
-    background-color: #46B552;
-    color: #FFFFFF;
+    color: #FFF;
+    background: transparent linear-gradient(to bottom, #43AD4C 0%, #4AA14E 52%, #3B9844 100%) repeat scroll 0% 0%;
+}
+
+#avatar img{
+    background-color: #fff;
 }

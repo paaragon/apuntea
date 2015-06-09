@@ -86,11 +86,7 @@ class ControladorEstandar {
 
         $this->setUpDatabase();
 
-        if (!isset($_GET["id"])) {
-
-            $this->variables["carrera"] = R::dispense('carrera');
-            $this->variables["asignaturas"] = $this->variables["carrera"]->ownAsignaturaList;
-        } else {
+        if (isset($_GET["id"])) {
             $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
             $this->variables["carrera"] = R::findOne('carrera', ' id = ?', [$id]);
@@ -105,11 +101,7 @@ class ControladorEstandar {
 
         $this->setUpDatabase();
 
-        if (!isset($_GET["id"])) {
-
-            $this->variables["asignatura"] = R::dispense('asignatura');
-            $this->variables["apuntes"] = $this->variables["carrera"]->ownApunteList;
-        } else {
+        if (isset($_GET["id"])) {
             $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
             $this->variables["asignatura"] = R::findOne('asignatura', ' id = ?', [$id]);
@@ -124,10 +116,7 @@ class ControladorEstandar {
 
         $this->setUpDatabase();
 
-        if (!isset($_GET["id"])) {
-
-            $this->variables["apunte"] = R::dispense('apunte');
-        } else {
+        if (isset($_GET["id"])) {
             $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
             $this->variables["apunte"] = R::findOne('apunte', ' id = ?', [$id]);
         }
@@ -200,7 +189,9 @@ class ControladorEstandar {
     }
 
     private function setUpDatabase() {
+
         R::setup('mysql:host=' . DbConfig::$dbHost . ';dbname=' . DbConfig::$dbName, DbConfig::$dbUser, DbConfig::$dbPassword);
+        R::freeze(TRUE);
         $this->cargarComunes();
     }
 

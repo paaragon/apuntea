@@ -18,7 +18,9 @@ ob_start();
 <section>
     <h2>Resultado de la búsqueda</h2>
     <ul>
-        <?php if ($variables["opcion"] == "universidades" && isset($variables["universidades"])): ?>
+        <?php if (!isset($variables["opcion"])): ?>
+            <blockquote>Error en al búsqueda.</blockquote>
+        <?php elseif ($variables["opcion"] == "universidades" && isset($variables["universidades"])): ?>
             <?php foreach ($variables["universidades"] as $uni): ?>
                 <li><a href="universidad.php?id?=<?php echo $uni->id ?>"><?php echo $uni->nombre ?></a></li>
             <?php endforeach; ?>

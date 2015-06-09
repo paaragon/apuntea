@@ -13,17 +13,17 @@ ob_start();
     <h3>Conversaciones recientes: </h3>
     <div id="conversaciones-recientes">
         <div>
-            <?php if(count($variables["contactos"]) > 0): ?>
-            <?php foreach ($variables["contactos"] as $contacto): ?>
-                <div class="picture fila">
-                    <p>
-                        <img src="../img/usuarios/perfil/<?php echo $contacto->avatar ?>" class="profile-img">
-                    </p>
-                    <h4><a href="mensajes.php?id=<?php echo $contacto->id ?>"><?php echo $contacto->nombre . " " . $contacto->apellidos ?></a></h4>
-                </div>
-            <?php endforeach; ?>
+            <?php if (count($variables["contactos"]) > 0): ?>
+                <?php foreach ($variables["contactos"] as $contacto): ?>
+                    <div class="picture fila">
+                        <p>
+                            <img src="../img/usuarios/perfil/<?php echo $contacto->avatar ?>" class="profile-img">
+                        </p>
+                        <h4><a href="mensajes.php?id=<?php echo $contacto->id ?>"><?php echo $contacto->nombre . " " . $contacto->apellidos ?></a></h4>
+                    </div>
+                <?php endforeach; ?>
             <?php else: ?>
-            <blockquote><h4>No tienes conversaciones recientes.</h4></blockquote>
+                <blockquote><h4>No tienes conversaciones recientes.</h4></blockquote>
             <?php endif; ?>
         </div>
     </div>
@@ -60,10 +60,45 @@ ob_start();
                     $("#enviarMensajeForm").submit();
                 });
             });
+
+            var emoji = [
+                {'char': 'XD', 'alias': 'laughing', 'class': 'twa twa-laughing'},
+                {'char': ':*', 'alias': 'kissing_heart', 'class': 'twa twa-kissing-heart'},
+                {'char': ':D', 'alias': 'smile', 'class': 'twa twa-smile'},
+                {'char': ';)', 'alias': 'wink', 'class': 'twa twa-wink'},
+                {'char': ':_(', 'alias': 'cry', 'class': 'twa twa-cry'},
+                {'char': '¬¬', 'alias': 'unamused', 'class': 'twa twa-unamused'},
+                {'char': 'zzz', 'alias': 'sleeping', 'class': 'twa twa-sleeping'},
+                {'char': '^^', 'alias': 'blush', 'class': 'twa twa-blush'},
+                {'char': '<3', 'alias': 'heart', 'class': 'twa twa-heart'}
+            ];
+            function buscarEmoji(texto) {
+
+                for (var i = 0; i < emoji.length; i++) {
+
+                    while ((index = texto.indexOf(emoji[i]["char"])) != -1) {
+                        em = '[' + emoji[i]["alias"] + ']';
+                        texto = texto.substring(0, index) + em + texto.substring(index + emoji[i]["char"].length, texto.length);
+                    }
+                }
+
+                return texto;
+            }
+
+            function decodeEmoji(texto) {
+
+                for (var i = 0; i < emoji.length; i++) {
+                    while ((index = texto.indexOf('[' + emoji[i]["alias"] + ']')) != -1) {
+                        em = '<span class="' + emoji[i]["class"] + ' twa-lg"></span>';
+                        texto = texto.substring(0, index) + em + texto.substring(index + emoji[i]["alias"].length + 2, texto.length);
+                    }
+                }
+
+                return texto;
+            }
         </script>
     <?php endif; ?>
 </div>
 <?php
-$scripts[] = '<script src="../js/chat.js"></script>';
 $contenido = ob_get_clean();
 require "../common/admin/layout.php";
