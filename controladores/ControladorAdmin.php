@@ -170,12 +170,18 @@ class ControladorAdmin {
         return $this->variables;
     }
 
-    public function grupos() {// = getUniversidades()...
+    public function grupos() {
         $this->setUpDatabase();
 
         $this->variables["universidades"] = R::findAll('universidad');
         $this->variables["grupos"] = R::findAll('grupo');
 
+        $sql = "SELECT usuariogrupo.grupo_id as grupo_id, COUNT(usuariogrupo.usuario_id) as num FROM usuariogrupo WHERE usuariogrupo.admitido=1 GROUP BY usuariogrupo.grupo_id ORDER BY num DESC LIMIT 5";
+        $this->variables["chart1"] = R::getAll($sql);
+        
+        $sql = "SELECT apuntegrupo.grupo_id as grupo_id, COUNT(apuntegrupo.apunte_id) as num FROM apuntegrupo GROUP BY apuntegrupo.grupo_id ORDER BY num DESC LIMIT 5";
+        $this->variables["chart2"] = R::getAll($sql);
+        
         R::close();
         return $this->variables;
     }
@@ -195,6 +201,12 @@ class ControladorAdmin {
 
         $this->variables["aportaciones"] = R::findAll('apunte', ' id IN(SELECT apunte_id FROM apuntegrupo WHERE grupo_id = ?) ORDER BY titulo', [$idGrupo]);
 
+        $sql = "SELECT  usuario.nick as nick, COUNT(apunte.id) as num FROM usuario, apunte, apuntegrupo WHERE usuario.id = apunte.usuario_id AND apunte.id = apuntegrupo.apunte_id AND apuntegrupo.grupo_id = ? GROUP BY usuario.id ORDER BY num DESC LIMIT 5";
+        $this->variables["chart1"] = R::getAll($sql, [$idGrupo]);
+        //print_r($this->variables["chart1"]);
+        $sql = "SELECT titulo, apunte.id as apId, likes - dislikes as puntuacion FROM apunte, apuntegrupo WHERE apunte.id = apuntegrupo.apunte_id AND apuntegrupo.grupo_id = ? ORDER BY puntuacion DESC LIMIT 5 ";
+        $this->variables["chart2"] = R::getAll($sql, [$idGrupo]);
+        
         R::close();
         return $this->variables;
     }
