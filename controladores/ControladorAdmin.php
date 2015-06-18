@@ -182,6 +182,8 @@ class ControladorAdmin {
 
         $this->setUpDatabase();
 
+        $this->variables["chart1"] = $this->carrerasUsuarios();
+        $this->variables["chart2"] = $this->carrerasApuntes();
         $this->variables["carreras"] = ($universidad != "") ? R::find("carrera", " universidad_id = " . $universidad) : R::findAll("carrera");
         $this->variables["universidades"] = R::findAll("universidad");
 

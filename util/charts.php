@@ -238,4 +238,37 @@ trait charts {
         return $chart;
     }
 
+    function carrerasUsuarios(){
+       $result = R::getAll('SELECT carrera.nombre , COUNT(*) / (SELECT COUNT(*) / 100 '
+                . 'FROM apunte) as num FROM carrera, asignatura, apunte WHERE '
+                 . 'carrera.id = carrera_id AND asignatura.id = asignatura_id GROUP BY carrera.id ORDER BY num DESC LIMIT 5');
+
+        $elem = array_shift($result);
+
+        $i = 1;
+        $chart["data"] = '{value: ' . $elem["num"] . ', color: "rgba(70, 181, 82, ' . $i . ')", highlight: "rgba(70, 181, 82, ' . ($i - 0.1) . ')", label: "' . $elem["nombre"] . '" }';
+        foreach ($result as $elem) {
+            $i -= 0.2;
+            $chart["data"] .= ',{value: ' . $elem["num"] . ', color: "rgba(70, 181, 82, ' . $i . ')", highlight: "rgba(70, 181, 82, ' . ($i - 0.1) . ')", label: "' . $elem["nombre"] . '" }';
+        }
+
+        return $chart;
+    }
+    function carrerasApuntes(){
+        
+         $result = R::getAll('SELECT carrera.nombre , COUNT(*) / (SELECT COUNT(*) / 100 '
+                . 'FROM usuario) as num FROM carrera, usuario WHERE '
+                 . 'carrera.id = carrera_id GROUP BY carrera.id ORDER BY num DESC LIMIT 5');
+
+        $elem = array_shift($result);
+
+        $i = 1;
+        $chart["data"] = '{value: ' . $elem["num"] . ', color: "rgba(70, 181, 82, ' . $i . ')", highlight: "rgba(70, 181, 82, ' . ($i - 0.1) . ')", label: "' . $elem["nombre"] . '" }';
+        foreach ($result as $elem) {
+            $i -= 0.2;
+            $chart["data"] .= ',{value: ' . $elem["num"] . ', color: "rgba(70, 181, 82, ' . $i . ')", highlight: "rgba(70, 181, 82, ' . ($i - 0.1) . ')", label: "' . $elem["nombre"] . '" }';
+        }
+
+        return $chart;
+    }
 }
