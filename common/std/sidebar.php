@@ -1,21 +1,29 @@
 <div class="panel">
     <div class="panel-cabecera"><strong>Acceder</strong></div>
     <div class="panel-cuerpo">
-        <form action="usuario/inicio.php" method="post">
-            <input type="text" class="campo-formulario" id="username" placeholder="Usuario">
+        <form action="servicios/standarHandler.php?action=doLogin&url=<?php echo $variables["url"] ?>" method="post">
+            <input type="text" name="username" class="campo-formulario" placeholder="Usuario" required>
             <br>
-            <input type="password" class="campo-formulario" id="password" placeholder="Contraseña">
+            <input type="password" name="password" class="campo-formulario" placeholder="Contraseña" required>
+            <?php
+            if (isset($_SESSION["login-error"])) {
+                echo '<p class="text-danger">' . $_SESSION["login-error"] . '</p>';
+                unset($_SESSION["login-error"]);
+            }
+            ?>
             <input type="submit" class="campo-formulario" value="Entrar">
         </form>
-        <form action="admin/inicio.php" method="post">
-            <input type="submit" class="campo-formulario" value="Entrar como administrador">
-        </form>
-        <p><small>El boton "Entrar como administrador" no aparecerá en la versión final. El mismo formulario de login servirá para ambos tipos de usuarios."</small></p>
+        <blockquote>
+            <h4>Inicia sesión con una de estas redes sociales:</h4>
+            <h1>
+                <a href="util/1353/fbconfig.php"><i class="fa fa-facebook-square"></i></a>
+            </h1>
+        </blockquote>
         <hr>
         <div>
             <p>
                 <strong>¿Aún no estas registrado?</strong> haz click en el siguiente botón para registrarte<br><br>
-                <a class="campo-formulario boton" href="registrarse">Registrarse</a>
+                <a class="campo-formulario boton" href="registrarse.php">Registrarse</a>
             </p>
         </div>
     </div>

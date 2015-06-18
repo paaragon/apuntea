@@ -9,7 +9,8 @@ ob_start();
 <section>
     <div class="col-sm-4"><img src="img/logo.png" class="img-responsive"></div>
     <div class="col-sm-8">
-        <h3>Bienvenido a <strong>Apuntea</strong> tu red social para compartir apuntes.</h3>
+        <h3>Bienvenido a <strong>Apuntea</strong></h3>
+        <h3 class="text-center">Tu red social para compartir apuntes.</h3>
     </div>
     <div class="clearfix"></div>
 </section>
@@ -29,11 +30,18 @@ ob_start();
 <div class="alerta alerta-info">
     <p>Llevamos un total de <span class="distintivo"><?php echo $variables["numero-de-apuntes"] ?></span> apuntes</p>
 </div>
+<div class="alert alert-warning">
+    <p><a href="asdft">Este enlace está roto ¡Pruebalo!</a></p>
+</div>
 <section>
     <div id="top-universidades">
-        <?php foreach ($variables["universidades"] as $id => $universidad): ?>
-            <div class="slide col-2"><a href="universidad.php?id=<?php echo $id ?>"><img src="img/universidades/perfil/<?php echo $universidad["img"] ?>"></a></div>
-        <?php endforeach; ?>
+        <?php if (count($variables["universidades"]) > 0): ?>
+            <?php foreach ($variables["universidades"] as $id => $universidad): ?>
+                <div class="slide col-2"><a href="universidad.php?id=<?php echo $id ?>"><img src="img/universidades/perfil/<?php echo $universidad["img"] ?>"></a></div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <blockquote><h3>No hay universidades en el top.</h3></blockquote>
+        <?php endif; ?>
         <div class="clear"></div>
     </div>
     <p><a href="universidades.php"><span class="etiqueta label-primary"><span class="fa fa-plus"></span> Ver todas</span></a></p>
@@ -43,9 +51,13 @@ ob_start();
         <h3>Top Carreras</h3>
         <hr>
         <ul>
-            <?php foreach ($variables["carreras"] as $id => $carrera): ?>
-                <li><a href="universidad.php?id=<?php echo $carrera["iduniversidad"] ?>"><?php echo $carrera["siglasuniversidad"] ?></a> - <a href="carrera.php?id=<?php echo $id ?>"><?php echo $carrera["nombre"] ?></a></li>
-            <?php endforeach; ?>
+            <?php if (count($variables["carreras"]) > 0): ?>
+                <?php foreach ($variables["carreras"] as $id => $carrera): ?>
+                    <li><a href="universidad.php?id=<?php echo $carrera["iduniversidad"] ?>"><?php echo $carrera["siglasuniversidad"] ?></a> - <a href="carrera.php?id=<?php echo $id ?>"><?php echo $carrera["nombre"] ?></a></li>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <blockquote>No hay carreras en el top.</blockquote>
+            <?php endif; ?>
         </ul>
         <p><a href="carreras.php"><span class="etiqueta label-primary"><span class="fa fa-plus"></span> Ver todas</span></a></p>
     </section>
@@ -53,16 +65,13 @@ ob_start();
         <h3>Top Asignaturas</h3>
         <hr>
         <ul>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
-            <li><a href="asignatura.php">[Nombre Asignatura]</a></li>
+            <?php if (count($variables["asignaturas"]) > 0): ?>
+                <?php foreach ($variables["asignaturas"] as $asignatura): ?>
+                    <li><a href="asignatura.php?id=<?php echo $asignatura->id ?>"><?php echo $asignatura->nombre ?></a></li>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <blockquote>No hay asignaturas en el top.</blockquote>
+            <?php endif; ?>
         </ul>
         <p><a href="asignaturas.php"><span class="etiqueta"><span class="fa fa-plus"></span> Ver todas</span></a></p>
     </section>
@@ -70,16 +79,13 @@ ob_start();
         <h3>Top Apuntes</h3>
         <hr>
         <ul>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
-            <li><a href="apuntes.php">[Nombre apuntes]</a></li>
+            <?php if (count($variables["apuntes"]) > 0): ?>
+                <?php foreach ($variables["apuntes"] as $apunte): ?>
+                    <li><a href="ver-apunte.php?id=<?php echo $apunte->id ?>"><?php echo $apunte->titulo ?></a></li>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <blockquote>No hay apuntes en el top.</blockquote>
+            <?php endif; ?>
         </ul>
         <p><a href="lista-apuntes.php"><span class="label label-primary"><span class="fa fa-plus"></span> Ver todas</span></a></p>
     </section>

@@ -1,8 +1,4 @@
 <?php
-/* Iniciamos sesion con usuario id */
-session_start();
-
-
 /* DIR... LA RUTA absoluta dsde donde  se llama .. donde esta el archivo */
 require __DIR__ . "/../controladores/ControladorUsuario.php";
 
@@ -31,8 +27,7 @@ ob_start();
         </p>
         <!-- Form para la busqueda de contactos-->
         <form action="mis-contactos.php" method="post">
-            <input type="text" class="campo-formulario" placeholder="Buscar Contacto...">
-            <input type="submit" class="campo-formulario" value="Buscar">
+            <input type="text" class="campo-formulario" placeholder="Buscar Contacto..." id="buscar">
         </form>
     </div>
     <hr>
@@ -42,20 +37,20 @@ ob_start();
     recorremos el array 
     -->
     <?php
-    if (count($variables["contactosUsuario"]) > 0):
+    if (isset($variables["contactosUsuario"]) && count($variables["contactosUsuario"]) > 0):
         foreach ($variables["contactosUsuario"] as $contacto):
             ?>
-            <div class="col-6">
+            <div class="col-6 contacto">
                 <div class="fila">
                     <div class="col-5"><p><img src="../img/usuarios/perfil/<?php echo $contacto->avatar ?>" class="img-responsive"/></p></div>
                     <div class="col-7">
                         <p>
-                            <strong><?php echo $contacto->nombre ?></strong> 
-                            <small><a href="perfil-usuario.php" class="color-green">@<?php echo $contacto->nick ?></a></small>
+                            <strong class="nombre"><?php echo $contacto->nombre ?></strong> 
+                            <small><a href="perfil-usuario.php?id=<?php echo $contacto->id ?>" class="color-green nick">@<?php echo $contacto->nick ?></a></small>
                         </p>
                         <blockquote>
                             <p>
-                                <?php echo $contacto->estado ?>
+                                <?php echo ($contacto->estado != "") ? $contacto->estado : "Sin estado" ?>
                             </p>
                         </blockquote>
                         <p>
@@ -63,11 +58,11 @@ ob_start();
                                 <?php
                                 /* Tabla que referencia a la tabla del propio contacto(dame todos los alice->veo donde alice
                                   es id */
-                                echo count($contacto->alias('alice')->ownContactoList)+count($contacto->alias('bob')->ownContactoList);
+                                echo count($contacto->alias('alice')->ownContactoList) + count($contacto->alias('bob')->ownContactoList);
                                 ?>
 
                             </span> Amigos<br><br>
-                            <a href="mis-mensajes.php" class="boton">Enviar mensaje</a>
+                            <a href="mis-mensajes.php?id=<?php echo $contacto->id ?>" class="boton">Enviar mensaje</a>
                         </p>
                     </div>
                     <div class="clear"></div>
@@ -76,12 +71,49 @@ ob_start();
             <?php
         endforeach;
     else:
-        echo "No tienes ningun contacto";
+        echo "<blockquote><h3>No tienes ningún contacto</h3></blockquote>";
     endif;
     ?>
 
 
 </div>
+<script>
+
+    $(document).on("ready", function () {
+
+        $("#buscar").on("keyup", function () {
+
+            consulta = $(this).val();
+
+            $(".contacto").each(function () {
+
+                var nombre = $(this).find(".nombre").text();
+                var nick = $(this).find(".nick").text();
+                if (quitaAcentos(nombre.toLowerCase()).indexOf(quitaAcentos(consulta.toLowerCase())) !== -1 || quitaAcentos(nick.toLowerCase()).indexOf(quitaAcentos(consulta.toLowerCase())) !== -1) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    });
+
+    function quitaAcentos(str) {
+        for (var i = 0; i < str.length; i++) {
+            if (str.charAt(i) == "á")
+                str = str.replace(/á/, "a");
+            if (str.charAt(i) == "é")
+                str = str.replace(/é/, "e");
+            if (str.charAt(i) == "í")
+                str = str.replace(/í/, "i");
+            if (str.charAt(i) == "ó")
+                str = str.replace(/ó/, "o");
+            if (str.charAt(i) == "ú")
+                str = str.replace(/ú/, "u");
+        }
+        return str;
+    }
+</script>
 <?php
 $contenido = ob_get_clean();
 require "../common/usuario/layout.php";

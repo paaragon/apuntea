@@ -1,99 +1,105 @@
-<?php ob_start(); ?>
+<?php
+require __DIR__ . "/../controladores/ControladorAdmin.php";
+$controlador = new ControladorAdmin();
+$variables = $controlador->grupos();
+
+ob_start();
+?>
 <div class="col-9">
     <h2>
         <span class="fa fa-users"></span> Grupos
     </h2>
     <hr>
-    <div class="fila">
-        <form action="apuntes.php" method="post">
-            <label>Nombre:</label> <input type="search" name="nombre" placeholder="Buscador por nombre" class="campo-formulario">
-            <label><span class="fa fa-university"></span> Universidad:</label>
-            <select class="campo-formulario campo-en-linea">
-                <option value="UCM">UCM</option>
-                <option value="UPM">UPM</option>
-                <option value="URJC">URJC</option>
-                <option value="UAM">UAM</option>
-            </select>
-            <label><span class="fa fa-graduation-cap"></span> Carrera:</label>
-            <select class="campo-formulario campo-en-linea">
-                <option value="Informatica">Informatica</option>
-                <option value="Derecho">Derecho</option>
-                <option value="Medicina">Medicina</option>
-                <option value="Chuletas">Chuletas</option>
-            </select>
-            <input type="submit" class="campo-formulario" value="Buscar">
-        </form>
-    </div>
     <div>
-        <div class="fila">
-            <p>
-                <span class="col-8">
-                    <a href="ver-grupo.php">
-                        <span class="fa fa-circle-o-notch"></span>
-                        <strong> Grupo Bachillerato</strong>
-                    </a>
-                </span>
-                <span class="col-4"><span class="fa fa-users"></span> 137</span>
-            </p>
-            <div class="clear"></div>
-        </div>
-        <div class="fila">
-            <p>
-                <span class="col-8">
-                    <a href="ver-grupo-admin.php">
-                        <span class="fa fa-globe"></span>
-                        <strong> Grupo Biblioteca (Administrador)</strong>
-                    </a>
-                </span>
-                <span class="col-4"><span class="fa fa-users"></span> 115</span>
-            </p>
-            <div class="clear"></div>
-        </div>
-        <div class="fila">
-            <p>
-                <span class="col-8">
-                    <a href="ver-grupo.php">
-                        <span class="fa fa-lock"></span>
-                        <strong> Grupo Universidad</strong>
-                    </a>
-                </span>
-                <span class="col-4"><span class="fa fa-users"></span> 178</span>
-            </p>
-            <div class="clear"></div>
-        </div>
-        <div class="fila">
-            <p>
-                <span class="col-8">
-                    <a href="ver-grupo-admin.php">
-                        <span class="fa fa-circle-o-notch"></span>
-                        <strong> Grupo Clase 1ºB (Administrador)</strong>
-                    </a>
-                </span>
-                <span class="col-4"><span class="fa fa-users"></span> 68</span>
-            </p>
-            <div class="clear"></div>
-        </div>
-        <div class="fila">
-            <p>
-                <span class="col-8">
-                    <a href="ver-grupo.php">
-                        <span class="fa fa-globe"></span>
-                        <strong> Grupo Grado en Ingenieria Informatica</strong>
-                    </a>
-                </span>
-                <span class="col-4"><span class="fa fa-users"></span> 238</span>
-            </p>
-            <div class="clear"></div>
-        </div>
+        <span>
+            <input id="buscador" type="search" class="campo-formulario" placeholder="Busqueda por nombre">
+        </span>
     </div>
+
+    <?php
+    if (count($variables["grupos"]) > 0) {
+        foreach ($variables["grupos"] as $gru) {
+            //echo "<a class='btn btn-primary col-xs-12 grupo' href='ver-grupos.php'>$gru->nombre</a>";
+            echo "<div class='fila'><a class='btn btn-primary col-xs-12 grupo' href='ver-grupo.php?idGrupo=" . $gru->id . "'>$gru->nombre</a></div>";
+        }
+    } else {
+        echo "<blockquote><h3>No hay grupos.</h3></blockquote>";
+    }
+    ?>
 </div>
 <div class="col-3">
-    <p>
-        <img src="../img/line-graph.gif" class="img-responsive">
-        <img src="../img/line-graph.gif" class="img-responsive">
-        <img src="../img/line-graph.gif" class="img-responsive">
-    <p>
+    <h4 class="text-center"><strong>Grupos con mas participantes</strong></h4>
+    <canvas id="myChart1"></canvas>
+    <hr>
+    <h4 class="text-center"><strong>Grupos con mas apuntes</strong></h4>
+    <canvas id="myChart2"></canvas>
 </div>
+
+<script>
+
+    $(document).on("ready", function () {
+
+        //Gráfica 1----------------------------------------------------
+        var data1 = {
+            labels: [<?php echo $variables["chart1"]["label"] ?>],
+            datasets: [
+                {
+                    fillColor: "rgba(70, 181, 82, 0.2)",
+                    strokeColor: "rgba(59, 152, 68, 0.5)",
+                    pointColor: "rgba(59, 152, 68, 0.6)",
+                    pointStrokeColor: "rgba(59, 152, 68, 0.8)",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: [<?php echo $variables["chart1"]["data"] ?>]
+                }
+            ]
+        };
+
+        var canvas1 = document.getElementById("myChart1");
+        canvas1.width = $("#myChart1").width() - 50;
+        canvas1.height = 300;
+
+        var ctx = document.getElementById("myChart1").getContext("2d");
+        var myLineChart2 = new Chart(ctx).Bar(data1);
+
+        //Gráfica 2----------------------------------------------------
+        var data2 = {
+            labels: [<?php echo $variables["chart2"]["label"] ?>],
+            datasets: [
+                {
+                    fillColor: "rgba(70, 181, 82, 0.2)",
+                    strokeColor: "rgba(59, 152, 68, 0.5)",
+                    pointColor: "rgba(59, 152, 68, 0.6)",
+                    pointStrokeColor: "rgba(59, 152, 68, 0.8)",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: [<?php echo $variables["chart2"]["data"] ?>]
+                }
+            ]
+        };
+
+        var canvas2 = document.getElementById("myChart2");
+        canvas2.width = $("#myChart2").width() - 50;
+        canvas2.height = 300;
+
+        var ctx = document.getElementById("myChart2").getContext("2d");
+        var myLineChart2 = new Chart(ctx).Bar(data2);//,{scaleBeginAtZero : false});
+
+        $("#buscador").on("keyup", function () {
+            consulta = $(this).val();
+            $(".grupo").each(function () {
+                var cad = $(this).text();
+                if (cad.toLowerCase().indexOf(consulta.toLowerCase()) !== -1) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+
+    });
+</script>
+
 <?php
 $contenido = ob_get_clean();
 require "../common/admin/layout.php";

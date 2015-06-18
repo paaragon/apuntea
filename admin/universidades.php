@@ -4,7 +4,7 @@ require __DIR__ . "/../controladores/ControladorAdmin.php";
 
 $controlador = new ControladorAdmin();
 
-$variables = $controlador->universidad();
+$variables = $controlador->universidades();
 
 ob_start();
 ?>
@@ -36,7 +36,7 @@ ob_start();
 	<?php
 	   endforeach;
     else:
-        echo "No hay universidades disponibles";
+        echo "<blockquote><h3>No hay universidades disponibles</h3></blockquote>";
     endif;
 	?>
 </div>
