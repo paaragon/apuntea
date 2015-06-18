@@ -5,7 +5,7 @@
         <link rel="icon" type="image/png" href="../img/logo.png" />
         <meta name="viewport" content="width=device-width, user-scalable=no">
         <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
-        <link rel="stylesheet" href="../font-awesome-4.3.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="../css/font-awesome-4.3.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="../css/componentes.css" />
         <link rel="stylesheet" type="text/css" href="../css/perfect-scrollbar.css" />
         <link rel="stylesheet" type="text/css" href="../css/usuario.css" />

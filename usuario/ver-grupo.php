@@ -93,7 +93,6 @@ ob_start();
                 <form action="../servicios/usuarioHandler.php?action=anadirComentarioGrupo&idGrupo=<?php echo $variables["grupo"]->id ?>" method="post">
                     <h3><span class="fa fa-comment"></span> Añadir comentario</h3>
                     <textarea class="campo-formulario" name="comentario"></textarea>
-                    <input type="hidden" name="isAdmin" value="1">
                     <input type="submit" class="campo-formulario" value="Añadir comentario">
                 </form>
             </div>

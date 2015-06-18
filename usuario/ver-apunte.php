@@ -48,7 +48,7 @@ if (isset($variables["apunte"])):
         </div>
         <?php foreach ($variables["comentarios"] as $comentario): ?>
             <div class="fila">
-                <h4><a href="perfil-usuario.phpid=<?php echo $comentario->usuario->id ?>"><?php echo $comentario->usuario->nombre . " " . $comentario->usuario->apellido ?></a> <small> - <?php echo date("d-m-Y", strtotime($comentario->fecha)) ?></small></h4>
+                <h4><a href="perfil-usuario.php?id=<?php echo $comentario->usuario->id ?>"><?php echo $comentario->usuario->nombre . " " . $comentario->usuario->apellido ?></a> <small> - <?php echo date("d-m-Y", strtotime($comentario->fecha)) ?></small></h4>
                 <p>
                     <?php echo $comentario->texto ?>
                 </p>
@@ -63,9 +63,15 @@ if (isset($variables["apunte"])):
         });
     </script>
 
-    <?php
-else:
-    echo "<blockquote><h3>Este apunte no existe o no tiene permisos para verlo.</h3></blockquote>";
+<?php else: ?>
+    <blockquote>
+        <h3>Este apunte no existe o no tiene permisos para verlo.</h3>
+        <?php if (isset($_GET["id"])): ?>
+            <p>Si está seguro que este apunte existe pida permiso a su autor para poder verlo.</p>
+            <p><a href="../servicios/usuarioHandler.php?action=pedirPermisoApunte&id=<?php echo filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT) ?>">Pedir permiso</a></p>
+        <?php endif; ?>
+    </blockquote>
+<?php
 endif;
 $contenido = ob_get_clean();
 require "../common/usuario/layout.php";

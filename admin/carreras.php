@@ -37,19 +37,18 @@ ob_start();
             ?>
             <div class="fila">
                 <p>
-                    <span class="col-9">
+                    <span class="col-10">
                         <strong><a href="perfil-carrera.php?id=<?php echo $carrera->id ?>"><?php echo $carrera->nombre ?></a> <small>/
                                 <a href="perfil-universidad.php?id=<?php echo $carrera->universidad->id ?>"><?php echo $carrera->universidad->siglas ?></a></small></strong>
                     </span>
-                    <span class="col-1"><span class="fa fa-user"></span><strong><?php echo count($carrera->ownUsuarioList) ?></strong></span>
-                    <span class="col-1"><span class="fa fa-file"></span><strong><?php if (isset($variables['carapuntes'][$carrera->id])) echo $variables['carapuntes'][$carrera->id] ?></strong></span>
+                    <span class="col-1"><span class="fa fa-user"></span> <?php echo count($carrera->ownUsuarioList) ?></span>
                     <span class="col-1"><span id="f<?php echo $carrera->id . '-' . $carrera->nombre; ?>" class="fa fa-trash-o"></span></span>
                 </p> 
                 <div class="clear"></div>
             </div>
         <?php endforeach; ?>
     <?php else: ?>
-    <blockquote><h3>No hay carreras.</h3></blockquote>
+        <blockquote><h3>No hay carreras.</h3></blockquote>
     <?php endif; ?>
 </div>
 <div class="col-3">

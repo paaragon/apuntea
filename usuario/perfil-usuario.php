@@ -28,7 +28,7 @@ ob_start();
                     <small>Apuntes</small>
                 </li>
                 <li id="actividad-3">
-                    <span><?php echo count($variables["usuario"]->ownComentarioList) ?></span>
+                    <span><?php echo count($variables["usuario"]->ownComentarioapunteList) ?></span>
                     <small>Comentarios</small>
                 </li>
             </ul>

@@ -71,8 +71,12 @@ ob_start();
             var r = confirm("Seguro que quieres borrar un apunte?");
             if (r == true) {
                 $.post('../servicios/usuarioHandler.php?action=borrarapunte', {id: id}, function (data) {
-                    ap.closest(".fila").remove();
-                });
+                    if (data == true) {
+                        ap.closest(".fila").remove();
+                    } else {
+                        alert("Error eliminando apunte.");
+                    }
+                }, "json");
             }
         });
     });

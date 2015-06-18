@@ -3,6 +3,7 @@
 require __DIR__ . "/../DB/rb.php";
 require __DIR__ . "/../DB/DbConfig.php";
 require __DIR__ . "/../security/security.php";
+require __DIR__ . "/../util/Validate.php";
 
 class ServiciosEstandar {
 
@@ -15,7 +16,7 @@ class ServiciosEstandar {
         $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_MAGIC_QUOTES);
 
         $this->setUpDatabase();
-        $usuario = R::findOne('usuario', ' nick = "' . $username . '"');
+        $usuario = R::findOne('usuario', ' nick = "' . $username . '" AND activo = 1');
 
         if ($usuario == NULL || !password_verify($password . "pimienta_de_la_buena", $usuario->password)) {
             echo "Mal";
@@ -75,6 +76,20 @@ class ServiciosEstandar {
             $response = json_decode(file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LcTwgcTAAAAAAIYyE8EBBWc1A4k8OPFIQfzVw8i&response=" . $_POST['g-recaptcha-response'] . "&remoteip=" . $_SERVER['REMOTE_ADDR']), true);
 
             if ($response["success"] == 1) {
+
+                $fields = array(
+                    "alias" => array($_POST, "texto", true),
+                    "apellidos" => array($_POST, "texto", true),
+                    "email" => array($_POST, "email", true),
+                    "password" => array($_POST, "texto", true),
+                    "password2" => array($_POST, "texto", true),
+                    "carrera" => array($_POST, "entero", true),
+                    "nombre" => array($_POST, "texto", true));
+                $validate = new Validate($fields);
+                if (!$validate->validate()) {
+                    $_SESSION["error"] = $validate->getErrorMessage();
+                    return "registrarse.php";
+                }
                 $alias = filter_input(INPUT_POST, "alias", FILTER_SANITIZE_MAGIC_QUOTES);
                 $nombre = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES);
                 $apellidos = filter_input(INPUT_POST, "apellidos", FILTER_SANITIZE_MAGIC_QUOTES);

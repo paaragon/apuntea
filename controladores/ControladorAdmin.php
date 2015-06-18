@@ -3,8 +3,11 @@
 require __DIR__ . "/../security/security.php";
 require __DIR__ . "/../DB/rb.php";
 require __DIR__ . "/../DB/DbConfig.php";
+require __DIR__ . "/../util/charts.php";
 
 class ControladorAdmin {
+
+    use charts;
 
     private $variables = array();
     private $emojis = array(
@@ -218,18 +221,8 @@ class ControladorAdmin {
 
         $this->variables["usuarios"] = R::findAll('usuario', " tipo != 2 ");
 
-        //Gráfica 1
-        $month = time();
-        for ($i = 1; $i <= 7; $i++) {
-            $month = strtotime('last month', $month);
-            $months[] = array("name" => strftime("%B", $month), "number" => strftime("%m", $month));
-        }
-
-        foreach ($months as $m) {
-            $this->variables["chart1"][$m["name"]] = R::count('usuario', 'MONTH(fecha) = ? AND TIMESTAMPDIFF(MONTH, NOW(), fecha) >= -6', [$m["number"]]);
-        }
-
-        $this->variables["chart2"] = R::getAll("SELECT nick, COUNT(*) as num FROM usuario, apunte WHERE usuario.id = apunte.usuario_id GROUP BY nick ORDER BY num DESC limit 5");
+        $this->variables["chart1"] = $this->usuariosMeses();
+        $this->variables["chart2"] = $this->usuariosConMasApuntes();
 
         R::close();
 
@@ -245,22 +238,8 @@ class ControladorAdmin {
 
         if (isset($this->variables["usuario"])) {
 
-
-
-            setlocale(LC_ALL, 'esp');
-
-            //Gráfica 1  
-            $month = time();
-            for ($i = 1; $i <= 2; $i++) {
-                $month = strtotime('last month', $month);
-                $months[] = array("name" => strftime("%B", $month), "number" => strftime("%m", $month));
-            }
-
-            foreach ($months as $m) {
-                $this->variables["chart1"][$m["name"]] = R::count('apunte', 'usuario_id = ? AND MONTH(fecha) = ? AND TIMESTAMPDIFF(MONTH, NOW(), fecha) >= -1', [$id, $m["number"]]);
-            }
-
-            $this->variables["chart2"] = R::getAll("SELECT apunte.titulo, apunte.likes FROM apunte, usuario WHERE apunte.usuario_id = usuario.id AND usuario_id = ? ORDER BY apunte.likes DESC limit 5", [$id]);
+            $this->variables["chart1"] = $this->numApuntesDeUsuario($id);
+            $this->variables["chart2"] = $this->apuntesMasPopulares($id);
 
             //Carrera usuario
             $this->variables["carrera"] = R::findOne("carrera", "id = " . $this->variables["usuario"]->carrera_id);
@@ -333,9 +312,9 @@ class ControladorAdmin {
         $this->setUpDatabase();
         $this->variables["apunte"] = R::findOne('apunte', ' id=?', [$idApunte]);
 
-        $this->variables["likes"] = R::getAll("SELECT COUNT(*) as num, WEEK(fechalike) as semana FROM usuariointeractuaapunte WHERE TIMESTAMPDIFF(WEEK, NOW(), fechalike) >= -8 GROUP BY WEEK(fechalike)");
-        $this->variables["dislikes"] = R::getAll("SELECT COUNT(*) as num, WEEK(fechadislike) as semana FROM usuariointeractuaapunte WHERE TIMESTAMPDIFF(WEEK, NOW(), fechadislike) >= -8 GROUP BY WEEK(fechadislike)");
-        $this->variables["favoritos"] = R::getAll("SELECT COUNT(*) as num, WEEK(fechafavorito) as semana FROM usuariointeractuaapunte WHERE TIMESTAMPDIFF(WEEK, NOW(), fechafavorito) >= -8 GROUP BY WEEK(fechafavorito)");
+        $this->variables["chart1"] = $this->numLikes($idApunte);
+        $this->variables["chart2"] = $this->numDislikes($idApunte);
+        $this->variables["chart3"] = $this->numFavs($idApunte);
         R::close();
         return $this->variables;
     }
@@ -360,21 +339,10 @@ class ControladorAdmin {
     public function inicio() {
 
         $this->setUpDatabase();
-        setlocale(LC_ALL, 'esp');
 
-        //Gráfica 1
-        $month = time();
-        for ($i = 1; $i <= 7; $i++) {
-            $month = strtotime('last month', $month);
-            $months[] = array("name" => strftime("%B", $month), "number" => strftime("%m", $month));
-        }
-
-        foreach ($months as $m) {
-            $this->variables["chart1"][$m["name"]] = R::count('usuario', 'MONTH(fecha) = ? AND TIMESTAMPDIFF(MONTH, NOW(), fecha) >= -6', [$m["number"]]);
-            $this->variables["chart3"][$m["name"]] = R::count('apunte', 'MONTH(fecha) = ? AND TIMESTAMPDIFF(MONTH, NOW(), fecha) >= -6', [$m["number"]]);
-        }
-
-        $this->variables["chart2"] = R::getAll('SELECT universidad.siglas, COUNT(*) / (SELECT COUNT(*) / 100 FROM apunte) as num FROM universidad, carrera, asignatura, apunte WHERE universidad.id = universidad_id AND carrera.id = carrera_id AND asignatura.id = asignatura_id GROUP BY universidad.id ORDER BY num DESC');
+        $this->variables["chart1"] = $this->usuariosMeses();
+        $this->variables["chart2"] = $this->apuntesPorUniversidades();
+        $this->variables["chart3"] = $this->apuntesMeses();
 
         $this->variables["numcarreras"] = R::count('carrera');
         $this->variables["numuniversidades"] = R::count('universidad');
@@ -449,29 +417,22 @@ class ControladorAdmin {
         $this->variables["universidades"] = R::findAll('universidad');
         $this->variables["carreras"] = R::findAll('carrera');
 
-        setlocale(LC_ALL, 'esp');
+        $this->variables["chart1"] = $this->apuntesMeses();
 
-        $month = time();
-        for ($i = 1; $i <= 7; $i++) {
-            $month = strtotime('last month', $month);
-            $months[] = array("name" => strftime("%B", $month), "number" => strftime("%m", $month));
-        }
-
-        foreach ($months as $m) {
-            $this->variables["chart1"][$m["name"]] = R::count('apunte', 'MONTH(fecha) = ? AND TIMESTAMPDIFF(MONTH, NOW(), fecha) >= -6', [$m["number"]]);
-        }
-
-        $this->variables["chart2"] = R::getAll("SELECT nick, COUNT(*) as num FROM usuario, apunte WHERE usuario.id = apunte.usuario_id GROUP BY nick ORDER BY num DESC limit 5");
+        $this->variables["chart2"] = $this->usuariosConMasApuntes();
 
         R::close();
         return $this->variables;
     }
 
-    public function grupos() {// = getUniversidades()...
+    public function grupos() {
         $this->setUpDatabase();
 
         $this->variables["universidades"] = R::findAll('universidad');
         $this->variables["grupos"] = R::findAll('grupo');
+
+        $this->variables["chart1"] = $this->gruposConMasParticipantes();
+        $this->variables["chart2"] = $this->gruposConMasApuntes();
 
         R::close();
         return $this->variables;

@@ -68,38 +68,9 @@ ob_start();
 
 <script>
     $(document).on("ready", function () {
-
-<?php
-$chart1 = array_reverse($variables["chart1"]);
-
-$primer_mes = key($chart1);
-$primer_valor = array_shift($chart1);
-
-$etiquetas1 = '"' . $primer_mes . '"';
-$valores1 = $primer_valor;
-
-foreach ($chart1 as $month => $value) {
-
-    $etiquetas1 .= ', "' . $month . '"';
-    $valores1 .=', ' . $value;
-}
-
-$chart2 = $variables["chart2"];
-
-$primer_elemento = array_shift($chart2);
-
-$etiquetas2 = '"' . $primer_elemento["nick"] . '"';
-$valores2 = $primer_elemento["num"];
-
-foreach ($chart2 as $elem) {
-
-    $etiquetas2 .= ', "' . $elem["nick"] . '"';
-    $valores2 .=', ' . $elem["num"];
-}
-?>
         //Gráfica 1----------------------------------------------------
         var data1 = {
-            labels: [<?php echo $etiquetas1 ?>],
+            labels: [<?php echo $variables["chart1"]["label"] ?>],
             datasets: [
                 {
                     fillColor: "rgba(70, 181, 82, 0.2)",
@@ -108,7 +79,7 @@ foreach ($chart2 as $elem) {
                     pointStrokeColor: "rgba(59, 152, 68, 0.8)",
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: [<?php echo $valores1 ?>]
+                    data: [<?php echo $variables["chart1"]["data"] ?>]
                 }
             ]
         };
@@ -122,7 +93,7 @@ foreach ($chart2 as $elem) {
 
         //Gráfica 2----------------------------------------------------
         var data2 = {
-            labels: [<?php echo $etiquetas2 ?>],
+            labels: [<?php echo $variables["chart2"]["label"] ?>],
             datasets: [
                 {
                     fillColor: "rgba(70, 181, 82, 0.2)",
@@ -131,7 +102,7 @@ foreach ($chart2 as $elem) {
                     pointStrokeColor: "rgba(59, 152, 68, 0.8)",
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: [<?php echo $valores2 ?>]
+                    data: [<?php echo $variables["chart2"]["data"] ?>]
                 }
             ]
         };
@@ -187,7 +158,7 @@ foreach ($chart2 as $elem) {
     function getCarreras(id) {
         $("#selectCarrera").html("<option value='0' selected=''>Todas</option>");
         if (id != 0) {
-            $.post("../servicios/usuarioHandler.php?action=getCarreras", {idUniversidad: id}, function (data) {
+            $.post("../servicios/adminHandler.php?action=getCarreras", {idUniversidad: id}, function (data) {
 
                 for (i = 0; i < data.length; i++) {
                     $("#selectCarrera").append("<option value='" + data[i]["id"] + "'>" + data[i]["nombre"] + "</option>");

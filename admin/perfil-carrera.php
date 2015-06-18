@@ -12,8 +12,8 @@ ob_start();
         </h2>
         <hr>
         <p>
-            <a href="editar-carrera.php" class="boton">Editar carrera</a>
-            <a href="carreras.php" class="boton">Eliminar carrera</a>
+            <a href="editar-carrera.php?id=<?php echo $carrera->id ?>" class="boton">Editar carrera</a>
+            <a href="../servicios/adminHandler.php?action=borrarCarrera&id=<?php echo $carrera->id ?>" class="boton">Eliminar carrera</a>
         </p>
         <div class="col-6">
             <h3>Alumnos:</h3>

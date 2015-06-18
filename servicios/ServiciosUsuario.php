@@ -3,6 +3,7 @@
 require __DIR__ . "/../security/security.php";
 require __DIR__ . "/../DB/rb.php";
 require __DIR__ . "/../DB/DbConfig.php";
+require __DIR__ . "/../util/Validate.php";
 
 class ServiciosUsuario {
 
@@ -13,18 +14,27 @@ class ServiciosUsuario {
     public function borrarapunte() {
 
         $this->setUpDatabase();
+
+        $fields = array("id" => array($_POST["id"], "entero", "required" => true));
+        $validate = new Validate($fields);
+
+        if (!$validate->validate()) {
+            return json_encode(false);
+        }
+
         $id = filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
         $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
-//borrar interactuacion
+
         $interaccion = R::find('usuariointeractuaapunte', 'apunte_id= :idapunte', array(':idapunte' => $id));
         R::trashAll($interaccion);
 
-//borrar apunte
         $apunte = R::findOne('apunte', "id = ? AND usuario_id = ?", [$id, $idUsuario]);
 
         R::trash($apunte);
 
         R::close();
+
+        return json_encode(true);
     }
 
     public function editando() {
@@ -61,6 +71,78 @@ class ServiciosUsuario {
         R::close();
     }
 
+    public function pedirPermisoApunte() {
+
+        $idApunte = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+
+        $this->setUpDatabase();
+
+        $apunte = R::load('apunte', $idApunte);
+
+        if ($apunte != null && R::count('peticionapunte', 'apunte_id = ? AND usuario_id = ?', [$idApunte, $idUsuario]) == 0) {
+            $peticion = R::dispense('peticionpermiso');
+            $peticion->apunte_id = $idApunte;
+            $peticion->usuario_id = $idUsuario;
+
+            R::store($peticion);
+
+            $_SESSION["exito"] = "Petición realizada con éxito.";
+            return "usuario/inicio.php";
+        } else {
+            $_SESSION["error"] = "Usted ya ha pedido permiso para ver este apunte";
+            return "usuario/inicio.php";
+        }
+    }
+
+    public function aceptarPeticionApunte() {
+        $idPeticion = filter_input(INPUT_GET, "idPeticion", FILTER_SANITIZE_NUMBER_INT);
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+
+        $this->setUpDatabase();
+
+        $peticion = R::findOne('peticionapunte', 'id = ? AND apunte_id IN (SELECT id FROM apunte WHERE usuario_id = ?)', [$idPeticion, $idUsuario]);
+
+        if ($peticion == null) {
+
+            $_SESSION["error"] = "Error al aceptar la peticion.";
+            return "usuario/inicio.php";
+        }
+
+        $peticion->admitido = 1;
+        R::store($peticion);
+        $interaccion = R::findOne('usuariointeractuaapunte', 'usuario_id = ? AND apunte_id = ?', [$peticion->usuario_id, $peticion->apunte_id]);
+        if ($interaccion == null) {
+            $interaccion = R::dispense('usuariointeractuaapunte');
+            $interaccion->usuario_id = $peticion->usuario_id;
+            $interaccion->apunte_id = $peticion->apunte_id;
+        }
+        $interaccion->permiso = 1;
+        R::store($interaccion);
+        R::close();
+        $_SESSION["exito"] = "Petición aceptada con éxito.";
+        return "usuario/inicio.php";
+    }
+
+    public function borrarPeticionApunte() {
+        $idPeticion = filter_input(INPUT_GET, "idPeticion", FILTER_SANITIZE_NUMBER_INT);
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+
+        $this->setUpDatabase();
+        $peticion = R::findOne('peticionapunte', 'id = ? AND apunte_id IN (SELECT id FROM apunte WHERE usuario_id = ?)', [$idPeticion, $idUsuario]);
+
+        if ($peticion == null) {
+
+            $_SESSION["error"] = "Error al cancelar la peticion.";
+            return "usuario/inicio.php";
+        }
+
+        R::trash($peticion);
+        R::close();
+        $_SESSION["exito"] = "Petición cancelada con éxito.";
+        return "usuario/inicio.php";
+    }
+
     public function getUsuariosConectados() {
         $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
 
@@ -87,6 +169,18 @@ class ServiciosUsuario {
 
     public function guardarApunte() {
 
+        $fields = array(
+            "apunte" => array($_POST, "entero", true),
+            "contenido" => array($_POST, "texto", false),
+            "visualizacion" => array($_POST, "entero", true),
+            "modificacion" => array($_POST, "entero", true),
+            "edicion-permisos" => array($_POST, "entero", true));
+        $validate = new Validate($fields);
+        if (!$validate->validate()) {
+            $_SESSION["error"] = $validate->getErrorMessage();
+            return "usuario/editar-apunte.php?id=" . filter_input(INPUT_POST, "apunte", FILTER_SANITIZE_NUMBER_INT);
+        }
+
         $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
         $idApunte = filter_input(INPUT_POST, "apunte", FILTER_SANITIZE_NUMBER_INT);
         $contenido = filter_input(INPUT_POST, "contenido", FILTER_SANITIZE_MAGIC_QUOTES);
@@ -104,7 +198,7 @@ class ServiciosUsuario {
         $apunte->permisoedicionpermiso = $permiso3;
 
         $interaccion = R::findOne('usuariointeractuaapunte', ' usuario_id = ? AND apunte_id = ?', [$idUsuario, $idApunte]);
-        if ($interaccion->permiso == 3 || $apunte->usuario_id == $idUsuario) {
+        if (isset($interaccion) && ($interaccion->permiso == 3 || $apunte->usuario_id == $idUsuario)) {
 //Elimino los permisos anteriores
             $visualizaciones = R::findAll('usuariointeractuaapunte', 'apunte_id = ? AND permiso = 1', [$idApunte]);
             foreach ($visualizaciones as $visualizacion) {
@@ -186,17 +280,26 @@ class ServiciosUsuario {
         return "usuario/editar-apunte.php?id=" . $idApunte;
     }
 
-    public function anadirComentarioGrupo($parametros) {
+    public function anadirComentarioGrupo() {
+
+        $admin = (isset($_POST["isAdmin"])) ? "-admin" : "";
+        $idGrupo = filter_input(INPUT_GET, "idGrupo", FILTER_SANITIZE_NUMBER_INT);
+
+        $fields = array(
+            "idUsuario" => array($_SESSION, "entero", true),
+            "comentario" => array($_POST, "texto", true));
+
+        $validate = new Validate($fields);
+        if (!$validate->validate()) {
+            $_SESSION["error"] = $validate->getErrorMessage();
+            return "usuario/ver-grupo" . $admin . ".php?id=" . $idGrupo;
+        }
 
         $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
-
         $this->setUpDatabase();
 
-        $idGrupo = $parametros["idGrupo"];
         $fecha = date("Y-m-d h:i:s", time());
         $texto = filter_input(INPUT_POST, "comentario", FILTER_SANITIZE_MAGIC_QUOTES);
-        $admin = (isset($_POST["isAdmin"])) ? "-admin" : "";
-
 
         $comentario = R::dispense('comentariogrupo');
 
@@ -213,6 +316,15 @@ class ServiciosUsuario {
     }
 
     public function editarGrupo() {
+
+        $fields = array(
+            "idGrupo" => array($_POST, "entero", true),
+            "privacidad" => array($_POST, "texto", true));
+        $validate = new Validate($fields);
+        if (!$validate->validate()) {
+            $_SESSION["error"] = $validate->getErrorMessage();
+            return "usuario/ver-grupo-admin.php?id=" . filter_input(INPUT_POST, "idGrupo", FILTER_SANITIZE_NUMBER_INT);
+        }
 
         $idGrupo = filter_input(INPUT_POST, "idGrupo", FILTER_SANITIZE_NUMBER_INT);
         $privacidad = filter_input(INPUT_POST, "privacidad", FILTER_SANITIZE_NUMBER_INT);
@@ -233,9 +345,17 @@ class ServiciosUsuario {
         return "usuario/ver-grupo-admin.php?id=" . $idGrupo;
     }
 
-    public function peticionGrupo($params) {
+    public function peticionGrupo() {
 
-        $idGrupo = filter_var($params["idGrupo"], FILTER_SANITIZE_NUMBER_INT);
+        $fields = array(
+            "idGrupo" => array($_GET, "entero", true));
+        $validate = new Validate($fields);
+        if (!$validate->validate()) {
+            $_SESSION["error"] = $validate->getErrorMessage();
+            return "usuario/mis-grupos-sugeridos.php";
+        }
+
+        $idGrupo = filter_input(INPUT_GET, "idGrupo", FILTER_SANITIZE_NUMBER_INT);
         $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
 
         $this->setUpDatabase();
@@ -277,10 +397,19 @@ class ServiciosUsuario {
         return $return;
     }
 
-    public function anadirUsuarioGrupo($parametros) {
+    public function anadirUsuarioGrupo() {
+
+        $fields = array(
+            "nick" => array($_POST, "texto", true),
+            "idGrupo" => array($_GET, "entero", true));
+        $validate = new Validate($fields);
+        if (!$validate->validate()) {
+            $_SESSION["error"] = $validate->getErrorMessage();
+            return "usuario/ver-grupo-admin.php?id=" . filter_input(INPUT_POST, "idGrupo", FILTER_SANITIZE_NUMBER_INT);
+        }
 
         $nick = filter_input(INPUT_POST, "nick", FILTER_SANITIZE_MAGIC_QUOTES);
-        $idGrupo = $parametros["idGrupo"];
+        $idGrupo = filter_input(INPUT_GET, "idGrupo", FILTER_SANITIZE_NUMBER_INT);
         $this->setUpDatabase();
         try {
             $usuario = R::findOne('usuario', " nick=? ", [$nick]);
@@ -300,11 +429,21 @@ class ServiciosUsuario {
         return $return;
     }
 
-    public function anadirApunteGrupo($parametros) {
+    public function anadirApunteGrupo() {
 
-        $idGrupo = filter_var($parametros["idGrupo"], FILTER_SANITIZE_NUMBER_INT);
+        $admin = isset($_GET["admin"]) ? "-admin" : "";
+
+        $fields = array(
+            "apunte" => array($_POST, "entero", true),
+            "idGrupo" => array($_GET, "entero", true));
+        $validate = new Validate($fields);
+        if (!$validate->validate()) {
+            $_SESSION["error"] = $validate->getErrorMessage();
+            return "usuario/ver-grupo" . $admin . ".php?id=" . filter_input(INPUT_POST, "idGrupo", FILTER_SANITIZE_NUMBER_INT);
+        }
+
+        $idGrupo = filter_input(INPUT_GET, "idGrupo", FILTER_SANITIZE_NUMBER_INT);
         $idApunte = filter_input(INPUT_POST, "apunte", FILTER_SANITIZE_NUMBER_INT);
-        $isadmin = filter_input(INPUT_GET, "admin", FILTER_SANITIZE_NUMBER_INT);
 
         $this->setUpDatabase();
         if (R::count('apuntegrupo', 'apunte_id = ? AND grupo_id = ?', [$idApunte, $idGrupo]) == 0) {
@@ -318,18 +457,25 @@ class ServiciosUsuario {
         }
         R::close();
 
-        $admin = ($isadmin == 1) ? "-admin" : "";
-
         $return = "usuario/ver-grupo" . $admin . ".php?id=" . $idGrupo;
 
         return $return;
     }
 
-    public function aceptarPeticionGrupo($parametros) {
+    public function aceptarPeticionGrupo() {
+
+        $fields = array(
+            "idUsuario" => array($_GET, "entero", true),
+            "idGrupo" => array($_GET, "entero", true));
+        $validate = new Validate($fields);
+        if (!$validate->validate()) {
+            $_SESSION["error"] = $validate->getErrorMessage();
+            return "usuario/peticiones-grupo.php?id=" . filter_input(INPUT_POST, "idGrupo", FILTER_SANITIZE_NUMBER_INT);
+        }
 
         $this->setUpDatabase();
-        $idGrupo = $parametros["idGrupo"];
-        $idUsuario = $parametros["idUsuario"];
+        $idGrupo = filter_input(INPUT_GET, "idGrupo", FILTER_SANITIZE_NUMBER_INT);
+        $idUsuario = filter_input(INPUT_GET, "idUsuario", FILTER_SANITIZE_NUMBER_INT);
 
         try {
             $usuario = R::findOne('usuariogrupo', "grupo_id = " . $idGrupo . " AND usuario_id = " . $idUsuario);
@@ -345,11 +491,20 @@ class ServiciosUsuario {
         return $return;
     }
 
-    public function borrarUsuarioGrupo($parametros) {
+    public function borrarUsuarioGrupo() {
+
+        $fields = array(
+            "idUsuario" => array($_GET, "entero", true),
+            "idGrupo" => array($_GET, "entero", true));
+        $validate = new Validate($fields);
+        if (!$validate->validate()) {
+            $_SESSION["error"] = $validate->getErrorMessage();
+            return "usuario/ver-grupo-admin.php?id=" . filter_input(INPUT_POST, "idGrupo", FILTER_SANITIZE_NUMBER_INT);
+        }
 
         $this->setUpDatabase();
-        $idGrupo = $parametros["idGrupo"];
-        $idUsuario = $parametros["idUsuario"];
+        $idGrupo = filter_input(INPUT_GET, "idGrupo", FILTER_SANITIZE_NUMBER_INT);
+        $idUsuario = filter_input(INPUT_GET, "idUsuario", FILTER_SANITIZE_NUMBER_INT);
         try {
             $usuario = R::findOne('usuariogrupo', "grupo_id = " . $idGrupo . " AND usuario_id = " . $idUsuario);
             R::trash($usuario);
@@ -364,6 +519,15 @@ class ServiciosUsuario {
     }
 
     public function eliminarAdminGrupo() {
+
+        $fields = array(
+            "idUsuario" => array($_GET, "entero", true),
+            "idGrupo" => array($_GET, "entero", true));
+        $validate = new Validate($fields);
+        if (!$validate->validate()) {
+            $_SESSION["error"] = $validate->getErrorMessage();
+            return "usuario/ver-grupo-admin.php?id=" . filter_input(INPUT_POST, "idGrupo", FILTER_SANITIZE_NUMBER_INT);
+        }
 
         $idGrupo = filter_input(INPUT_GET, "idGrupo", FILTER_SANITIZE_NUMBER_INT);
         $idUsuario = filter_input(INPUT_GET, "idUsuario", FILTER_SANITIZE_NUMBER_INT);
@@ -828,7 +992,8 @@ class ServiciosUsuario {
         $apunte->likes = 0;
         $apunte->dislikes = 0;
         $apunte->visualizaciones = 0;
-        $apunte->contenido = ""; //estos valores (default) deberiamos ponerlos bien en la BD
+        $apunte->contenido = "";
+        $apunte->ultimoeditor = $idUser;
 
         $idApunte = R::store($apunte);
 

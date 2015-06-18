@@ -104,35 +104,6 @@ if (isset($variables["usuario"])):
         <canvas id="myChart2"></canvas
     </div>
     <script>
-    <?php
-    $chart1 = array_reverse($variables["chart1"]);
-
-    $primer_mes = key($chart1);
-    $primer_valor = array_shift($chart1);
-
-    $etiquetas1 = '"' . $primer_mes . '"';
-    $valores1 = $primer_valor;
-
-    foreach ($chart1 as $month => $value) {
-
-        $etiquetas1 .= ', "' . $month . '"';
-        $valores1 .=', ' . $value;
-    }
-
-    $chart2 = $variables["chart2"];
-
-    $primer_elemento = array_shift($chart2);
-
-    $etiquetas2 = '"' . $primer_elemento["titulo"] . '"';
-    $valores2 = $primer_elemento["likes"];
-
-    foreach ($chart2 as $elem) {
-
-        $etiquetas2 .= ', "' . $elem["titulo"] . '"';
-        $valores2 .=', ' . $elem["likes"];
-    }
-    ?>
-
 
         var canvas1 = document.getElementById("myChart1");
 
@@ -141,7 +112,7 @@ if (isset($variables["usuario"])):
 
         //Gráfica 1----------------------------------------------------
         var data1 = {
-            labels: [<?php echo $etiquetas1 ?>],
+            labels: [<?php echo $variables["chart1"]["label"] ?>],
             datasets: [
                 {
                     fillColor: "rgba(70, 181, 82, 0.2)",
@@ -150,7 +121,7 @@ if (isset($variables["usuario"])):
                     pointStrokeColor: "rgba(59, 152, 68, 0.8)",
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: [<?php echo $valores1 ?>]
+                    data: [<?php echo $variables["chart1"]["data"] ?>]
                 }
             ]
         };
@@ -160,7 +131,7 @@ if (isset($variables["usuario"])):
 
         //Gráfica 2----------------------------------------------------
         var data2 = {
-            labels: [<?php echo $etiquetas2 ?>],
+            labels: [<?php echo $variables["chart2"]["label"] ?>],
             datasets: [
                 {
                     fillColor: "rgba(70, 181, 82, 0.2)",
@@ -169,7 +140,7 @@ if (isset($variables["usuario"])):
                     pointStrokeColor: "rgba(59, 152, 68, 0.8)",
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: [<?php echo $valores2 ?>]
+                    data: [<?php echo $variables["chart2"]["data"] ?>]
                 }
             ]
         };
@@ -180,6 +151,7 @@ if (isset($variables["usuario"])):
 
         var ctx = document.getElementById("myChart2").getContext("2d");
         var myLineChart2 = new Chart(ctx).Bar(data2);
+
     </script>
 <?php else: ?>
     <blockquote><h3>Usuario no encontrado.</h3></blockquote>

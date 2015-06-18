@@ -176,7 +176,9 @@ class ControladorEstandar {
     public function registrarse() {
 
         $this->setUpDatabase();
-
+        if (isset($_SESSION["fbid"])) {
+            unset($_SESSION["fbid"]);
+        }
         $this->variables["universidades"] = R::findAll('universidad');
 
         R::close();

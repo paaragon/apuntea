@@ -80,50 +80,9 @@ ob_start();
     </div>
     <script>
         $(document).on("ready", function () {
-
-    <?php
-    $chart1 = $variables["likes"];
-
-    $primer_elemento = array_shift($chart1);
-
-    $etiquetas1 = '"' . $primer_elemento["semana"] . '"';
-    $valores1 = $primer_elemento["num"];
-
-    foreach ($chart1 as $elem) {
-
-        $etiquetas1 .= ', "' . $elem["semana"] . '"';
-        $valores1 .=', ' . $elem["num"];
-    }
-
-    $chart2 = $variables["dislikes"];
-
-    $primer_elemento = array_shift($chart2);
-
-    $etiquetas2 = '"' . $primer_elemento["semana"] . '"';
-    $valores2 = $primer_elemento["num"];
-
-    foreach ($chart2 as $elem) {
-
-        $etiquetas2 .= ', "' . $elem["semana"] . '"';
-        $valores2 .=', ' . $elem["num"];
-    }
-
-    $chart3 = $variables["favoritos"];
-
-    $primer_elemento = array_shift($chart3);
-
-    $etiquetas3 = '"' . $primer_elemento["semana"] . '"';
-    $valores3 = $primer_elemento["num"];
-
-    foreach ($chart3 as $elem) {
-
-        $etiquetas3 .= ', "' . $elem["semana"] . '"';
-        $valores3 .=', ' . $elem["num"];
-    }
-    ?>
             //Gráfica 1----------------------------------------------------
             var data1 = {
-                labels: [<?php echo $etiquetas1 ?>],
+                labels: [<?php echo $variables["chart1"]["label"] ?>],
                 datasets: [
                     {
                         fillColor: "rgba(70, 181, 82, 0.2)",
@@ -132,7 +91,7 @@ ob_start();
                         pointStrokeColor: "rgba(59, 152, 68, 0.8)",
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: [<?php echo $valores1 ?>]
+                        data: [<?php echo $variables["chart1"]["data"] ?>]
                     }
                 ]
             };
@@ -146,7 +105,7 @@ ob_start();
 
             //Gráfica 2----------------------------------------------------
             var data2 = {
-                labels: [<?php echo $etiquetas2 ?>],
+                labels: [<?php echo $variables["chart2"]["label"] ?>],
                 datasets: [
                     {
                         fillColor: "rgba(70, 181, 82, 0.2)",
@@ -155,7 +114,7 @@ ob_start();
                         pointStrokeColor: "rgba(59, 152, 68, 0.8)",
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: [<?php echo $valores2 ?>]
+                        data: [<?php echo $variables["chart2"]["data"] ?>]
                     }
                 ]
             };
@@ -169,7 +128,7 @@ ob_start();
 
             //Gráfica 2----------------------------------------------------
             var data3 = {
-                labels: [<?php echo $etiquetas3 ?>],
+                labels: [<?php echo $variables["chart3"]["label"] ?>],
                 datasets: [
                     {
                         fillColor: "rgba(70, 181, 82, 0.2)",
@@ -178,7 +137,7 @@ ob_start();
                         pointStrokeColor: "rgba(59, 152, 68, 0.8)",
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: [<?php echo $valores3 ?>]
+                        data: [<?php echo $variables["chart3"]["data"] ?>]
                     }
                 ]
             };

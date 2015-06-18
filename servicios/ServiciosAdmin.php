@@ -46,26 +46,14 @@ class ServiciosAdmin {
         $idCarrera = filter_input(INPUT_POST, "carrera", FILTER_SANITIZE_MAGIC_QUOTES);
         $curso = filter_input(INPUT_POST, "curso", FILTER_SANITIZE_NUMBER_INT);
         $nombre = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES);
-        $apellidos = filter_input(INPUT_POST, "apellidos", FILTER_SANITIZE_MAGIC_QUOTES);
 
-        /*
-          Necesitmoas el ide de la univiserdad para saber
-         * a que carrera pertenece ?? pero la tabla
-         * no tiene este id?
-         * 
-         * y en descripcion que se pone ?
-         *          */
-        //$idUniversidad = filter_input(INPUT_POST, "universidad", FILTER_SANITIZE_NUMBER_INT);
-        //Conectamos a bd
         $this->setUpDatabase();
 
-        //Obtenemos la asignatura
         $asignatura = R::dispense('asignatura');
 
         $asignatura->carrera_id = $idCarrera;
         $asignatura->curso = $curso;
         $asignatura->nombre = $nombre;
-        $asignatura->apellidos = $apellidos;
 
 
         try {
@@ -365,6 +353,7 @@ class ServiciosAdmin {
         $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
 
         $nombre = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES);
+        $apellidos = filter_input(INPUT_POST, "apellidos", FILTER_SANITIZE_MAGIC_QUOTES);
         $email = filter_input(INPUT_POST, "mail", FILTER_SANITIZE_MAGIC_QUOTES);
         $newPass = filter_input(INPUT_POST, "new-password", FILTER_SANITIZE_MAGIC_QUOTES);
         $pass3 = filter_input(INPUT_POST, "pass3", FILTER_SANITIZE_MAGIC_QUOTES);
@@ -373,6 +362,7 @@ class ServiciosAdmin {
 
         $usuario = R::findOne('usuario', ' id = ?', [$idUsuario]);
         $usuario->nombre = $nombre;
+        $usuario->apellidos = $apellidos;
         $usuario->email = $email;
 
         if ($newPass != "" && $newPass == $pass3) {

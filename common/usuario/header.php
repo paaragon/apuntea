@@ -23,6 +23,14 @@
                 <button type="submit" class="btn btn-primary"><span class="fa fa-search"></span></button>
             </form>
             <ul class="nav navbar-nav navbar-right">
+                <?php if ($variables["peticiones-apuntes"] > 0): ?>
+                    <li>
+                        <a href="peticiones-visualizacion.php">
+                            <span class="fa fa-file-o"></span><span class="menu-label"> Peticiones de amistad</span>
+                                <span class="badge"><?php echo $variables["peticiones-apuntes"] ?></span>
+                        </a>
+                    </li>
+                <?php endif; ?>
                 <li>
                     <a href="peticiones.php">
                         <span class="fa fa-user-plus"></span><span class="menu-label"> Peticiones de amistad</span>

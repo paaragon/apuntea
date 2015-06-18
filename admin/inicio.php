@@ -94,47 +94,6 @@ ob_start();
 <script>
     $(document).on("ready", function () {
 
-<?php
-$chart1 = array_reverse($variables["chart1"]);
-
-$primer_mes = key($chart1);
-$primer_valor = array_shift($chart1);
-
-$etiquetas1 = '"' . $primer_mes . '"';
-$valores1 = $primer_valor;
-
-foreach ($chart1 as $month => $value) {
-
-    $etiquetas1 .= ', "' . $month . '"';
-    $valores1 .=', ' . $value;
-}
-
-$chart2 = $variables["chart2"];
-
-$elem = array_shift($chart2);
-
-$i = 1;
-$data2 = '{value: ' . $elem["num"] . ', color: "rgba(70, 181, 82, ' . $i . ')", highlight: "rgba(70, 181, 82, ' . ($i - 0.1) . ')", label: "' . $elem["siglas"] . '" }';
-foreach ($chart2 as $elem) {
-    $i -= 0.2;
-    $data2 .= ',{value: ' . $elem["num"] . ', color: "rgba(70, 181, 82, ' . $i . ')", highlight: "rgba(70, 181, 82, ' . ($i - 0.1) . ')", label: "' . $elem["siglas"] . '" }';
-}
-
-$chart3 = array_reverse($variables["chart3"]);
-
-$primer_mes = key($chart3);
-$primer_valor = array_shift($chart3);
-
-$etiquetas3 = '"' . $primer_mes . '"';
-$valores3 = $primer_valor;
-
-foreach ($chart3 as $month => $value) {
-
-    $etiquetas3 .= ', "' . $month . '"';
-    $valores3 .=', ' . $value;
-}
-?>
-
         var canvas1 = document.getElementById("myChart1");
         var canvas2 = document.getElementById("myChart2");
         var canvas3 = document.getElementById("myChart3");
@@ -148,7 +107,7 @@ foreach ($chart3 as $month => $value) {
 
         //Gráfica 1----------------------------------------------------
         var data1 = {
-            labels: [<?php echo $etiquetas1 ?>],
+            labels: [<?php echo $variables["chart1"]["label"] ?>],
             datasets: [
                 {
                     fillColor: "rgba(70, 181, 82, 0.2)",
@@ -157,7 +116,7 @@ foreach ($chart3 as $month => $value) {
                     pointStrokeColor: "rgba(59, 152, 68, 0.8)",
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: [<?php echo $valores1 ?>]
+                    data: [<?php echo $variables["chart1"]["data"] ?>]
                 }
             ]
         };
@@ -165,14 +124,14 @@ foreach ($chart3 as $month => $value) {
         var ctx = document.getElementById("myChart1").getContext("2d");
         var myLineChart2 = new Chart(ctx).Line(data1);
         //Gráfica 2----------------------------------------------------
-        var data2 = [<?php echo $data2 ?>]
+        var data2 = [<?php echo $variables["chart2"]["data"] ?>]
 
         var ctx = document.getElementById("myChart2").getContext("2d");
         var myLineChart1 = new Chart(ctx).Pie(data2);
 
         //Gráfica 3----------------------------------------------------
         var data3 = {
-            labels: [<?php echo $etiquetas3 ?>],
+            labels: [<?php echo $variables["chart3"]["label"] ?>],
             datasets: [
                 {
                     fillColor: "rgba(70, 181, 82, 0.2)",
@@ -181,7 +140,7 @@ foreach ($chart3 as $month => $value) {
                     pointStrokeColor: "rgba(59, 152, 68, 0.8)",
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: [<?php echo $valores3 ?>]
+                    data: [<?php echo $variables["chart3"]["data"] ?>]
                 }
             ]
         };

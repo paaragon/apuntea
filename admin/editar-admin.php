@@ -12,9 +12,9 @@ ob_start();
     <div>
         <form action="../servicios/adminHandler.php?action=cambiarConfiguracion" method="post">
             <legend>Mis datos personales:</legend>
-            <span class="col-3"><label>Nombre completo:</label></span>
+            <span class="col-3"><label>Nombre:</label></span>
             <span class="col-9"><input type="text" name="nombre" class="campo-formulario" placeholder="Introduzca su nombre de usuario" required="" value ="<?php echo $variables["admin"]->nombre ?>"></span>
-            <span class="col-3"><label>Nombre completo:</label></span>
+            <span class="col-3"><label>Apellidos:</label></span>
             <span class="col-9"><input type="text" name="apellidos" class="campo-formulario" placeholder="Introduzca su nombre de usuario" required="" value ="<?php echo $variables["admin"]->apellidos ?>"></span>
             <span class="col-3"><label>Email:</label></span>
             <span class="col-9"><input type="email" name="mail" class="campo-formulario" placeholder="Introduzca su nuevo e-mail" required="" value="<?php echo $variables["admin"]->email ?>"></span>

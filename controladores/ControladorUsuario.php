@@ -164,7 +164,7 @@ class ControladorUsuario {
         $this->variables["misapuntes"] = R::findAll('apunte', ' usuario_id = ? AND id NOT IN(SELECT apunte_id FROM apuntegrupo WHERE grupo_id = ?)', [$idUsuario, $idGrupo]);
 
 
-        $comentarios = R::findAll('comentariogrupo', " grupo_id =? ", [$idGrupo]);
+        $comentarios = R::findAll('comentariogrupo', " grupo_id =? ORDER BY fecha DESC", [$idGrupo]);
         $this->variables["comentarios"] = $comentarios;
 
 
@@ -217,15 +217,10 @@ class ControladorUsuario {
         $this->variables["busqueda"] = $busqueda;
         $this->setUpDatabase();
 
-        //apuntes por etiquetas, carreras, asignaturas, universidades y usuarios (grupos con visibilidad para mi o total)
-        $resultadosapuntesporetiquetas = R::getAll('SELECT apunte.* FROM apunte,etiquetaapunte,etiqueta WHERE LOWER(etiqueta.titulo) '
-                        . 'LIKE ? AND etiquetaapunte.etiqueta_id=etiqueta.id AND apunte.id=etiquetaapunte.apunte_id', ['%' . strtolower($busqueda) . '%']);
-        $apuntes = R::convertToBeans('apunte', $resultadosapuntesporetiquetas);
+        //apuntes por carreras, asignaturas, universidades y usuarios (grupos con visibilidad para mi o total)
         $resultadosapuntesportitulo = R::find('apunte', ' apunte.titulo LIKE ?', ['%' . strtolower($busqueda) . '%']);
 
-        $resultado = $resultadosapuntesporetiquetas + $resultadosapuntesportitulo;
-        $this->variables["apuntes"] = $resultado;
-
+        $this->variables["apuntes"] = $resultadosapuntesportitulo;
 
         $resultadocarreras = R::find('carrera', ' LOWER(carrera.nombre) LIKE :nombre OR LOWER(carrera.rama) LIKE :rama', array(':nombre' => '%' . strtolower($busqueda) . '%', ':rama' => '%' . strtolower($busqueda) . '%'));
 
@@ -251,7 +246,7 @@ class ControladorUsuario {
 
 
 
-        $asignaturas = R::find('asignatura', 'LOWER(asignatura.nombre) LIKE :nombre OR LOWER(asignatura.descripcion) LIKE :desc', array(':nombre' => '%' . strtolower($busqueda) . '%', ':desc' => '%' . strtolower($busqueda) . '%'));
+        $asignaturas = R::find('asignatura', 'LOWER(asignatura.nombre) LIKE :nombre', array(':nombre' => '%' . strtolower($busqueda) . '%'));
         $this->variables["asignaturas"] = $asignaturas;
 
 
@@ -681,6 +676,16 @@ class ControladorUsuario {
         R::close();
         return $this->variables;
     }
+    
+    public function peticionesApuntes(){
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+        
+        $this->setUpDatabase();
+        
+        $this->variables["peticiones"] = R::findAll('peticionapunte', 'apunte_id IN (SELECT id FROM apunte WHERE usuario_id = ?) AND admitido = 0', [$idUsuario]);
+        
+        return $this->variables;
+    }
 
     public function carrera() {
 
@@ -731,6 +736,7 @@ class ControladorUsuario {
         $this->variables["usuario-actual"] = R::load('usuario', $_SESSION["idUsuario"]);
         $this->variables["n-peticiones"] = R::count('contacto', ' bob_id = ? AND admitido = 0', [$_SESSION["idUsuario"]]);
         $this->variables["n-mensajes"] = R::count('mensaje', 'receptor_id = ? AND visto = 0', [$_SESSION["idUsuario"]]);
+        $this->variables["peticiones-apuntes"] = R::count('peticionapunte', 'apunte_id IN (SELECT id FROM apunte WHERE usuario_id = ?) AND admitido = 0', [$_SESSION["idUsuario"]]);
 
         if ($this->variables["usuario-actual"]->carrera_id == "" || $this->variables["usuario-actual"]->email == "") {
             $_SESSION["error"] = "Su perfil no contiene toda la información necesaria para mostrar toda la funcionalidad de apuntea. Por favor, entra en \"Mi configuración\" para completar tu perfil";
