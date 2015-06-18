@@ -148,17 +148,13 @@ class ControladorUsuario {
         $this->variables["usuarios"] = $usuarios;
 
         $apuntesGrupo = R::findAll("apuntegrupo", " grupo_id=? ", [$idGrupo]);
-
-        if (isset($apuntesGrupo)) {
-            foreach ($apuntesGrupo as $apunte) {
-                $apuntes = R::find("apunte", " id =? ", [$apunte->apunte_id]);
-            }
-        }
-        if (isset($apuntes)) {
-            $this->variables["apuntes"] = $apuntes;
-        } else {
-            $this->variables["apuntes"] = array();
-        }
+		
+		$this->variables["apuntes"] = array();
+            if (isset($apuntesGrupo)) {
+                foreach ($apuntesGrupo as $apunte) {
+                    $this->variables["apuntes"][] = R::findOne("apunte", " id =? ", [$apunte->apunte_id]);
+                }
+         }
 
         $this->variables["misapuntes"] = array();
         $this->variables["misapuntes"] = R::findAll('apunte', ' usuario_id = ? AND id NOT IN(SELECT apunte_id FROM apuntegrupo WHERE grupo_id = ?)', [$idUsuario, $idGrupo]);
