@@ -1,5 +1,8 @@
 <?php
 require "../controladores/ControladorUsuario.php";
+require "../util/Like.php";
+require "../util/Dislike.php";
+require "../util/Fav.php";
 $controlador = new ControladorUsuario();
 
 $variables = $controlador->misApuntes();
@@ -19,29 +22,33 @@ ob_start();
         </p>
     </div>
     <div>
+        <?php if (count($variables["apuntes"]) > 0): ?>
+            <?php foreach ($variables["apuntes"] as $apunte) { ?>
+                <div class="fila">
+                    <p>
+                        <span class="col-7">
+                            <span class="fa fa-file-text-o"></span>
+                            <strong><a href="ver-apunte.php?id=<?php echo $apunte->id ?>"><?php echo $apunte["titulo"] ?> </a></strong>
+                        </span>
+                        <?php
+                        $like = new Like($apunte);
+                        $dislike = new Dislike($apunte);
+                        $fav = new Fav($apunte);
+                        ?>
+                        <span class="col-1"><?php echo $like->generateLike(); ?></span>
+                        <span class="col-1"><?php echo $dislike->generateDislike(); ?></span>
+                        <span class="col-1"><span class="fa fa-eye"></span> <?php echo $apunte["visualizaciones"] ?></span>
+                        <span class="col-1"><?php echo $fav->generateFav(); ?></span>
 
-        <?php foreach ($variables["apuntes"] as $apunte) { ?>
-            <div class="fila">
-                <p>
-                    <span class="col-7">
-                        <span class="fa fa-file-text-o"></span>
-                        <strong><a href="ver-apunte-propio.php?id=<?php echo $apunte->id ?>"><?php echo $apunte["titulo"] ?> </a></strong>
-                    </span>
+                        <span class="col-1"><span id="f<?php echo $apunte->id; ?>" class="fa fa-trash-o"></span></span>
+                    </p>
+                    <div class="clear"></div>
+                </div>
 
-                    <span class="col-1"><span class="fa fa-thumbs-o-up"></span> <?php echo $apunte["likes"] ?></span>
-                    <span class="col-1"><span class="fa fa-thumbs-o-down"></span> <?php echo $apunte["dislikes"] ?></span>
-                    <span class="col-1"><span class="fa fa-eye"></span> <?php echo $apunte["visualizaciones"] ?></span>
-                    <!--poner la clase en funcion de si es favorito o no   -->
-                    <span class="col-1"><span id="f<?php echo $apunte->id; ?>"  class="fa fa-star 
-                                              <?php if (isset($apunte->usuariointeractuaapunte->favorito) == 1) echo "apunte-favorito" ?>"></span></span>
-
-                    <span class="col-1"><span id="f<?php echo $apunte->id; ?>"  class="fa fa-trash-o"></span></span>
-                </p>
-                <div class="clear"></div>
-            </div>
-
-        <?php } ?>
-
+            <?php } ?>
+        <?php else: ?>
+            <blockquote><h3>No has subido ningún apunte.</h3></blockquote>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -49,34 +56,27 @@ ob_start();
 <script>
 
     $(document).ready(function () {
-        $('.fa-star').on("click", function () {
-
-            star = $(this);
-            id = $(this).attr("id").substring(1);
-
-            $.post('../servicios/usuarioHandler.php?action=favorito', {id: id}, function (data) {
-
-                if (data == 1) {
-
-                    star.addClass('apunte-favorito');
-                } else if (data == 0) {
-
-                    star.removeClass('apunte-favorito');
-                }
-            });
-        });
+<?php if (count($variables["apuntes"]) > 0): ?>
+    <?php echo $like->generateAjaxScript(); ?>
+    <?php echo $dislike->generateAjaxScript(); ?>
+    <?php echo $fav->generateAjaxScript(); ?>
+<?php endif; ?>
 
 
         $('.fa-trash-o').on("click", function () {
 
-            id = $(this).attr("id").substring(1);  
-            
+            ap = $(this);
+            id = ap.attr("id").substring(1);
+
             var r = confirm("Seguro que quieres borrar un apunte?");
             if (r == true) {
-               
                 $.post('../servicios/usuarioHandler.php?action=borrarapunte', {id: id}, function (data) {
-                    alert(data);
-                });
+                    if (data == true) {
+                        ap.closest(".fila").remove();
+                    } else {
+                        alert("Error eliminando apunte.");
+                    }
+                }, "json");
             }
         });
     });

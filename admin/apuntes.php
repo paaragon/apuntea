@@ -1,157 +1,192 @@
-<?php ob_start(); ?>
+<?php
+require __DIR__ . "/../controladores/ControladorAdmin.php";
+$controlador = new ControladorAdmin();
+$variables = $controlador->apuntes();
+
+ob_start();
+?>
 <div class="col-9">
     <h2>
         <span class="fa fa-file-text-o"></span> Apuntes subidos por los usuarios
     </h2>
     <hr>
-    <div class="fila">
-        <form action="apuntes.php" method="post">
-            <label>Nombre:</label> <input type="search" name="nombre" placeholder="Buscador por nombre" class="campo-formulario">
+    <div class="fila cosa-verde">
+        <form action="apuntes.php"> <!-- method="post"> -->
+            <!-- <label>Nombre:</label> -->
+            <input id="buscador" type="search" name="nombre" placeholder="Busqueda por nombre" class="campo-formulario">
             <label><span class="fa fa-university"></span> Universidad:</label>
-            <select class="campo-formulario campo-en-linea">
-                <option value="UCM">UCM</option>
-                <option value="UPM">UPM</option>
-                <option value="URJC">URJC</option>
-                <option value="UAM">UAM</option>
+            <select id="selectUniversidad" name="universidad" class="campo-formulario campo-en-linea">
+                <?php
+                echo "<option class='universidad' value='0' selected=''>Todas</option>";
+                foreach ($variables["universidades"] as $uni) {
+                    echo "<option class='universidad' value='$uni->id'>$uni->nombre</option>";
+                }
+                ?>
             </select>
             <label><span class="fa fa-graduation-cap"></span> Carrera:</label>
-            <select class="campo-formulario campo-en-linea">
-                <option value="Informatica">Informatica</option>
-                <option value="Derecho">Derecho</option>
-                <option value="Medicina">Medicina</option>
-                <option value="Chuletas">Chuletas</option>
+            <select id="selectCarrera" class="campo-formulario campo-en-linea">
+                <option class='carrera' value='0' selected=''>Todas</option>
             </select>
-            <input type="submit" class="campo-formulario" value="Buscar">
         </form>
-    </div >
-    <div class="fila">
-        <p>
-            <span class="col-8">
-                <span class="fa fa-file-text-o"></span>
-                <label><a href="ver-apunte.php">Tema 1</a></label>
-            </span>
-
-            <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
-            <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
-            <span class="col-1"><span class="fa fa-eye"></span> 999</span>
-
-            <span class="col-1"><a href="apuntes.php"><span class="fa fa-trash-o"></span></a></span>
-        </p>
-        <div class="clear"></div>
-    </div>  
-    <div class="fila">
-        <p>
-            <span class="col-8">
-                <span class="fa fa-file-text-o"></span>
-                <label><a href="ver-apunte.php">Tema 1</a></label>
-            </span>
-
-            <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
-            <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
-            <span class="col-1"><span class="fa fa-eye"></span> 999</span>
-
-            <span class="col-1"><a href="apuntes.php"><span class="fa fa-trash-o"></span></a></span>
-        </p>
-        <div class="clear"></div>
-    </div>  
-    <div class="fila">
-        <p>
-            <span class="col-8">
-                <span class="fa fa-file-text-o"></span>
-                <label><a href="ver-apunte.php">Tema 1</a></label>
-            </span>
-
-            <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
-            <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
-            <span class="col-1"><span class="fa fa-eye"></span> 999</span>
-
-            <span class="col-1"><a href="apuntes.php"><span class="fa fa-trash-o"></span></a></span>
-        </p>
-        <div class="clear"></div>
-    </div>  
-    <div class="fila">
-        <p>
-            <span class="col-8">
-                <span class="fa fa-file-text-o"></span>
-                <label><a href="ver-apunte.php">Tema 1</a></label>
-            </span>
-
-            <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
-            <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
-            <span class="col-1"><span class="fa fa-eye"></span> 999</span>
-
-            <span class="col-1"><a href="apuntes.php"><span class="fa fa-trash-o"></span></a></span>
-        </p>
-        <div class="clear"></div>
-    </div>  
-    <div class="fila">
-        <p>
-            <span class="col-8">
-                <span class="fa fa-file-text-o"></span>
-                <label><a href="ver-apunte.php">Tema 1</a></label>
-            </span>
-
-            <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
-            <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
-            <span class="col-1"><span class="fa fa-eye"></span> 999</span>
-
-            <span class="col-1"><a href="apuntes.php"><span class="fa fa-trash-o"></span></a></span>
-        </p>
-        <div class="clear"></div>
-    </div>  
-    <div class="fila">
-        <p>
-            <span class="col-8">
-                <span class="fa fa-file-text-o"></span>
-                <label><a href="ver-apunte.php">Tema 1</a></label>
-            </span>
-
-            <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
-            <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
-            <span class="col-1"><span class="fa fa-eye"></span> 999</span>
-
-            <span class="col-1"><a href="apuntes.php"><span class="fa fa-trash-o"></span></a></span>
-        </p>
-        <div class="clear"></div>
-    </div>  
-    <div class="fila">
-        <p>
-            <span class="col-8">
-                <span class="fa fa-file-text-o"></span>
-                <label><a href="ver-apunte.php">Tema 1</a></label>
-            </span>
-
-            <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
-            <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
-            <span class="col-1"><span class="fa fa-eye"></span> 999</span>
-
-            <span class="col-1"><a href="apuntes.php"><span class="fa fa-trash-o"></span></a></span>
-        </p>
-        <div class="clear"></div>
-    </div>  
-    <div class="fila">
-        <p>
-            <span class="col-8">
-                <span class="fa fa-file-text-o"></span>
-                <label><a href="ver-apunte.php">Tema 1</a></label>
-            </span>
-
-            <span class="col-1"><span class="fa fa-thumbs-o-up"></span> 20</span>
-            <span class="col-1"><span class="fa fa-thumbs-o-down"></span> 2</span>
-            <span class="col-1"><span class="fa fa-eye"></span> 999</span>
-
-            <span class="col-1"><a href="apuntes.php"><span class="fa fa-trash-o"></span></a></span>
-        </p>
-        <div class="clear"></div>
     </div>
+
+    <?php if (count($variables["apuntes"]) > 0): ?>
+        <?php
+        foreach ($variables["apuntes"] as $a) {
+            echo "<div class='fila apunte'>
+                        <span class='nombre hide'>" . $a->titulo . "</span>
+                        <span class='carrera hide'>" . $a->asignatura->carrera->id . "</span>
+                        <span class='universidad hide'>" . $a->asignatura->carrera->universidad->id . "</span>
+                        <p>
+                            <span class='col-8'>
+                                <span class='fa fa-file-text-o'></span>
+                                <label><a href='ver-apunte.php?id=" . $a->id . "'>" . $a->titulo . "</a></label>
+                                <label class='hide'>$a->asignatura_id</a></label>
+                            </span>
+
+                            <span class='col-1'><span class='fa fa-thumbs-o-up'></span> " . $a->likes . "</span>
+                            <span class='col-1'><span class='fa fa-thumbs-o-down'></span> " . $a->dislikes . "</span>
+                            <span class='col-1'><span class='fa fa-eye'></span> " . $a->visualizaciones . "</span>
+
+                            <span class='col-1'><a href='#'><span class='eliminar fa fa-trash-o' id='e" . $a->id . "'></span></a></span>
+                        </p>
+                        <div class='clear'></div>
+                    </div>";
+        }
+        ?>
+    <?php else: ?>
+        <blockquote><h3>No hay apuntes.</h3></blockquote>
+    <?php endif; ?>
 </div>
 <div class="col-3">
-    <p>
-        <img src="../img/line-graph.gif" class="img-responsive">
-        <img src="../img/line-graph.gif" class="img-responsive">
-        <img src="../img/line-graph.gif" class="img-responsive">
-    <p>
+    <h4 class="text-center"><strong>Apuntes en los últimos 7 meses</strong></h4>
+    <canvas id="myChart1"></canvas>
+    <hr>
+    <h4 class="text-center"><strong>Usuarios con más apuntes</strong></h4>
+    <canvas id="myChart2"></canvas>
 </div>
+
+<script>
+    $(document).on("ready", function () {
+        //Gráfica 1----------------------------------------------------
+        var data1 = {
+            labels: [<?php echo $variables["chart1"]["label"] ?>],
+            datasets: [
+                {
+                    fillColor: "rgba(70, 181, 82, 0.2)",
+                    strokeColor: "rgba(59, 152, 68, 0.5)",
+                    pointColor: "rgba(59, 152, 68, 0.6)",
+                    pointStrokeColor: "rgba(59, 152, 68, 0.8)",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: [<?php echo $variables["chart1"]["data"] ?>]
+                }
+            ]
+        };
+
+        var canvas1 = document.getElementById("myChart1");
+        canvas1.width = $("#myChart1").width() - 50;
+        canvas1.height = 200;
+
+        var ctx = document.getElementById("myChart1").getContext("2d");
+        var myLineChart2 = new Chart(ctx).Line(data1);
+
+        //Gráfica 2----------------------------------------------------
+        var data2 = {
+            labels: [<?php echo $variables["chart2"]["label"] ?>],
+            datasets: [
+                {
+                    fillColor: "rgba(70, 181, 82, 0.2)",
+                    strokeColor: "rgba(59, 152, 68, 0.5)",
+                    pointColor: "rgba(59, 152, 68, 0.6)",
+                    pointStrokeColor: "rgba(59, 152, 68, 0.8)",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: [<?php echo $variables["chart2"]["data"] ?>]
+                }
+            ]
+        };
+
+        var canvas2 = document.getElementById("myChart2");
+        canvas2.width = $("#myChart2").width() - 50;
+        canvas2.height = 200;
+
+        var ctx = document.getElementById("myChart2").getContext("2d");
+        var myLineChart2 = new Chart(ctx).Bar(data2);
+
+        $("#buscador").on("keyup", function () {
+            buscar();
+        });
+
+        $("#selectUniversidad").on("change", function () {
+            var idUni = $("#selectUniversidad").val();
+            getCarreras(idUni);
+            buscar();
+        });
+
+        $("#selectCarrera").on("change", function () {
+            buscar();
+        });
+
+        $(".eliminar").on("click", function () {
+            var r = confirm("¿Está seguro?");
+            if (r == true) {
+                id = $(this).attr('id').substring(1);
+                window.location = "../servicios/adminHandler.php?action=removeApunte&id=" + id;
+            }
+        });
+
+    });
+
+    function buscar() {
+        universidad = $("#selectUniversidad").val();
+        carrera = $("#selectCarrera").val();
+        consulta = $("#buscador").val();
+
+        $(".apunte").each(function () {
+            var uni = $(this).children(".universidad").text();
+            var car = $(this).children(".carrera").text();
+            var con = $(this).children(".nombre").text();
+            if ((universidad == uni || universidad == 0) && (carrera == car || carrera == 0) && (quitaAcentos(con.toLowerCase()).indexOf(quitaAcentos(consulta.toLowerCase())) > -1)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+
+    function getCarreras(id) {
+        $("#selectCarrera").html("<option value='0' selected=''>Todas</option>");
+        if (id != 0) {
+            $.post("../servicios/adminHandler.php?action=getCarreras", {idUniversidad: id}, function (data) {
+
+                for (i = 0; i < data.length; i++) {
+                    $("#selectCarrera").append("<option value='" + data[i]["id"] + "'>" + data[i]["nombre"] + "</option>");
+                }
+            }, "json");
+        }
+        else {
+            $("#selectCarrera").append("<option class='carrera' value='0' selected=''>Todas</option>");
+        }
+    }
+
+    function quitaAcentos(str) {
+        for (var i = 0; i < str.length; i++) {
+            if (str.charAt(i) == "á")
+                str = str.replace(/á/, "a");
+            if (str.charAt(i) == "é")
+                str = str.replace(/é/, "e");
+            if (str.charAt(i) == "í")
+                str = str.replace(/í/, "i");
+            if (str.charAt(i) == "ó")
+                str = str.replace(/ó/, "o");
+            if (str.charAt(i) == "ú")
+                str = str.replace(/ú/, "u");
+        }
+        return str;
+    }
+</script>
+
 <?php
 $contenido = ob_get_clean();
 require "../common/admin/layout.php";

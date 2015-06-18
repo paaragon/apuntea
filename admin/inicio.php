@@ -48,88 +48,51 @@ ob_start();
 </div>
 <div class="col-9">
     <h3>Última actividad:</h3>
-    <?php foreach ($variables["grupos"] as $g): ?>
-        <div class="fila">
-            <p>
-                <span class="col-11">
-                    <a href="ver-grupo.php?id=<?php echo $g->id ?>"><span class="fa fa-circle-o-notch"></span> <?php echo $g["nombre"] ?> </a> ha sido creado
-                </span>
-                <span class="col-1"><span class="fa fa-users"></span><?php echo count($g->ownUsuariogrupoList) ?></span>
-            </p>
-            <div class="clear"></div>
-        </div>
-    <?php endforeach; ?>
+    <?php if (count($variables["grupos"]) > 0 || count($variables["usuarios"]) > 0 || count($variables["apuntes"]) > 0): ?>
+        <?php foreach ($variables["grupos"] as $g): ?>
+            <div class="fila">
+                <p>
+                    <span class="col-11">
+                        <a href="ver-grupo.php?id=<?php echo $g->id ?>"><span class="fa fa-circle-o-notch"></span> <?php echo $g["nombre"] ?> </a> ha sido creado
+                    </span>
+                    <span class="col-1"><span class="fa fa-users"></span><?php echo count($g->ownUsuariogrupoList) ?></span>
+                </p>
+                <div class="clear"></div>
+            </div>
+        <?php endforeach; ?>
 
-    <?php foreach ($variables["usuarios"] as $u): ?>
-        <div class="fila">
-            <p>
-                <span class="col-11">
-                    <a href="usuarios-detalles.php?id=<?php echo $u->id ?>"><span class="fa fa-users"></span> <?php echo $u["nick"] ?> </a> se ha registrado
-                </span>
-                <span class="col-1"><span class="fa fa-file"></span><?php echo count($u->ownApunteList) ?> </span>
-            </p>
-            <div class="clear"></div>
-        </div>
-    <?php endforeach; ?>
+        <?php foreach ($variables["usuarios"] as $u): ?>
+            <div class="fila">
+                <p>
+                    <span class="col-11">
+                        <a href="usuarios-detalles.php?id=<?php echo $u->id ?>"><span class="fa fa-users"></span> <?php echo $u["nick"] ?> </a> se ha registrado
+                    </span>
+                    <span class="col-1"><span class="fa fa-file"></span><?php echo count($u->ownApunteList) ?> </span>
+                </p>
+                <div class="clear"></div>
+            </div>
+        <?php endforeach; ?>
 
-    <?php foreach ($variables["apuntes"] as $a): ?>
-        <div class="fila">
-            <p>
-                <span class="col-9">
-                    <a href="ver-apunte.php?id=<?php echo $a->id ?>"><span class="fa fa-file"></span> <?php echo $a["titulo"] ?> </a> se han añadido
-                </span>
-                <span class="col-1"><span class="fa fa-thumbs-up"></span><?php echo $a->likes ?></span>
-                <span class="col-1"><span class="fa fa-thumbs-down"></span><?php echo $a->dislikes ?></span>
-                <span class="col-1"><span class="fa fa-eye"></span><?php echo $a->visualizaciones ?></span>
-            </p>
-            <div class="clear"></div>
-        </div>
-    <?php endforeach; ?>
+        <?php foreach ($variables["apuntes"] as $a): ?>
+            <div class="fila">
+                <p>
+                    <span class="col-9">
+                        <a href="ver-apunte.php?id=<?php echo $a->id ?>"><span class="fa fa-file"></span> <?php echo $a["titulo"] ?> </a> se han añadido
+                    </span>
+                    <span class="col-1"><span class="fa fa-thumbs-up"></span><?php echo $a->likes ?></span>
+                    <span class="col-1"><span class="fa fa-thumbs-down"></span><?php echo $a->dislikes ?></span>
+                    <span class="col-1"><span class="fa fa-eye"></span><?php echo $a->visualizaciones ?></span>
+                </p>
+                <div class="clear"></div>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <blockquote><h4>Sin actividad reciente.</h4></blockquote>
+    <?php endif; ?>
 </div>
 <div class="clear"></div>
 <script>
     $(document).on("ready", function () {
-
-<?php
-$chart1 = array_reverse($variables["chart1"]);
-
-$primer_mes = key($chart1);
-$primer_valor = array_shift($chart1);
-
-$etiquetas1 = '"' . $primer_mes . '"';
-$valores1 = $primer_valor;
-
-foreach ($chart1 as $month => $value) {
-
-    $etiquetas1 .= ', "' . $month . '"';
-    $valores1 .=', ' . $value;
-}
-
-$chart2 = $variables["chart2"];
-
-$elem = array_shift($chart2);
-
-$i = 1;
-$data2 = '{value: ' . $elem["num"] . ', color: "rgba(70, 181, 82, ' . $i . ')", highlight: "rgba(70, 181, 82, ' . ($i - 0.1) . ')", label: "' . $elem["siglas"] . '" }';
-foreach ($chart2 as $elem) {
-    $i -= 0.2;
-    $data2 .= ',{value: ' . $elem["num"] . ', color: "rgba(70, 181, 82, ' . $i . ')", highlight: "rgba(70, 181, 82, ' . ($i - 0.1) . ')", label: "' . $elem["siglas"] . '" }';
-}
-
-$chart3 = array_reverse($variables["chart3"]);
-
-$primer_mes = key($chart3);
-$primer_valor = array_shift($chart3);
-
-$etiquetas3 = '"' . $primer_mes . '"';
-$valores3 = $primer_valor;
-
-foreach ($chart3 as $month => $value) {
-
-    $etiquetas3 .= ', "' . $month . '"';
-    $valores3 .=', ' . $value;
-}
-?>
 
         var canvas1 = document.getElementById("myChart1");
         var canvas2 = document.getElementById("myChart2");
@@ -144,7 +107,7 @@ foreach ($chart3 as $month => $value) {
 
         //Gráfica 1----------------------------------------------------
         var data1 = {
-            labels: [<?php echo $etiquetas1 ?>],
+            labels: [<?php echo $variables["chart1"]["label"] ?>],
             datasets: [
                 {
                     fillColor: "rgba(70, 181, 82, 0.2)",
@@ -153,7 +116,7 @@ foreach ($chart3 as $month => $value) {
                     pointStrokeColor: "rgba(59, 152, 68, 0.8)",
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: [<?php echo $valores1 ?>]
+                    data: [<?php echo $variables["chart1"]["data"] ?>]
                 }
             ]
         };
@@ -161,14 +124,14 @@ foreach ($chart3 as $month => $value) {
         var ctx = document.getElementById("myChart1").getContext("2d");
         var myLineChart2 = new Chart(ctx).Line(data1);
         //Gráfica 2----------------------------------------------------
-        var data2 = [<?php echo $data2 ?>]
+        var data2 = [<?php echo $variables["chart2"]["data"] ?>]
 
         var ctx = document.getElementById("myChart2").getContext("2d");
         var myLineChart1 = new Chart(ctx).Pie(data2);
 
         //Gráfica 3----------------------------------------------------
         var data3 = {
-            labels: [<?php echo $etiquetas3 ?>],
+            labels: [<?php echo $variables["chart3"]["label"] ?>],
             datasets: [
                 {
                     fillColor: "rgba(70, 181, 82, 0.2)",
@@ -177,7 +140,7 @@ foreach ($chart3 as $month => $value) {
                     pointStrokeColor: "rgba(59, 152, 68, 0.8)",
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: [<?php echo $valores3 ?>]
+                    data: [<?php echo $variables["chart3"]["data"] ?>]
                 }
             ]
         };
