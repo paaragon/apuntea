@@ -75,7 +75,7 @@ ob_start();
                 }
                 ?>
                 <br>
-                <form action="../servicios/usuarioHandler.php?action=anadirApunteGrupo&idGrupo=<?php echo $variables["grupo"]->id ?>&idUsuario=<?php echo $user->usuario_id ?>&admin=0"  method="post">
+                <form action="../servicios/usuarioHandler.php?action=anadirApunteGrupo&idGrupo=<?php echo $variables["grupo"]->id ?>&idUsuario=<?php echo $user->usuario_id ?>"  method="post">
                     <legend>Añadir apuntes al grupo:</legend>
                     <label>Apuntes:</label>
                     <select name="apunte" class="form-control">
