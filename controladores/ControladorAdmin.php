@@ -72,7 +72,7 @@ class ControladorAdmin {
         $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
 
         $this->variables["carrera"] = R::findOne('carrera', 'id=?', [$id]);
-
+        
         $this->variables["universidades"] = R::findAll('universidad');
 
         return $this->variables;
@@ -332,7 +332,6 @@ class ControladorAdmin {
 
         $this->setUpDatabase();
         $this->variables["apunte"] = R::findOne('apunte', ' id=?', [$idApunte]);
-
         $this->variables["chart1"] = $this->numLikes($idApunte);
         $this->variables["chart2"] = $this->numDislikes($idApunte);
         $this->variables["chart3"] = $this->numFavs($idApunte);

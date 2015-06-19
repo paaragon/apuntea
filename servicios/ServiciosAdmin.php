@@ -345,6 +345,37 @@ class ServiciosAdmin {
         $_SESSION["exito"] = "Carrera eliminada con éxito";
         return "admin/carreras.php";
     }
+    public function editarCarrera(){
+        
+       
+        $nombre = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES);
+        $idUniversidad = filter_input(INPUT_POST, "universidad", FILTER_SANITIZE_NUMBER_INT);
+        $rama = filter_input(INPUT_POST, "rama", FILTER_SANITIZE_MAGIC_QUOTES);
+        $idCarrera = filter_input(INPUT_POST, "idcarrera", FILTER_SANITIZE_MAGIC_QUOTES);
+        $this->setUpDatabase();
+
+        $carrera = R::findOne('carrera', 'id = ?', [$idCarrera] );
+        $carrera->nombre = $nombre;
+        $carrera->universidad_id = $idUniversidad;
+        $carrera->rama = $rama;
+        
+
+        try {
+
+            $idCarrera = R::store($carrera);
+            $_SESSION["exito"] = "Carrera actualizada con éxito";
+            $return = "admin/carreras.php";
+        } catch (Exception $e) {
+
+            $_SESSION["error"] = "Error al modificar la carrera";
+            $return = "admin/carreras.php";
+        }
+
+        R::close();
+
+        return $return;
+    }
+    
 
     public function editarAsignatura($parametros) {
 
