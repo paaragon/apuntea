@@ -4,6 +4,7 @@ require __DIR__ . "/../security/security.php";
 require __DIR__ . "/../DB/rb.php";
 require __DIR__ . "/../DB/DbConfig.php";
 require __DIR__ . "/../util/Validate.php";
+require __DIR__ . "/cascades.php";
 
 class ServiciosUsuario {
 
@@ -13,6 +14,7 @@ class ServiciosUsuario {
 
     public function borrarapunte() {
 
+        $borrador = new cascade();
         $this->setUpDatabase();
 
         $fields = array("id" => array($_POST["id"], "entero", "required" => true));
@@ -23,15 +25,8 @@ class ServiciosUsuario {
         }
 
         $id = filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT);
-        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
 
-        $interaccion = R::find('usuariointeractuaapunte', 'apunte_id= :idapunte', array(':idapunte' => $id));
-        R::trashAll($interaccion);
-
-        $apunte = R::findOne('apunte', "id = ? AND usuario_id = ?", [$id, $idUsuario]);
-
-        R::trash($apunte);
-
+        $borrador->borrarApunteCascada($id);
         R::close();
 
         return json_encode(true);

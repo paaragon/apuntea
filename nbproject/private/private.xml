@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/apuntea/controladores/ControladorAdmin.php</file>
-            <file>file:/C:/xampp/htdocs/apuntea/admin/editar-carrera.php</file>
-            <file>file:/C:/xampp/htdocs/apuntea/admin/anadir-carrera.php</file>
-            <file>file:/C:/xampp/htdocs/apuntea/admin/usuarios.php</file>
-            <file>file:/C:/xampp/htdocs/apuntea/admin/perfil-carrera.php</file>
-            <file>file:/C:/xampp/htdocs/apuntea/admin/carreras.php</file>
-            <file>file:/C:/xampp/htdocs/apuntea/admin/inicio.php</file>
+            <file>file:/C:/xampp/htdocs/apuntea/servicios/ServiciosAdmin.php</file>
+            <file>file:/C:/xampp/htdocs/apuntea/admin/ver-grupo.php</file>
+            <file>file:/C:/xampp/htdocs/apuntea/servicios/cascades.php</file>
+            <file>file:/C:/xampp/htdocs/apuntea/servicios/ServiciosUsuario.php</file>
         </group>
     </open-files>
 </project-private>

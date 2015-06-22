@@ -3,8 +3,11 @@
 require __DIR__ . "/../security/security.php";
 require __DIR__ . "/../DB/rb.php";
 require __DIR__ . "/../DB/DbConfig.php";
+require __DIR__ . "/cascades.php";
 
 class ServiciosAdmin {
+
+    private $borrador;
 
     public function __construct() {
         apunteaSec\checkAdmin();
@@ -26,11 +29,11 @@ class ServiciosAdmin {
             header("location: ../admin/anadir-admin.php");
             exit();
         }
-        
-        $used=R::findOne("usuario", "nick=?", [$alias]);
-        
-        if ($used!=NULL){
-            
+
+        $used = R::findOne("usuario", "nick=?", [$alias]);
+
+        if ($used != NULL) {
+
             $_SESSION["error"] = "Error. El nombre de usuario ya está cogido";
             header("location: ../admin/anadir-admin.php");
             exit();
@@ -41,13 +44,11 @@ class ServiciosAdmin {
         $usuario->apellidos = $apellidos;
         $usuario->password = password_hash($password . "pimienta_de_la_buena", PASSWORD_DEFAULT);
         $usuario->email = $email;
-        $usuario->tipo= "2";
+        $usuario->tipo = "2";
         R::store($usuario);
         $_SESSION["exito"] = "Registro completado. Notificar al nuevo administrador";
 
         return "admin/administradores.php";
-        
-        
     }
 
     public function anadirCarrera() {
@@ -80,7 +81,6 @@ class ServiciosAdmin {
         return $return;
     }
 
-    //Añadimos la carrera
     public function anadirAsignatura() {
 
         $idCarrera = filter_input(INPUT_POST, "carrera", FILTER_SANITIZE_MAGIC_QUOTES);
@@ -162,20 +162,18 @@ class ServiciosAdmin {
     public function borrarUniversidad() {
 
         $idUniversidad = filter_input(INPUT_GET, "idUniversidad", FILTER_SANITIZE_MAGIC_QUOTES);
-
+        $borrador = new cascade();
+        $this->setUpDatabase();
         try {
-            $this->setUpDatabase();
-            //Ceamos un bean
-            $universidad = R::load('universidad', $idUniversidad);
-            //Borramos 
-            R::trash($universidad);
-            $_SESSION["exito"] = $universidad->nombre . "  borrada con éxito";
+            $borrador->borrarUniversidadCascade($idUniversidad);
+
+            $_SESSION["exito"] = "  borrada con éxito";
             $return = "admin/universidades.php";
         } catch (Exception $ex) {
             $_SESSION["error"] = "Error al borrar la universidad elegida";
             $return = "admin/universidades.php";
         }
-        R::close();
+
         return $return;
     }
 
@@ -225,17 +223,12 @@ class ServiciosAdmin {
     }
 
     public function borrarUsuario($parametros) {
-
+        $borrador = new cascade();
+        $idUsuario = filter_input(INPUT_GET, "idUsuario", FILTER_SANITIZE_NUMBER_INT);
+        $this->setUpDatabase();
         try {
-            $this->setUpDatabase();
-            $idUsuario = filter_input(INPUT_GET, "idUsuario", FILTER_SANITIZE_NUMBER_INT);
-            //Ceamos un bean
-            $usuario = R::findOne('usuario', 'id=?', [$idUsuario]);
-            unlink(__DIR__ . "/../img/usuarios/perfil/" . $usuario->avatar);
-            unlink(__DIR__ . "/../img/usuarios/portada/" . $usuario->imagenportada);
-            //Borramos 
-            R::trash($usuario);
-            $_SESSION["exito"] = "@" . $usuario->nick . "  borrado con éxito";
+            $borrador->borrarUsuarioCascade($idUsuario);
+            $_SESSION["exito"] = "  borrado con éxito";
             $return = "admin/usuarios.php";
         } catch (Exception $ex) {
             $_SESSION["error"] = "Error al borrar usuario";
@@ -247,22 +240,36 @@ class ServiciosAdmin {
 
     public function removeGrupo() {
         $idGrupo = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
+        $borrador = new cascade();
         $this->setUpDatabase();
-        $grupo = R::findOne('grupo', ' id = ? ', [$idGrupo]);
-        R::trash($grupo);
+        try {
+            $borrador->borrarGrupoCascade($idGrupo);
+            $_SESSION['exito'] = "Grupo eliminado con éxito";
+            return "admin/grupos.php";
+        } catch (Exception $ex) {
+            $_SESSION["error"] = "Error al borrar el grupo";
+            $return = "admin/grupos.php";
+        }
         R::close();
-        $_SESSION['exito'] = "Grupo eliminado con éxito";
-        return "admin/grupos.php";
+
+        return $return;
     }
 
     public function removeApunte() {
         $idApunte = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
+        $borrador = new cascade();
         $this->setUpDatabase();
-        $apunte = R::findOne('apunte', ' id = ? ', [$idApunte]);
-        R::trash($apunte);
+        try {
+            $borrador->borrarApunteCascade($idApunte);
+            $_SESSION['exito'] = "Apunte eliminado con éxito";
+            return "admin/apuntes.php";
+        } catch (Exception $ex) {
+            $_SESSION["error"] = "Error al borrar el apunte";
+            $return = "admin/apuntes.php";
+        }
         R::close();
-        $_SESSION['exito'] = "Apunte eliminado con éxito";
-        return "admin/apuntes.php";
+
+        return $return;
     }
 
     public function sendToAdmin() {
@@ -276,18 +283,11 @@ class ServiciosAdmin {
     public function borrarAsignatura($parametros) {
 
 
-        /*
-          usar parametros obtenemos el id por este parametro
-         *          */
+        $borrador = new cascade();
+        $this->setUpDatabase();
 
         try {
-            $this->setUpDatabase();
-
-            //Ceamos un bean
-            $asignatura = R::load('asignatura', $parametros['idAsignatura']);
-            //Borramos 
-            R::trash($asignatura);
-
+            $borrador->borrarAsignaturaCascade($parametros['idAsignatura']);
             $_SESSION["exito"] = $asignatura->nombre . " - (" . $asignatura->carrera->nombre . ") borrada con éxito";
             $return = "admin/asignaturas.php";
         } catch (Exception $ex) {
@@ -333,32 +333,38 @@ class ServiciosAdmin {
     }
 
     public function borrarCarrera() {
-        $this->setUpDatabase();
+
 
         $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
-
-        $carrera = R::load('carrera', $id);
-
-        R::trash($carrera);
-
+        $borrador = new cascade();
+        $this->setUpDatabase();
+        try {
+            $borrador->borrarCarreraCascada($id);
+            $_SESSION["exito"] = "Carrera eliminada con éxito";
+            return "admin/carreras.php";
+        } catch (Exception $ex) {
+            $_SESSION["error"] = "Error al borrar la carrera";
+            $return = "admin/carreras.php";
+        }
         R::close();
-        $_SESSION["exito"] = "Carrera eliminada con éxito";
-        return "admin/carreras.php";
+
+        return $return;
     }
-    public function editarCarrera(){
-        
-       
+
+    public function editarCarrera() {
+
+
         $nombre = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES);
         $idUniversidad = filter_input(INPUT_POST, "universidad", FILTER_SANITIZE_NUMBER_INT);
         $rama = filter_input(INPUT_POST, "rama", FILTER_SANITIZE_MAGIC_QUOTES);
         $idCarrera = filter_input(INPUT_POST, "idcarrera", FILTER_SANITIZE_MAGIC_QUOTES);
         $this->setUpDatabase();
 
-        $carrera = R::findOne('carrera', 'id = ?', [$idCarrera] );
+        $carrera = R::findOne('carrera', 'id = ?', [$idCarrera]);
         $carrera->nombre = $nombre;
         $carrera->universidad_id = $idUniversidad;
         $carrera->rama = $rama;
-        
+
 
         try {
 
@@ -375,7 +381,6 @@ class ServiciosAdmin {
 
         return $return;
     }
-    
 
     public function editarAsignatura($parametros) {
 
