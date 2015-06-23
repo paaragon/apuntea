@@ -66,13 +66,33 @@ class ControladorAdmin {
         return $this->variables;
     }
 
+    public function anadirAdmin() {
+
+        $this->setUpDatabase();
+
+        $this->variables["administrador"] = R::find('usuario', "tipo = 2");
+
+        return $this->variables;
+    }
+
+    public function administradores() {
+        $this->setUpDatabase();
+
+        $this->variables['administrador'] = R::find("usuario", "tipo = 2");
+
+
+        R::close();
+
+        return $this->variables;
+    }
+
     public function editarCarrera() {
         $this->setUpDatabase();
 
         $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
 
         $this->variables["carrera"] = R::findOne('carrera', 'id=?', [$id]);
-        
+
         $this->variables["universidades"] = R::findAll('universidad');
 
         return $this->variables;
@@ -96,6 +116,9 @@ class ControladorAdmin {
             }
             $this->variables['uniapun'] = $uniapun;
         }
+
+        $this->variables["chart1"] = $this->apuntesPorUniversidades();
+        $this->variables["chart2"] = $this->universidadesUsuarios();
         R::close();
         return $this->variables;
     }
@@ -181,7 +204,6 @@ class ControladorAdmin {
     public function carreras($universidad = "") {
 
         $this->setUpDatabase();
-
         $this->variables["chart1"] = $this->carrerasUsuarios();
         $this->variables["chart2"] = $this->carrerasApuntes();
         $this->variables["carreras"] = ($universidad != "") ? R::find("carrera", " universidad_id = " . $universidad) : R::findAll("carrera");
@@ -195,6 +217,8 @@ class ControladorAdmin {
         $idCarrera = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
 
         $this->setUpDatabase();
+        $this->variables["chart1"] = $this->usuariosMesesCarreras($idCarrera);
+        $this->variables["chart2"] = $this->apuntesMesesCarreras($idCarrera);
         $this->variables["carrera"] = R::findOne("carrera", "id=?", [$idCarrera]);
         R::close();
         return $this->variables;
@@ -231,25 +255,6 @@ class ControladorAdmin {
         return $this->variables;
     }
 
-    public function anadirAdmin(){
-       
-        $this->setUpDatabase();
-
-        $this->variables["administrador"] = R::find('usuario', "tipo = 2" );
-
-        return $this->variables;
-        
-    }
-    public function administradores(){
-         $this->setUpDatabase();
-         
-         $this->variables['administrador'] = R::find("usuario", "tipo = 2");
-         
-         
-          R::close();
-
-        return $this->variables;
-    }
     public function usuario() {
 
         $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
@@ -304,18 +309,8 @@ class ControladorAdmin {
 
     public function asignaturas() {
 
-        $idCarrera = (isset($_POST["carrera"])) ? filter_input(INPUT_POST, "carrera", FILTER_SANITIZE_NUMBER_INT) : "";
-        $nombre = (isset($_POST["nombre"])) ? filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES) : "";
-
         $this->setUpDatabase();
-
-        if ($idCarrera == "") {
-
-            $this->variables["asignaturas"] = R::findAll("asignatura");
-        } else {
-
-            $this->variables["asignaturas"] = R::findAll("asignatura", " carrera_id = ? AND LOWER(nombre) LIKE ?", [$idCarrera, "%" . strtolower($nombre) . "%"]);
-        }
+        $this->variables["asignaturas"] = R::convertToBeans('asignatura', R::getAll('SELECT asignatura.* FROM asignatura, carrera WHERE carrera_id = carrera.id ORDER BY rama'));
 
         $this->variables["ramas"] = array("Artes y humanidades" => "fa-paint-brush", "Ciencias" => "fa-rocket", "Ciencias de la salud" => "fa-user-md", "Ingeniería y arquitectura" => "fa-cogs", "Ciencias sociales y jurídicas" => "fa-gavel");
 
@@ -332,6 +327,7 @@ class ControladorAdmin {
 
         $this->setUpDatabase();
         $this->variables["apunte"] = R::findOne('apunte', ' id=?', [$idApunte]);
+
         $this->variables["chart1"] = $this->numLikes($idApunte);
         $this->variables["chart2"] = $this->numDislikes($idApunte);
         $this->variables["chart3"] = $this->numFavs($idApunte);
@@ -368,6 +364,7 @@ class ControladorAdmin {
         $this->variables["numuniversidades"] = R::count('universidad');
         $this->variables["numapuntes"] = R::count('apunte');
         $this->variables["numasignaturas"] = R::count('asignatura');
+        $this->variables["numusuarios"] = R::count('usuario', 'tipo=1 AND activo = 1');
         $this->variables["grupos"] = array();
         $this->variables["usuarios"] = array();
         $this->variables["apuntes"] = array();

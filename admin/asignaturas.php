@@ -7,7 +7,7 @@ $variables = $controlador->asignaturas();
 
 ob_start();
 ?>
-<div class="col-9">
+<div class="col-12">
     <h2 class="col-xs-8">
         <span class="fa fa-file-text-o"></span> Asignaturas
     </h2>
@@ -60,15 +60,6 @@ ob_start();
         <blockquote><h3>No hay asignaturas.</h3></blockquote>
     <?php endif; ?>
 </div>
-
-<div class="col-3">
-    <p>
-        <img src="../img/line-graph.gif" class="img-responsive">
-        <img src="../img/line-graph.gif" class="img-responsive">
-        <img src="../img/line-graph.gif" class="img-responsive">
-    <p>
-</div>
-
 <script>
     $(document).on("ready", function () {
 

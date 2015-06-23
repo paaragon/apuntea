@@ -104,7 +104,7 @@ ob_start();
 
         var input = $("#nick");
         var nick = input.val();
-        $.post("servicios/standarHandler.php?action=userNameExist", {name: nick}, function (data) {
+        $.post("../servicios/standarHandler.php?action=userNameExist", {name: nick}, function (data) {
             if (data === true) {
                 $("#nickStatus").text(" Alias disponible").removeClass("text-danger").addClass("text-success");
             } else {

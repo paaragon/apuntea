@@ -7,7 +7,7 @@ $variables = $controlador->universidad();
 
 ob_start();
 ?>
-<div id="principal" class="col-9">
+<div id="principal" class="col-12">
     <?php if (isset($variables["universidad"])): ?>
         <div class="fila profile">
             <div id="fondo"><img class="img-responsive" src="../img/universidades/portada/<?php echo $variables["universidad"]->imagenportada ?>"></div>

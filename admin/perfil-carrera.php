@@ -76,13 +76,61 @@ ob_start();
     <?php endif; ?>
 </div>
 <div class="col-3">
-    <p>
-        <img src="../img/line-graph.gif" class="img-responsive">
-        <img src="../img/line-graph.gif" class="img-responsive">
-        <img src="../img/line-graph.gif" class="img-responsive">
-    <p>
+    <h4 class="text-center"><strong>Usuarios añadidos en los últimos 7 meses</strong></h4>
+    <canvas id="myChart1"></canvas>
+    <hr>
+    <h4 class="text-center"><strong>Apuntes añadidos en los últimos 7 meses</strong></h4>
+    <canvas id="myChart2"></canvas>
 </div>
+<script>
+    $(document).on('ready', function () {
+        //Gráfica 1----------------------------------------------------
+        var data1 = {
+            labels: [<?php echo $variables["chart1"]["label"] ?>],
+            datasets: [
+                {
+                    fillColor: "rgba(70, 181, 82, 0.2)",
+                    strokeColor: "rgba(59, 152, 68, 0.5)",
+                    pointColor: "rgba(59, 152, 68, 0.6)",
+                    pointStrokeColor: "rgba(59, 152, 68, 0.8)",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: [<?php echo $variables["chart1"]["data"] ?>]
+                }
+            ]
+        };
 
+        var canvas1 = document.getElementById("myChart1");
+        canvas1.width = $("#myChart1").width() - 50;
+        canvas1.height = 200;
+
+        var ctx = document.getElementById("myChart1").getContext("2d");
+        var myLineChart2 = new Chart(ctx).Line(data1);
+
+        //Gráfica 2----------------------------------------------------
+        var data2 = {
+            labels: [<?php echo $variables["chart2"]["label"] ?>],
+            datasets: [
+                {
+                    fillColor: "rgba(70, 181, 82, 0.2)",
+                    strokeColor: "rgba(59, 152, 68, 0.5)",
+                    pointColor: "rgba(59, 152, 68, 0.6)",
+                    pointStrokeColor: "rgba(59, 152, 68, 0.8)",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: [<?php echo $variables["chart2"]["data"] ?>]
+                }
+            ]
+        };
+
+        var canvas2 = document.getElementById("myChart2");
+        canvas2.width = $("#myChart2").width() - 50;
+        canvas2.height = 200;
+
+        var ctx = document.getElementById("myChart2").getContext("2d");
+        var myLineChart2 = new Chart(ctx).Line(data2);
+    });
+</script>
 <?php
 $contenido = ob_get_clean();
 require "../common/admin/layout.php";

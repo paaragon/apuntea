@@ -14,7 +14,7 @@ class ControladorEstandar {
     public function inicio() {
 
         $this->setUpDatabase();
-        $this->variables["universidades"] = R::getAssoc("SELECT universidad.id as id, universidad.nombre as nombre, universidad.imagenperfil as img FROM universidad, carrera, usuario WHERE universidad.id = carrera.universidad_id AND carrera.id = usuario.carrera_id GROUP BY universidad.id ORDER BY COUNT(*) DESC");
+        $this->variables["universidades"] = R::getAssoc("SELECT universidad.id as id, universidad.nombre as nombre, universidad.imagenperfil as img, (SELECT COUNT(*) FROM usuario, carrera WHERE carrera_id = carrera.id AND universidad_id = universidad.id) as num FROM universidad GROUP BY universidad.id ORDER BY num DESC ");
         $this->variables["carreras"] = R::getAssoc("SELECT carrera.id as id, carrera.nombre as nombre, universidad.siglas as siglasuniversidad, universidad.id as iduniversidad FROM universidad, carrera, usuario WHERE universidad.id = carrera.universidad_id AND carrera.id = usuario.carrera_id GROUP BY carrera.id ORDER BY COUNT(*) DESC");
         $asignaturas = R::getAll('SELECT asignatura.* FROM asignatura, apunte WHERE asignatura_id=asignatura.id GROUP BY asignatura_id ORDER BY COUNT(asignatura_id) DESC');
         $this->variables["asignaturas"] = R::convertToBeans('asignatura', $asignaturas);
@@ -40,7 +40,7 @@ class ControladorEstandar {
             $this->variables["carreras"] = R::findAll('carrera', ' universidad_id = ? ORDER BY rama, nombre ASC', [$id]);
         }
 
-        $this->variables["ramas"] = array(array("Artes y humanidades", "fa-paint-brush"), array("Ciencias", "fa-rocket"), array("Ciencias de la salud", "fa-user-md"), array("Ingeniería y arquitectura", "fa-cogs"), array("Ciencias sociales y jurídicas", "fa-gavel"));
+        $this->variables["ramas"] = array("Artes y humanidades" => "fa-paint-brush", "Ciencias" => "fa-rocket", "Ciencias de la salud" => "fa-user-md", "Ingeniería y arquitectura" => "fa-cogs", "Ciencias sociales y jurídicas" => "fa-gavel");
         R::close();
         return $this->variables;
     }
@@ -132,7 +132,7 @@ class ControladorEstandar {
         $this->variables["universidades"] = R::findAll('universidad');
         $this->variables["carreras"] = R::findAll('carrera', ' ORDER BY rama, nombre ASC');
 
-        $this->variables["ramas"] = array(array("Artes y humanidades", "fa-paint-brush"), array("Ciencias", "fa-rocket"), array("Ciencias de la salud", "fa-user-md"), array("Ingeniería y arquitectura", "fa-cogs"), array("Ciencias sociales y jurídicas", "fa-gavel"));
+        $this->variables["ramas"] = array("Artes y humanidades" => "fa-paint-brush", "Ciencias" => "fa-rocket", "Ciencias de la salud" => "fa-user-md", "Ingeniería y arquitectura" => "fa-cogs", "Ciencias sociales y jurídicas" => "fa-gavel");
         R::close();
         return $this->variables;
     }

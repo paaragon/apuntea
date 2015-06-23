@@ -2,7 +2,7 @@
 require __DIR__ . "/../controladores/ControladorAdmin.php";
 $controlador = new ControladorAdmin();
 $variables = $controlador->editarCarrera();
-
+$ramas = array('Artes y humanidades', 'Ciencias', 'Ciencias de la salud', 'Ingeniería y arquitectura', 'Ciencias sociales y jurídicas');
 ob_start();
 ?>
 
@@ -12,7 +12,7 @@ ob_start();
 <hr>
 <?php if (isset($variables["carrera"])): ?>
     <form action="../servicios/adminHandler.php?action=editarCarrera" method="post">
-        <input type="hidden" value="<?php echo $variables["Carrera"]->id ?>" name="idCarrera">
+        <input type="hidden" value="<?php echo $variables["carrera"]->id ?>" name="idCarrera">
         <label>Nombre:</label>
         <input type="text" name="nombre" required="" class="campo-formulario" placeholder="Introduce el nuevo nombre" value="<?php echo $variables["carrera"]->nombre ?>">
         <label>Universidad:</label>
@@ -23,11 +23,13 @@ ob_start();
         </select>
         <label>Rama:</label>
         <select class="campo-formulario" name="rama">
-            <option value="Artes y humanidades">Artes y humanidades</option>
-            <option value="Ciencias">Ciencias</option>
-            <option value="Ciencias de la salud">Ciencias de la salud</option>
-            <option value="Ingeniería y arquitectura">Ingeniería y arquitectura</option>
-            <option value="Ciencias sociales y jurídicas">Ciencias sociales y jurídicas</option>
+            <?php foreach ($ramas as $rama): ?>
+                <?php if ($variables["carrera"]->rama == $rama): ?>
+                    <option value="<?php echo $rama ?>" selected=""><?php echo $rama ?></option>
+                <?php else: ?>
+                    <option value="<?php echo $rama ?>"><?php echo $rama ?></option>
+                <?php endif; ?>
+            <?php endforeach; ?>
         </select>
         <input type="submit" value="Guardar cambios" class="campo-formulario">
     </form>

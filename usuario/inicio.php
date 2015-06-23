@@ -34,7 +34,7 @@ ob_start();
                 <p>
                     <span class="col-10">
                         <span class="fa fa-users"></span>
-                        <strong><em><a href="perfil-usuario.php?id=<?php echo $contacto->id ?>">@<?php echo $contacto->nick ?></a></em> se ha añadido a tu grupo <a href="ver-grupo.php?id=<?php echo $grupo->id ?>"><?php echo $grupo->nombre ?></a></strong>
+                        <strong><em><a href="perfil-usuario.php?id=<?php echo $contacto->usuario->id ?>">@<?php echo $contacto->usuario->nick ?></a></em> se ha añadido a tu grupo <a href="ver-grupo.php?id=<?php echo $grupo->id ?>"><?php echo $grupo->nombre ?></a></strong>
                     </span>
                 </p>
                 <div class="clear"></div>

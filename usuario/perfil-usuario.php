@@ -90,7 +90,7 @@ ob_start();
 <script>
 
     $(document).ready(function () {
-<?php if (count($variables["apuntes"]) > 0): ?>
+<?php if (isset($variables["usuario"]) && count($variables["apuntes"]) > 0): ?>
     <?php echo $like->generateAjaxScript(); ?>
     <?php echo $dislike->generateAjaxScript(); ?>
     <?php echo $fav->generateAjaxScript(); ?>

@@ -34,8 +34,8 @@ ob_start();
     <hr>
 
     <?php
-    if (count($variables["contactosUsuario"]) > 0):
-        foreach ($variables["contactosUsuario"] as $contacto):
+    if (count($variables["recomendados"]) > 0):
+        foreach ($variables["recomendados"] as $contacto):
             ?>
             <div class="col-6 contacto">
                 <div class="fila">

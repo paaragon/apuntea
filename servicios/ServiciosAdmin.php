@@ -7,8 +7,6 @@ require __DIR__ . "/cascades.php";
 
 class ServiciosAdmin {
 
-    private $borrador;
-
     public function __construct() {
         apunteaSec\checkAdmin();
     }
@@ -41,13 +39,40 @@ class ServiciosAdmin {
         $usuario = R::dispense('usuario');
         $usuario->nombre = $nombre;
         $usuario->nick = $alias;
+        $usuario->avatar = "admin.png";
         $usuario->apellidos = $apellidos;
         $usuario->password = password_hash($password . "pimienta_de_la_buena", PASSWORD_DEFAULT);
         $usuario->email = $email;
         $usuario->tipo = "2";
+        $codigo = md5(openssl_random_pseudo_bytes(32));
+        $usuario->codigoactivacion = $codigo;
         R::store($usuario);
+
+        $params["id"] = $usuario->id;
+        $params["codigo"] = $codigo;
+        $params["nick"] = $usuario->nick;
+        $params["password"] = $password;
+        $this->sendEmail($email, $nombre . " " . $apellidos, "../util/emailConfirmacionAdmin.php", $params);
         $_SESSION["exito"] = "Registro completado. Notificar al nuevo administrador";
 
+        return "admin/administradores.php";
+    }
+
+    public function eliminarAdmin() {
+        $idAdmin = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
+        $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
+
+        if ($idAdmin == $idUsuario) {
+            $_SESSION["error"] = "Error. No puedes eliminarte a ti mismo.";
+            return "admin/inicio.php";
+        }
+
+        $this->setUpDatabase();
+
+        Cascade::borrarUsuarioCascade($idAdmin);
+        R::close();
+
+        $_SESSION["exito"] = "Administrador eliminado con éxito";
         return "admin/administradores.php";
     }
 
@@ -81,6 +106,7 @@ class ServiciosAdmin {
         return $return;
     }
 
+    //Añadimos la carrera
     public function anadirAsignatura() {
 
         $idCarrera = filter_input(INPUT_POST, "carrera", FILTER_SANITIZE_MAGIC_QUOTES);
@@ -162,18 +188,18 @@ class ServiciosAdmin {
     public function borrarUniversidad() {
 
         $idUniversidad = filter_input(INPUT_GET, "idUniversidad", FILTER_SANITIZE_MAGIC_QUOTES);
-        $borrador = new cascade();
-        $this->setUpDatabase();
-        try {
-            $borrador->borrarUniversidadCascade($idUniversidad);
 
-            $_SESSION["exito"] = "  borrada con éxito";
+        try {
+            $this->setUpDatabase();
+            //Borramos 
+            Cascade::borrarUniversidadCascade($idUniversidad);
+            $_SESSION["exito"] = $universidad->nombre . "  borrada con éxito";
             $return = "admin/universidades.php";
         } catch (Exception $ex) {
             $_SESSION["error"] = "Error al borrar la universidad elegida";
             $return = "admin/universidades.php";
         }
-
+        R::close();
         return $return;
     }
 
@@ -222,13 +248,19 @@ class ServiciosAdmin {
         return $return;
     }
 
-    public function borrarUsuario($parametros) {
-        $borrador = new cascade();
-        $idUsuario = filter_input(INPUT_GET, "idUsuario", FILTER_SANITIZE_NUMBER_INT);
-        $this->setUpDatabase();
+    public function borrarUsuario() {
+
         try {
-            $borrador->borrarUsuarioCascade($idUsuario);
-            $_SESSION["exito"] = "  borrado con éxito";
+            $this->setUpDatabase();
+            $idUsuario = filter_input(INPUT_GET, "idUsuario", FILTER_SANITIZE_NUMBER_INT);
+            //Ceamos un bean
+            $usuario = R::findOne('usuario', 'id=?', [$idUsuario]);
+            unlink(__DIR__ . "/../img/usuarios/perfil/" . $usuario->avatar);
+            unlink(__DIR__ . "/../img/usuarios/portada/" . $usuario->imagenportada);
+            //Borramos 
+            Cascade::borrarUsuarioCascade($idUsuario);
+            R::close();
+            $_SESSION["exito"] = "@" . $usuario->nick . "  borrado con éxito";
             $return = "admin/usuarios.php";
         } catch (Exception $ex) {
             $_SESSION["error"] = "Error al borrar usuario";
@@ -240,36 +272,20 @@ class ServiciosAdmin {
 
     public function removeGrupo() {
         $idGrupo = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
-        $borrador = new cascade();
         $this->setUpDatabase();
-        try {
-            $borrador->borrarGrupoCascade($idGrupo);
-            $_SESSION['exito'] = "Grupo eliminado con éxito";
-            return "admin/grupos.php";
-        } catch (Exception $ex) {
-            $_SESSION["error"] = "Error al borrar el grupo";
-            $return = "admin/grupos.php";
-        }
+        Cascade::borrarGrupoCascade($idGrupo);
         R::close();
-
-        return $return;
+        $_SESSION['exito'] = "Grupo eliminado con éxito";
+        return "admin/grupos.php";
     }
 
     public function removeApunte() {
         $idApunte = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
-        $borrador = new cascade();
         $this->setUpDatabase();
-        try {
-            $borrador->borrarApunteCascade($idApunte);
-            $_SESSION['exito'] = "Apunte eliminado con éxito";
-            return "admin/apuntes.php";
-        } catch (Exception $ex) {
-            $_SESSION["error"] = "Error al borrar el apunte";
-            $return = "admin/apuntes.php";
-        }
+        Cascade::borrarApunteCascade($idApunte);
         R::close();
-
-        return $return;
+        $_SESSION['exito'] = "Apunte eliminado con éxito";
+        return "admin/apuntes.php";
     }
 
     public function sendToAdmin() {
@@ -280,14 +296,17 @@ class ServiciosAdmin {
         return "admin/mensajes.php?id=" . $usuariogrupo->usuario_id;
     }
 
-    public function borrarAsignatura($parametros) {
-
-
-        $borrador = new cascade();
-        $this->setUpDatabase();
+    public function borrarAsignatura() {
 
         try {
-            $borrador->borrarAsignaturaCascade($parametros['idAsignatura']);
+            $this->setUpDatabase();
+
+            $idAsignatura = filter_input(INPUT_GET, 'idAsignatura', FILTER_SANITIZE_NUMBER_INT);
+            //Ceamos un bean
+            $asignatura = R::load('asignatura', $idAsignatura);
+
+            Cascade::borrarAsignaturaCascade($idAsignatura);
+            R::close();
             $_SESSION["exito"] = $asignatura->nombre . " - (" . $asignatura->carrera->nombre . ") borrada con éxito";
             $return = "admin/asignaturas.php";
         } catch (Exception $ex) {
@@ -333,53 +352,15 @@ class ServiciosAdmin {
     }
 
     public function borrarCarrera() {
-
+        $this->setUpDatabase();
 
         $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
-        $borrador = new cascade();
-        $this->setUpDatabase();
-        try {
-            $borrador->borrarCarreraCascada($id);
-            $_SESSION["exito"] = "Carrera eliminada con éxito";
-            return "admin/carreras.php";
-        } catch (Exception $ex) {
-            $_SESSION["error"] = "Error al borrar la carrera";
-            $return = "admin/carreras.php";
-        }
-        R::close();
 
-        return $return;
-    }
-
-    public function editarCarrera() {
-
-
-        $nombre = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES);
-        $idUniversidad = filter_input(INPUT_POST, "universidad", FILTER_SANITIZE_NUMBER_INT);
-        $rama = filter_input(INPUT_POST, "rama", FILTER_SANITIZE_MAGIC_QUOTES);
-        $idCarrera = filter_input(INPUT_POST, "idcarrera", FILTER_SANITIZE_MAGIC_QUOTES);
-        $this->setUpDatabase();
-
-        $carrera = R::findOne('carrera', 'id = ?', [$idCarrera]);
-        $carrera->nombre = $nombre;
-        $carrera->universidad_id = $idUniversidad;
-        $carrera->rama = $rama;
-
-
-        try {
-
-            $idCarrera = R::store($carrera);
-            $_SESSION["exito"] = "Carrera actualizada con éxito";
-            $return = "admin/carreras.php";
-        } catch (Exception $e) {
-
-            $_SESSION["error"] = "Error al modificar la carrera";
-            $return = "admin/carreras.php";
-        }
+        Cascade::borrarCarreraCascade($id);
 
         R::close();
-
-        return $return;
+        $_SESSION["exito"] = "Carrera eliminada con éxito";
+        return "admin/carreras.php";
     }
 
     public function editarAsignatura($parametros) {
@@ -407,6 +388,36 @@ class ServiciosAdmin {
             $return = "admin/asignaturas.php";
         }
         R::close();
+        return $return;
+    }
+
+    public function editarCarrera() {
+
+
+        $nombre = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES);
+        $idUniversidad = filter_input(INPUT_POST, "universidad", FILTER_SANITIZE_NUMBER_INT);
+        $rama = filter_input(INPUT_POST, "rama", FILTER_SANITIZE_MAGIC_QUOTES);
+        $idCarrera = filter_input(INPUT_POST, "idCarrera", FILTER_SANITIZE_NUMBER_INT);
+        $this->setUpDatabase();
+
+        $carrera = R::findOne('carrera', 'id = ?', [$idCarrera]);
+        $carrera->nombre = $nombre;
+        $carrera->universidad_id = $idUniversidad;
+        $carrera->rama = $rama;
+
+
+        try {
+            R::store($carrera);
+            $_SESSION["exito"] = "Carrera actualizada con éxito";
+            $return = "admin/perfil-carrera.php?id=" . $idCarrera;
+        } catch (Exception $e) {
+
+            $_SESSION["error"] = $e->getMessage();
+            $return = "admin/perfil-carrera.php?id=1" . $idCarrera;
+        }
+
+        R::close();
+
         return $return;
     }
 
@@ -480,6 +491,41 @@ class ServiciosAdmin {
     private function setUpDatabase() {
         R::setup('mysql:host=' . DbConfig::$dbHost . ';dbname=' . DbConfig::$dbName, DbConfig::$dbUser, DbConfig::$dbPassword);
         R::freeze(TRUE);
+    }
+
+    private function sendEmail($emailDest, $destinatario, $cuerpo, $params) {
+        require __DIR__ . '/../util/PHPMailer/PHPMailerAutoload.php';
+
+        $mail = new PHPMailer;
+
+//$mail->SMTPDebug = 3;                               // Enable verbose debug output
+
+        $mail->isSMTP();                                      // Set mailer to use SMTP
+        $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+        $mail->SMTPAuth = true;                               // Enable SMTP authentication
+        $mail->Username = 'apuntea.info@gmail.com';                 // SMTP username
+        $mail->Password = 'apunteamolamas';                           // SMTP password
+        $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+        $mail->Port = 587;                                    // TCP port to connect to
+
+        $mail->From = 'apuntea.info@gmail.com';
+        $mail->FromName = 'Apuntea';
+        $mail->addAddress($emailDest, $destinatario);
+        $mail->isHTML(true);                                  // Set email format to HTML
+
+        $mail->Subject = 'Confirmación de cuenta en Apuntea';
+
+        ob_start();
+        require $cuerpo;
+        $body = ob_get_clean();
+        $mail->Body = $body;
+
+        if (!$mail->send()) {
+            return false;
+        } else {
+
+            return true;
+        }
     }
 
 }

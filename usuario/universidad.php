@@ -29,6 +29,7 @@ ob_start();
 
         foreach ($variables["carreras"] as $carrera) {
             if ($carrera->rama != $rama) {
+                $i++;
                 echo "</ul>";
                 echo "</div>";
                 echo '<div class="rama-conocimiento">';

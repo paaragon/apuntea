@@ -130,6 +130,9 @@ ob_start();
             <label><input type="radio" name="vis-buscador" value="0" id="radiobusc2" <?php echo $chck23 ?>/> Solo mis amigos</label><br><br>
             <input type="submit" id="btnSubmit" name="actualizar" value="Guardar configuracion" class="campo-formulario">
         </form>
+        <p>
+            <a href="dar-de-baja.php" class="btn btn-danger form-control">Darse de baja</a>
+        </p>
     </div>
 </div>
 

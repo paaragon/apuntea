@@ -65,7 +65,6 @@ ob_start();
         </div>
         <script>
             $(document).on("ready", function () {
-
                 var objDiv = document.getElementById("conversacion-2");
                 objDiv.scrollTop = objDiv.scrollHeight;
 
@@ -79,6 +78,11 @@ ob_start();
         </script>
     <?php endif; ?>
 </div>
+<script>
+    $(document).on('ready', function () {
+        $("#conversaciones-recientes > div").width(<?php echo count($variables["contactos"]) * 178 ?>);
+    });
+</script>
 <?php
 $contenido = ob_get_clean();
 require "../common/usuario/layout.php";

@@ -23,10 +23,10 @@ ob_start();
         <?php
         $i = 0;
         echo '<div class="rama-conocimiento">';
-        echo "<h2><span class='fa " . $variables['ramas'][$i][1] . "'></span>" . $variables['ramas'][$i][0] . "</h2>";
+        echo "<h2><span class='fa " . $variables['ramas'][current($variables["carreras"])->rama] . "'></span>" . current($variables["carreras"])->rama . "</h2>";
         echo '<hr>';
         echo '<ul>';
-        $rama = $variables["ramas"][$i][0];
+        $rama = current($variables["carreras"])->rama;
 
         foreach ($variables["carreras"] as $carrera) {
             if ($carrera->rama != $rama) {
@@ -34,7 +34,7 @@ ob_start();
                 echo "</ul>";
                 echo "</div>";
                 echo '<div class="rama-conocimiento">';
-                echo "<h2><span class='fa " . $variables['ramas'][$i][1] . "'></span>" . $carrera->rama . "</h2>";
+                echo "<h2><span class='fa " . $variables['ramas'][$carrera->rama] . "'></span>" . $carrera->rama . "</h2>";
                 echo '<hr>';
                 echo '<ul>';
                 $rama = $carrera->rama;

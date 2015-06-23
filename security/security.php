@@ -12,9 +12,9 @@ function checkAdmin() {
     header("Pragma: no-cache");
         
     if (!isset($_SESSION["idUsuario"]) || $_SESSION["tipoUsuario"] != "admin") {
-//        logout();
-//        header("location: /index.php");
-//        exit();
+        logout();
+        header("location: /index.php");
+        exit();
     }
 }
 

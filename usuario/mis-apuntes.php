@@ -19,6 +19,7 @@ ob_start();
 
             <a href="mis-apuntes.php" class="boton boton-activo"><span class="fa fa-cloud-upload"></span> Subidos</a>
             <a href="mis-favoritos.php" class="boton"><span class="fa fa-star"></span> Favoritos</a>
+            <a href="subir-apuntes.php" class="boton"><span class="fa fa-cloud-upload"></span> Añadir apuntes</a>
         </p>
     </div>
     <div>

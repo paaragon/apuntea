@@ -28,12 +28,12 @@ class Validate {
                 $this->errorMessage = "Error. El campo " . $fieldName . " debe ser de tipo \"" . $field[1] . "\"";
                 return false;
             }
-            if (!$this->validateType($fieldName, $field)) {
-                $this->errorMessage = "Error. El campo " . $fieldName . " debe ser de tipo \"" . $field[1] . "\"";
-                return false;
-            }
             if (!$this->validateRequired($fieldName, $field)) {
                 $this->errorMessage = "Error. El campo " . $fieldName . " está vacío.";
+                return false;
+            }
+            if (!$this->validateType($fieldName, $field)) {
+                $this->errorMessage = "Error. El campo " . $fieldName . " debe ser de tipo \"" . $field[1] . "\"";
                 return false;
             }
         }

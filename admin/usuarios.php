@@ -24,14 +24,8 @@ ob_start();
                     <div class="col-5"><p><img src="../img/usuarios/perfil/<?php echo $usuario->avatar ?>" class="img-responsive"/></p></div>
                     <div class="col-7">
                         <p>
-                            <strong class="nombre"><?php echo $usuario->nombre . " " . $usuario->apellidos ?></strong> 
                             <small><a href="usuarios-detalles.php?id=<?php echo $usuario->id ?>" class="color-green nick">@<?php echo $usuario->nick ?></a></small>
                         </p>
-                        <blockquote>
-                            <p>
-                                <?php echo $usuario->estado ?>
-                            </p>
-                        </blockquote>
                         <p>
                             <span class="distintivo"><?php echo count($usuario->alias('alice')->ownContactoList) + count($usuario->alias('bob')->ownContactoList) ?> </span> Amigos<br><br>
                             <a href="mensajes.php?id=<?php echo $usuario->id ?>" class="boton">Enviar mensaje</a>

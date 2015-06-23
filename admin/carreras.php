@@ -77,35 +77,29 @@ ob_start();
                 window.location.href = '../servicios/adminHandler.php?action=borrarCarrera&id=' + id[0];
             }
         });
-    });
-    
-    
-    
-    $(document).on("ready", function () {
 
         var canvas1 = document.getElementById("myChart1");
         var canvas2 = document.getElementById("myChart2");
 
-        canvas1.width = $("#main").width() / 3 - 25;
+        canvas1.width = $("#main").width() / 4;
         canvas1.height = 240;
-        canvas2.width = $("#main").width() / 3 - 25;
+        canvas2.width = $("#main").width() / 4;
         canvas2.height = 240;
 
         //Gráfica 1----------------------------------------------------
         var data1 = [<?php echo $variables["chart1"]["data"] ?>]
-        
+
         var ctx = document.getElementById("myChart1").getContext("2d");
         var myLineChart1 = new Chart(ctx).Pie(data1);
-        
+
         //Gráfica 2----------------------------------------------------
         var data2 = [<?php echo $variables["chart2"]["data"] ?>]
-            
-        
+
+
 
         var ctx = document.getElementById("myChart2").getContext("2d");
         var myLineChart2 = new Chart(ctx).Pie(data2);
     });
-
 </script>
 <?php
 $contenido = ob_get_clean();

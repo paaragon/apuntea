@@ -104,7 +104,7 @@ ob_start();
                 } else
                     echo "No hay aportaciones a este grupo";
                 ?>
-                <form action="../servicios/usuarioHandler.php?action=anadirApunteGrupo&idGrupo=<?php echo $variables["grupo"]->id ?>&idUsuario=<?php echo $user->usuario_id ?>"  method="post">
+                <form action="../servicios/usuarioHandler.php?action=anadirApunteGrupo&idGrupo=<?php echo $variables["grupo"]->id ?>&idUsuario=<?php echo $user->usuario_id ?>&admin=1"  method="post">
                     <legend>Añadir apuntes al grupo:</legend>
                     <label>Apuntes:</label>
                     <select name="apunte" class="form-control">
@@ -151,6 +151,8 @@ ob_start();
 <script>
 
     $(document).ready(function () {
+        $("#conversaciones-recientes > div").width(<?php echo isset($variables["usuarios"]) ? count($variables["usuarios"]) * 178 : 0 ?>);
+
 <?php if (count($variables["apuntes"]) > 0): ?>
     <?php echo $like->generateAjaxScript(); ?>
     <?php echo $dislike->generateAjaxScript(); ?>

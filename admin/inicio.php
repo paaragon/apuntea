@@ -33,6 +33,7 @@ ob_start();
                 <li><strong>Nº carreras</strong></li>
                 <li><strong>Nº asignaturas</strong></li>
                 <li><strong>Nº apuntes</strong></li>
+                <li><strong>Nº usuarios</strong></li>
             </ul>
         </div>
         <div class="col-4">
@@ -41,6 +42,7 @@ ob_start();
                 <li><?php echo $variables['numcarreras'] ?></li>
                 <li><?php echo $variables['numasignaturas'] ?></li>
                 <li><?php echo $variables['numapuntes'] ?></li>
+                <li><?php echo $variables['numusuarios'] ?></li>
             </ul>
         </div>
         <div class="clear"></div>

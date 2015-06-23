@@ -6,7 +6,7 @@ $variables = $controlador->asignatura();
 ob_start();
 ?>
 <?php if (isset($variables["asignatura"])): ?>
-    <div class="col-9">
+    <div class="col-12">
         <section>
             <h2><span class="fa fa-file-text-o"></span>
                 <?php echo $variables["asignatura"]->nombre ?> -  <small><?php echo $variables["asignatura"]->curso ?> ª Curso - <a href="perfil-universidad.php"> <?php echo $variables["asignatura"]->carrera->universidad->siglas ?>
@@ -48,17 +48,7 @@ ob_start();
 <?php else: ?>
     <blockquote class="col-9"><h3>Asignatura no encontrada.</h3></blockquote>
 <?php endif; ?>
-<div class="col-3">
-    <p>
-        <img src="../img/line-graph.gif" class="img-responsive">
-        <img src="../img/line-graph.gif" class="img-responsive">
-        <img src="../img/line-graph.gif" class="img-responsive">
-    <p>
-</div>
-
 <div class="clear"></div>
-
-
 <?php
 $contenido = ob_get_clean();
 require "../common/admin/layout.php";

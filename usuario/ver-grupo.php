@@ -64,7 +64,9 @@ ob_start();
                                 <span class="col-1"><?php echo $dislike->generateDislike(); ?></span>
                                 <span class="col-1"><span class="fa fa-eye"></span> <?php echo $apunte->visualizaciones ?></span>
                                 <span class="col-1"><?php echo $fav->generateFav(); ?></span>
-                                <span class="col-1"><a href="../servicios/usuarioHandler.php?action=eliminarApunteGrupo&idApunte=<?php echo $apunte->id ?>&idGrupo=<?php echo $variables["grupo"]->id ?>"><span class="fa fa-trash-o"></span></a></span>
+                                <?php if ($apunte->usuario_id == $_SESSION["idUsuario"]) { ?>
+                                    <span class="col-1"><a href ="../servicios/usuarioHandler.php?action=eliminarApunteGrupo&idGrupo=<?php echo $variables["grupo"]->id ?>&idApunte=<?php echo $apunte->id ?>" ><span class="fa fa-trash"></span></a></span>
+                                <?php } ?>
                             </p>
                             <div class="clear"></div>
                         </div>
@@ -75,7 +77,7 @@ ob_start();
                 }
                 ?>
                 <br>
-                <form action="../servicios/usuarioHandler.php?action=anadirApunteGrupo&idGrupo=<?php echo $variables["grupo"]->id ?>&idUsuario=<?php echo $user->usuario_id ?>&admin=0"  method="post">
+                <form action="../servicios/usuarioHandler.php?action=anadirApunteGrupo&idGrupo=<?php echo $variables["grupo"]->id ?>&idUsuario=<?php echo $user->usuario_id ?>"  method="post">
                     <legend>Añadir apuntes al grupo:</legend>
                     <label>Apuntes:</label>
                     <select name="apunte" class="form-control">
@@ -116,6 +118,16 @@ ob_start();
         <blockquote><h3>No puedes ver la información de este grupo.</h3></blockquote>
     <?php endif; ?>
 </div>
+<script>
+    $(document).on('ready', function () {
+        $("#conversaciones-recientes > div").width(<?php echo isset($variables["usuarios"]) ? count($variables["usuarios"]) * 178 : 0 ?>);
+<?php if (count($variables["apuntes"]) > 0): ?>
+    <?php echo $like->generateAjaxScript(); ?>
+    <?php echo $dislike->generateAjaxScript(); ?>
+    <?php echo $fav->generateAjaxScript(); ?>
+<?php endif; ?>
+    });
+</script>
 <?php
 $contenido = ob_get_clean();
 require "../common/usuario/layout.php";

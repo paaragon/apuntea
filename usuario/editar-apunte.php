@@ -15,7 +15,7 @@ if ($variables["apunte"] != null):
                 <a href="asignatura.php?id=<?php echo $variables["apunte"]->asignatura->id ?>"><?php echo $variables["apunte"]->asignatura->nombre ?></a>
             </span>
             <span class="col-2"><a href="javascript:submit();"><span class="fa fa-floppy-o"></span> Guardar</a></span>
-            <span class="col-2"><a href="ver-apunte.php?id=<?php echo $variables["apunte"]->id ?>"><span class="fa fa-times"></span> Cancelar</a></span>
+            <span class="col-2"><a href="ver-apunte.php?id=<?php echo $variables["apunte"]->id ?>"><span class="fa fa-times"></span> Terminar edición</a></span>
             <div class="clear"></div>
         </div>
         <div id="contenido-apunte" class="editar-apunte">

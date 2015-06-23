@@ -1,30 +1,26 @@
 <?php
 
-
 class Cascade {
 
-  
-    public function borrarCarreraCascade($idCarrera) {
-        
+    public static function borrarCarreraCascade($idCarrera) {
+
         $carrera = R::load('carrera', $idCarrera);
         $asig = $carrera->ownAsignaturaList;
         foreach ($asig as $a) {
-            borrarAsignaturaCascada($a->id);
+            self::borrarAsignaturaCascade($a->id);
         }
 
         $usu = $carrera->ownUsuarioList;
-        //no estoy seguro de si esto cuela, en teoria deberia porque aqui ya es un bean
-        //si no cuela hay que hacer un store
         foreach ($usu as $u) {
             $u->carrera_id = NULL;
+            R::store($u);
         }
 
         R::trash($carrera);
-        
     }
 
-    public function borrarApunteCascade($idApunte) {
-        
+    public static function borrarApunteCascade($idApunte) {
+
         //borrar interactuacion
         $interactuacion = R::find('usuariointeractuaapunte', 'apunte_id= :idapunte', array(':idapunte' => $idApunte));
         R::trashAll($interactuacion);
@@ -38,36 +34,35 @@ class Cascade {
         $comentario = R::find('comentarioapunte', 'apunte_id= :idapunte', array(':idapunte' => $idApunte));
         R::trashAll($comentario);
         //borrar apunte
-        $apunte = R::load('apunte', $id);
+        $apunte = R::load('apunte', $idApunte);
 
         R::trash($apunte);
-        
     }
 
-    public function borrarUniversidadCascade($idUniversidad) {
+    public static function borrarUniversidadCascade($idUniversidad) {
         $this->setUpDatabase();
         $universidad = R::load('universidad', $idUniversidad);
         $car = $universidad->ownCarreraList;
         foreach ($car as $c) {
-            borrarCarreraCascada($c->id);
+            self::borrarCarreraCascade($c->id);
         }
         R::trash($universidad);
         R::close();
     }
 
-    public function borrarAsignaturaCascade($idAsignatura) {
+    public static function borrarAsignaturaCascade($idAsignatura) {
         $this->setUpDatabase();
         $asignatura = R::load('asignatura', $idAsignatura);
         $apuntes = $asignatura->ownApunteList;
         foreach ($apuntes as $a) {
-            borrarApunteCascada($a->id);
+            self::borrarApunteCascade($a->id);
         }
         R::trash($asignatura);
         R::close();
     }
 
-    public function borrarUsuarioCascade($idUsuario) {
-        
+    public static function borrarUsuarioCascade($idUsuario) {
+
         $usuario = R::load('usuario', $idUsuario);
         //mensajes del usuario
         $mensaje = R::find('mensaje', 'emisor_id = :usuario or receptor_id = :usuario', array(':usuario' => $idUsuario));
@@ -85,20 +80,19 @@ class Cascade {
         $inter = R::find('usuariointeractuaapunte', 'usuario_id = ?', [$idUsuario]);
         R::trashAll($inter);
         //apuntes del usuario
-        $apunte=R::find('apunte', 'usuario_id = ?', [$idUsuario]);
+        $apunte = R::find('apunte', 'usuario_id = ?', [$idUsuario]);
         R::trashAll($apunte);
-        $peticiones=R::find('peticionapunte', 'usuario_id = ?', [$idUsuario]);
+        $peticiones = R::find('peticionapunte', 'usuario_id = ?', [$idUsuario]);
         R::trashAll($peticiones);
         //comentarios en apuntes
-        $comentariosapuntes=R::find('comentarioapunte', 'usuario_id = ?', [$idUsuario]);
+        $comentariosapuntes = R::find('comentarioapunte', 'usuario_id = ?', [$idUsuario]);
         R::trashAll($comentariosapuntes);
 
 //	-Borra el usuario
         R::trash($usuario);
-       
     }
 
-    public function borrarGrupoCascade($idGrupo) {
+    public static function borrarGrupoCascade($idGrupo) {
         $this->setUpDatabase();
         $grupo = R::load('grupo', $idGrupo);
         //borrar comentarios

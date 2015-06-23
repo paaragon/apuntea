@@ -9,7 +9,7 @@ ob_start();
 ?>
 <div id="principal">
     <h2>
-        <span class="fa fa-key"></span> Peticiones de acceso al <a href="ver-grupo-admin.php"><?php echo $variables["grupo"]->nombre ?></a>
+        <span class="fa fa-key"></span> Peticiones de acceso al <a href="ver-grupo-admin.php?id=<?php echo $variables["grupo"]->id ?>"><?php echo $variables["grupo"]->nombre ?></a>
     </h2>
     <hr>
     <?php

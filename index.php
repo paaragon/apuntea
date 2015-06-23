@@ -35,13 +35,15 @@ ob_start();
 </div>
 <section>
     <div id="top-universidades">
-        <?php if (count($variables["universidades"]) > 0): ?>
-            <?php foreach ($variables["universidades"] as $id => $universidad): ?>
-                <div class="slide col-2"><a href="universidad.php?id=<?php echo $id ?>"><img src="img/universidades/perfil/<?php echo $universidad["img"] ?>"></a></div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <blockquote><h3>No hay universidades en el top.</h3></blockquote>
-        <?php endif; ?>
+        <div>
+            <?php if (count($variables["universidades"]) > 0): ?>
+                <?php foreach ($variables["universidades"] as $id => $universidad): ?>
+                    <div class="slide"><a href="universidad.php?id=<?php echo $id ?>"><img src="img/universidades/perfil/<?php echo $universidad["img"] ?>"></a></div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <blockquote><h3>No hay universidades en el top.</h3></blockquote>
+            <?php endif; ?>
+        </div>
         <div class="clear"></div>
     </div>
     <p><a href="universidades.php"><span class="etiqueta label-primary"><span class="fa fa-plus"></span> Ver todas</span></a></p>
@@ -90,6 +92,11 @@ ob_start();
         <p><a href="lista-apuntes.php"><span class="label label-primary"><span class="fa fa-plus"></span> Ver todas</span></a></p>
     </section>
 </div>
+<script>
+    $(document).on('ready', function () {
+        $("#top-universidades > div").width(<?php echo count($variables["universidades"]) * 178 ?>);
+    });
+</script>
 <?php
 $contenido = ob_get_clean();
 require "common/std/layout.php";

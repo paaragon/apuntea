@@ -83,7 +83,7 @@ class ControladorUsuario {
         //Nuevos contactos en tus grupos
         $this->variables["nuevosContactosGrupo"] = array();
 
-        $resultado = R::getAll(' SELECT *
+        $resultado = R::getAll(' SELECT usuariogrupo.*
                                   FROM usuario, usuariogrupo
                                   WHERE TIMESTAMPDIFF(HOUR, NOW(), usuariogrupo.fecha) >= -24 and
                                   usuariogrupo.usuario_id != ? and usuario.id = usuariogrupo.usuario_id
@@ -95,6 +95,13 @@ class ControladorUsuario {
         $this->variables["nuevosContactosGrupo"] = $nuevoContacto;
 
         R::close();
+        return $this->variables;
+    }
+
+    public function darDeBaja() {
+        $this->setUpDatabase();
+        R::close();
+
         return $this->variables;
     }
 
@@ -142,23 +149,11 @@ class ControladorUsuario {
         $idGrupo = (isset($_GET["id"])) ? filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT) : "";
 
         $this->variables["grupo"] = R::findOne('grupo', " id=? AND (privacidad=2 OR id IN (SELECT grupo_id FROM usuariogrupo WHERE usuario_id = ? AND admitido = 1))", [$idGrupo, $idUsuario]);
-        $grupo = $this->variables["grupo"];
 
-        $usuarios = R::findAll("usuariogrupo", " grupo_id = " . $idGrupo . " AND admitido = 1");
-        $this->variables["usuarios"] = $usuarios;
+        $this->variables["usuarios"] = R::findAll("usuariogrupo", " grupo_id = " . $idGrupo . " AND admitido = 1");
 
-        $apuntesGrupo = R::findAll("apuntegrupo", " grupo_id=? ", [$idGrupo]);
+        $this->variables["apuntes"] = R::findAll("apunte", " id IN (SELECT apunte_id FROM apuntegrupo WHERE grupo_id = ?) ", [$idGrupo]);
 
-        if (isset($apuntesGrupo)) {
-            foreach ($apuntesGrupo as $apunte) {
-                $apuntes = R::find("apunte", " id =? ", [$apunte->apunte_id]);
-            }
-        }
-        if (isset($apuntes)) {
-            $this->variables["apuntes"] = $apuntes;
-        } else {
-            $this->variables["apuntes"] = array();
-        }
 
         $this->variables["misapuntes"] = array();
         $this->variables["misapuntes"] = R::findAll('apunte', ' usuario_id = ? AND id NOT IN(SELECT apunte_id FROM apuntegrupo WHERE grupo_id = ?)', [$idUsuario, $idGrupo]);
@@ -290,7 +285,7 @@ class ControladorUsuario {
 
         //Obtenemos la lista de contactos(alice)
         $this->variables["contactosUsuario"] = R::convertToBeans('usuario', R::getAll('SELECT * FROM usuario, contacto'
-                . ' WHERE (usuario.id = alice_id AND bob_id = :usu OR usuario.id = bob_id AND alice_id = :usu) AND admitido = 1 AND usuario.id != :usu ', array( ':usu'=>$idUsuario)));
+                                . ' WHERE (usuario.id = alice_id AND bob_id = :usu OR usuario.id = bob_id AND alice_id = :usu) AND admitido = 1 AND usuario.id != :usu ', array(':usu' => $idUsuario)));
 
         //Cerramos conexioon
         R::close();
@@ -432,8 +427,8 @@ class ControladorUsuario {
         $this->variables["universidades"] = R::findAll('universidad');
         $this->variables["usuario"] = R::findOne("usuario", " id=?", [$idUsuario]);
 
-        $misAlice = R::findAll('contacto', " bob_id=?", [$idUsuario]);
-        $misBob = R::findAll('contacto', " alice_id=?", [$idUsuario]);
+        $misAlice = R::findAll('contacto', " bob_id=? AND admitido = 1", [$idUsuario]);
+        $misBob = R::findAll('contacto', " alice_id=? AND admitido = 1", [$idUsuario]);
         foreach ($misAlice as $a) {
             $this->variables["contactos"][] = $a->fetchAs('usuario')->alice;
         }
@@ -452,8 +447,8 @@ class ControladorUsuario {
         $currentUser = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
         $idUsuario = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
         $this->setUpDatabase();
-        $this->variables["usuario"] = R::findOne('usuario', ' (id = ? OR privacidadperfil = 1 OR id IN (SELECT bob_id FROM contacto WHERE alice_id = ?) OR id IN (SELECT alice_id FROM contacto WHERE bob_id = ?)) AND id = ?', [$currentUser, $currentUser, $currentUser, $idUsuario]);
-        $this->variables["apuntes"] = R::findAll('apunte', ' usuario_id = ? AND (permisovisualizacion = 2 OR id IN (SELECT apunte_id FROM usuariointeractuaapunte WHERE usuario_id = ? AND permiso != 0))', [$idUsuario, $currentUser]);
+        $this->variables["usuario"] = R::findOne('usuario', ' (id = ? OR privacidadperfil = 1 OR id IN (SELECT bob_id FROM contacto WHERE alice_id = ? AND admitido = 1) OR id IN (SELECT alice_id FROM contacto WHERE bob_id = ? AND admitido = 1)) AND id = ?', [$currentUser, $currentUser, $currentUser, $idUsuario]);
+        $this->variables["apuntes"] = R::findAll('apunte', ' usuario_id = ?', [$idUsuario]);
 
         $this->variables["currentuser"] = $currentUser;
         $this->variables["idUsuario"] = $idUsuario;
@@ -529,82 +524,7 @@ class ControladorUsuario {
         //Conectamos a la base de datos
         $this->setUpDatabase();
 
-        //Obtenemos el usuario asociado al idUsuario
-        $usuario = R::load('usuario', $idUsuario);
-
-
-        //Obtenemos la lista de contactos(alice)
-        $alice = $usuario->alias('alice')->ownContactoList;
-        //Obtenemos la lista de contactos(bob)
-        $bob = $usuario->alias('bob')->ownContactoList;
-
-        $miscontactos = array();
-
-        //Recorremos la lista de alice para obtener sus bobs
-        foreach ($alice as $a) {
-
-            //Obtenemos un amigo de alice(bob)
-            $contacto = $a->fetchAs('usuario')->bob;
-            //Guardamos en el array el contacto
-            $miscontactos[$contacto->id] = $contacto;
-        }
-        //Recorremos la lista de bob para obtener sus alices
-        foreach ($bob as $b) {
-
-            //Obtenemos un amigo de alice(bob)
-            $contacto = $b->fetchAs('usuario')->alice;
-            //Guardamos en el array el contacto
-            $miscontactos[$contacto->id] = $contacto;
-        }
-
-
-        //Recorremos cada contacto
-        //array con los amigos de mis amigos
-        $contactosAmigos = array();
-
-        foreach ($miscontactos as $contacto) {
-            //Obtenemos la lista de contactos(alice)
-            $alice2 = $contacto->alias('alice')->ownContactoList;
-            //Obtenemos la lista de contactos(bob)
-            $bob2 = $contacto->alias('bob')->ownContactoList;
-
-
-            //Recorremos la lista de alice para obtener sus bobs
-            foreach ($alice2 as $a) {
-
-                //Obtenemos un amigo de alice(bob)
-                $contactoA = $a->fetchAs('usuario')->bob;
-                //Guardamos en el array el contacto
-                if (!isset($contactosAmigos[$contactoA->id]) && $contactoA->id != $idUsuario) {
-                    $contactosAmigos[$contacto->id] = $contactoA;
-                }
-            }
-
-            //Recorremos la lista de bob para obtener sus alices
-            foreach ($bob2 as $b) {
-
-                //Obtenemos un amigo de alice(bob)
-                $contactoB = $b->fetchAs('usuario')->alice;
-                //Guardamos en el array el contacto
-                if (!isset($contactosAmigos[$contactoB->id]) && $contactoB->id != $idUsuario) {
-                    $contactosAmigos[$contacto->id] = $contactoB;
-                }
-            }
-        }
-
-        //Recorrer los elementos del contacto para saber cuales no tiene
-        //si son distintos los guardo
-        $this->variables["contactosUsuario"] = array();
-
-        foreach ($contactosAmigos as $contacto) {
-
-            if (!isset($miscontactos[$contacto->id])) {
-
-                $this->variables["contactosUsuario"][$contacto->id] = $contacto;
-            }
-        }
-
-
+        $this->variables["recomendados"] = R::convertToBeans('usuario', R::getAll('SELECT usuario.* FROM usuario, contacto WHERE (usuario.id = alice_id OR usuario.id = bob_id) AND (alice_id IN (SELECT usuario.id FROM usuario, contacto WHERE (usuario.id = alice_id OR usuario.id = bob_id) AND (alice_id = ? OR bob_id = ?) AND usuario.id != ?) OR bob_id IN (SELECT usuario.id FROM usuario, contacto WHERE (usuario.id = alice_id OR usuario.id = bob_id) AND (alice_id = ? OR bob_id = ?) AND usuario.id != ?)) AND usuario.id NOT IN (SELECT usuario.id FROM usuario, contacto WHERE (usuario.id = alice_id OR usuario.id = bob_id) AND (alice_id = ? OR bob_id = ?) AND usuario.id != ?) AND usuario.id != ?', [$idUsuario, $idUsuario, $idUsuario, $idUsuario, $idUsuario, $idUsuario, $idUsuario, $idUsuario, $idUsuario, $idUsuario]));
         //Cerramos conexioon
         R::close();
 
