@@ -15,10 +15,10 @@ class ControladorEstandar {
 
         $this->setUpDatabase();
         $this->variables["universidades"] = R::getAssoc("SELECT universidad.id as id, universidad.nombre as nombre, universidad.imagenperfil as img, (SELECT COUNT(*) FROM usuario, carrera WHERE carrera_id = carrera.id AND universidad_id = universidad.id) as num FROM universidad GROUP BY universidad.id ORDER BY num DESC ");
-        $this->variables["carreras"] = R::getAssoc("SELECT carrera.id as id, carrera.nombre as nombre, universidad.siglas as siglasuniversidad, universidad.id as iduniversidad FROM universidad, carrera, usuario WHERE universidad.id = carrera.universidad_id AND carrera.id = usuario.carrera_id GROUP BY carrera.id ORDER BY COUNT(*) DESC");
-        $asignaturas = R::getAll('SELECT asignatura.* FROM asignatura, apunte WHERE asignatura_id=asignatura.id GROUP BY asignatura_id ORDER BY COUNT(asignatura_id) DESC');
+        $this->variables["carreras"] = R::getAssoc("SELECT carrera.id as id, carrera.nombre as nombre, universidad.siglas as siglasuniversidad, universidad.id as iduniversidad FROM universidad, carrera, usuario WHERE universidad.id = carrera.universidad_id AND carrera.id = usuario.carrera_id GROUP BY carrera.id ORDER BY COUNT(*) DESC LIMIT 10");
+        $asignaturas = R::getAll('SELECT asignatura.* FROM asignatura, apunte WHERE asignatura_id=asignatura.id GROUP BY asignatura_id ORDER BY COUNT(asignatura_id) DESC LIMIT 10');
         $this->variables["asignaturas"] = R::convertToBeans('asignatura', $asignaturas);
-        $this->variables["apuntes"] = R::findAll('apunte', ' ORDER BY likes - dislikes');
+        $this->variables["apuntes"] = R::findAll('apunte', ' ORDER BY likes - dislikes LIMIT 10');
         $this->variables["numero-de-apuntes"] = R::count('apunte');
         R::close();
 

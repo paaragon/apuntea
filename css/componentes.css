@@ -168,6 +168,13 @@ p{
     text-decoration: none;
 }
 
+.navbar-default ul li a.activo{
+    background-color: #2E7636!important;
+    color: #fff;
+    text-shadow: 1px 1px 0px #54995A;
+    text-decoration: none;
+}
+
 .navbar-default ul li a span{
     font-size: 1.3em;
 }

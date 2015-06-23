@@ -645,7 +645,7 @@ class ServiciosUsuario {
     public function comentarApunte() {
 
         $fields = array(
-            "texto" => array($_POST, "texto", true),
+            "comentario" => array($_POST, "texto", true),
             "idApunte" => array($_POST, "entero", true),
             "idUsuario" => array($_SESSION, "entero", true));
         $validate = new Validate($fields);
@@ -752,7 +752,7 @@ class ServiciosUsuario {
     }
 
     public function aceptarPeticion() {
-        
+
         $fields = array(
             "user" => array($_GET, "entero", true),
             "idUsuario" => array($_SESSION, "entero", true));
@@ -761,7 +761,7 @@ class ServiciosUsuario {
             $_SESSION["error"] = $validate->getErrorMessage();
             return "usuario/peticiones.php";
         }
-        
+
         $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
         $contacto = filter_input(INPUT_GET, "user", FILTER_SANITIZE_NUMBER_INT);
         $this->setUpDatabase();
@@ -790,7 +790,7 @@ class ServiciosUsuario {
     }
 
     public function crearGrupo() {
-        
+
         $fields = array(
             "nombre" => array($_POST, "texto", true),
             "privacidad" => array($_POST, "entero", true),
@@ -800,7 +800,7 @@ class ServiciosUsuario {
             $_SESSION["error"] = $validate->getErrorMessage();
             return "usuario/peticiones.php";
         }
-        
+
         $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
         $nombre = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES);
         $privacidad = filter_input(INPUT_POST, "privacidad", FILTER_SANITIZE_NUMBER_INT);
@@ -993,6 +993,24 @@ class ServiciosUsuario {
 
     public function guardarConfiguracionUsuario() {
 
+        $fields = array(
+            "nick" => array($_POST, "texto", true),
+            "estado" => array($_POST, "entero", false),
+            "mail" => array($_POST, "email", true),
+            "carrera" => array($_POST, "entero", true),
+            "pwd1" => array($_POST, "texto", false),
+            "pwd2" => array($_POST, "texto", false),
+            "pwd3" => array($_POST, "texto", false),
+            "vis-perfil" => array($_POST, "entero", true),
+            "vis-actividad" => array($_POST, "entero", true),
+            "vis-buscador" => array($_POST, "entero", true),
+            "apellidos" => array($_POST, "texto", true));
+        $validate = new Validate($fields);
+        if (!$validate->validate()) {
+            $_SESSION["error"] = $validate->getErrorMessage();
+            return "usuario/mi-configuracion.php";
+        }
+
         require __DIR__ . "/../util/CropAvatar.php";
 
         $nick = filter_input(INPUT_POST, "nick", FILTER_SANITIZE_SPECIAL_CHARS);
@@ -1083,6 +1101,20 @@ class ServiciosUsuario {
     }
 
     public function subirApunte() {
+
+        $fields = array(
+            "titulo" => array($_POST, "texto", true),
+            "asignatura" => array($_POST, "entero", true),
+            "visualizacion" => array($_POST, "entero", true),
+            "modificacion" => array($_POST, "entero", true),
+            "edicion-permisos" => array($_POST, "entero", true));
+        $validate = new Validate($fields);
+        if (!$validate->validate()) {
+            $_SESSION["error"] = $validate->getErrorMessage();
+            return "usuario/mi-configuracion.php";
+        }
+
+
         $idUser = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
 
         $titulo = filter_input(INPUT_POST, "nombre", FILTER_SANITIZE_MAGIC_QUOTES);

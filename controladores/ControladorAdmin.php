@@ -145,24 +145,13 @@ class ControladorAdmin {
                 $numAlumnos += count($c->ownUsuarioList);
                 $numAsign += count($c->ownAsignaturaList);
                 $asign = $c->ownAsignaturaList;
-                foreach ($asign as $a) {
-                    $apuntes = $a->ownApunteList;
-                }
             }
 
 
             $this->variables["numCarreras"] = $numCarreras;
-            //} else $this->variables["numCarreras"]=array();
-            //if (isset($alumnos)){
             $this->variables["numAlumnos"] = $numAlumnos;
-            //} else $this->variables["alumnos"]=array();
-            //if (isset($numAsig)){
             $this->variables["numAsign"] = $numAsign;
-            //} else $this->variables["numAsign"]=array();
-            if (isset($apuntes)) {
-                $this->variables["apuntes"] = $apuntes;
-            } else
-                $this->variables["apuntes"] = array();
+            $this->variables["apuntes"] = R::findAll('apunte', 'asignatura_id IN (SELECT carrera.id FROM carrera, universidad WHERE universidad_id = universidad.id AND universidad.id = ?)', [$idUniversidad]);
 
 
             //novedades

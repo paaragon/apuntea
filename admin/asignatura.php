@@ -9,8 +9,8 @@ ob_start();
     <div class="col-12">
         <section>
             <h2><span class="fa fa-file-text-o"></span>
-                <?php echo $variables["asignatura"]->nombre ?> -  <small><?php echo $variables["asignatura"]->curso ?> ª Curso - <a href="perfil-universidad.php"> <?php echo $variables["asignatura"]->carrera->universidad->siglas ?>
-                    </a> / <a href="perfil-universidad.php"> <?php echo $variables["asignatura"]->carrera->nombre ?></a></small></h2>
+                <?php echo $variables["asignatura"]->nombre ?> -  <small><?php echo $variables["asignatura"]->curso ?> ª Curso - <a href="perfil-universidad.php?id=<?php echo $variables["asignatura"]->carrera->universidad->id ?>"> <?php echo $variables["asignatura"]->carrera->universidad->siglas ?>
+                    </a> / <a href="perfil-carrera.php?id=<?php echo $variables["asignatura"]->carrera->id ?>"> <?php echo $variables["asignatura"]->carrera->nombre ?></a></small></h2>
         </section>
         <hr>
         <p>

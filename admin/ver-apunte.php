@@ -69,13 +69,13 @@ ob_start();
             <span class="col-1"><a href="../servicios/adminHandler.php?action=removeApunte&id=<?php echo $apunte->id ?>"><span class="fa fa-trash-o"></span></a></span>
             <br>
         </div>
-        <h4 class="text-center"><strong>Likes en las últimas semanas</strong></h4>
+        <h4 class="text-center"><strong>Likes en los ultimos meses</strong></h4>
         <canvas id="myChart1"></canvas>
         <hr>
-        <h4 class="text-center"><strong>Dislikes en las últimas semanas</strong></h4>
+        <h4 class="text-center"><strong>Dislikes en los últimos meses</strong></h4>
         <canvas id="myChart2"></canvas>
         <hr>
-        <h4 class="text-center"><strong>Favoritos en las últimas semanas</strong></h4>
+        <h4 class="text-center"><strong>Favoritos en los últimos meses</strong></h4>
         <canvas id="myChart3"></canvas>
     </div>
     <script>

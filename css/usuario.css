@@ -47,7 +47,7 @@ body{
     display: block;
 }
 
-#menu-user li a:hover{
+#menu-user li a:hover, #menu-user li a.activo{
     cursor: pointer;
     text-decoration: none;
     border-left: 4px solid #3B9845;

@@ -152,51 +152,90 @@ trait charts {
 
     //Número de likes en las últimas semanas
     function numLikes($idApunte) {
-        $result = R::getAll("SELECT COUNT(*) as num, WEEK(fechalike) as semana FROM usuariointeractuaapunte WHERE TIMESTAMPDIFF(WEEK, NOW(), fechalike) >= -8 AND apunte_id = ? GROUP BY WEEK(fechalike)", [$idApunte]);
+        setlocale(LC_ALL, 'esp');
 
-        $primer_elemento = array_shift($result);
+        $month = time();
+        for ($i = 1; $i <= 7; $i++) {
+            $month = strtotime('last month', $month);
+            $months[] = array("name" => strftime("%B", $month), "number" => strftime("%m", $month));
+        }
 
-        $chart["label"] = '"' . $primer_elemento["semana"] . '"';
-        $chart["data"] = $primer_elemento["num"];
+        foreach ($months as $m) {
+            $result[$m["name"]] = R::count('usuariointeractuaapunte', 'MONTH(fechalike) = ? AND TIMESTAMPDIFF(MONTH, NOW(), fechalike) >= -6 AND apunte_id = ?', [$m["number"], $idApunte]);
+        }
 
-        foreach ($result as $elem) {
+        $result = array_reverse($result);
 
-            $chart["label"] .= ', "' . $elem["semana"] . '"';
-            $chart["data"] .=', ' . $elem["num"];
+        $primer_mes = key($result);
+        $primer_valor = array_shift($result);
+
+        $chart["label"] = '"' . $primer_mes . '"';
+        $chart["data"] = $primer_valor;
+
+        foreach ($result as $month => $value) {
+
+            $chart["label"] .= ', "' . $month . '"';
+            $chart["data"] .=', ' . $value;
         }
 
         return $chart;
     }
 
     function numDislikes($idApunte) {
-        $result = R::getAll("SELECT COUNT(*) as num, WEEK(fechadislike) as semana FROM usuariointeractuaapunte WHERE TIMESTAMPDIFF(WEEK, NOW(), fechadislike) >= -8 AND apunte_id = ? GROUP BY WEEK(fechadislike)", [$idApunte]);
+        setlocale(LC_ALL, 'esp');
 
-        $primer_elemento = array_shift($result);
+        $month = time();
+        for ($i = 1; $i <= 7; $i++) {
+            $month = strtotime('last month', $month);
+            $months[] = array("name" => strftime("%B", $month), "number" => strftime("%m", $month));
+        }
 
-        $chart["label"] = '"' . $primer_elemento["semana"] . '"';
-        $chart["data"] = $primer_elemento["num"];
+        foreach ($months as $m) {
+            $result[$m["name"]] = R::count('usuariointeractuaapunte', 'MONTH(fechadislike) = ? AND TIMESTAMPDIFF(MONTH, NOW(), fechadislike) >= -6 AND apunte_id = ?', [$m["number"], $idApunte]);
+        }
 
-        foreach ($result as $elem) {
+        $result = array_reverse($result);
 
-            $chart["label"] .= ', "' . $elem["semana"] . '"';
-            $chart["data"] .=', ' . $elem["num"];
+        $primer_mes = key($result);
+        $primer_valor = array_shift($result);
+
+        $chart["label"] = '"' . $primer_mes . '"';
+        $chart["data"] = $primer_valor;
+
+        foreach ($result as $month => $value) {
+
+            $chart["label"] .= ', "' . $month . '"';
+            $chart["data"] .=', ' . $value;
         }
 
         return $chart;
     }
 
     function numFavs($idApunte) {
-        $result = R::getAll("SELECT COUNT(*) as num, WEEK(fechafavorito) as semana FROM usuariointeractuaapunte WHERE TIMESTAMPDIFF(WEEK, NOW(), fechafavorito) >= -8 AND apunte_id = ? GROUP BY WEEK(fechafavorito)", [$idApunte]);
+        setlocale(LC_ALL, 'esp');
 
-        $primer_elemento = array_shift($result);
+        $month = time();
+        for ($i = 1; $i <= 7; $i++) {
+            $month = strtotime('last month', $month);
+            $months[] = array("name" => strftime("%B", $month), "number" => strftime("%m", $month));
+        }
 
-        $chart["label"] = '"' . $primer_elemento["semana"] . '"';
-        $chart["data"] = $primer_elemento["num"];
+        foreach ($months as $m) {
+            $result[$m["name"]] = R::count('usuariointeractuaapunte', 'MONTH(fechafav) = ? AND TIMESTAMPDIFF(MONTH, NOW(), fechafav) >= -6 AND apunte_id = ?', [$m["number"], $idApunte]);
+        }
 
-        foreach ($result as $elem) {
+        $result = array_reverse($result);
 
-            $chart["label"] .= ', "' . $elem["semana"] . '"';
-            $chart["data"] .=', ' . $elem["num"];
+        $primer_mes = key($result);
+        $primer_valor = array_shift($result);
+
+        $chart["label"] = '"' . $primer_mes . '"';
+        $chart["data"] = $primer_valor;
+
+        foreach ($result as $month => $value) {
+
+            $chart["label"] .= ', "' . $month . '"';
+            $chart["data"] .=', ' . $value;
         }
 
         return $chart;
