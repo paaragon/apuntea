@@ -286,35 +286,11 @@ class ControladorUsuario {
 
         $this->setUpDatabase();
 
-        $usuario = R::load('usuario', $idUsuario);
+        $usuario = R::load('usuario', 'id = ?', [$idUsuario]);
 
         //Obtenemos la lista de contactos(alice)
-        $alice = $usuario->alias('alice')->ownContactoList;
-        //Obtenemos la lista de contactos(bob)
-        $bob = $usuario->alias('bob')->ownContactoList;
-
-        //Recorremos la lista de alice para obtener sus bobs
-        foreach ($alice as $a) {
-
-            //Obtenemos un amigo de alice(bob)
-            $contacto = $a->fetchAs('usuario')->bob;
-            //Guardamos en el array el contacto
-            $this->variables["contactosUsuario"][$contacto->nombre] = $contacto;
-        }
-
-        //Recorremos la lista de alice para obtener sus alices
-        foreach ($bob as $b) {
-
-            //Obtenemos un amigo de alice(bob)
-            $contacto = $b->fetchAs('usuario')->alice;
-            //Guardamos en el array el contacto
-            $this->variables["contactosUsuario"][$contacto->nombre] = $contacto;
-        }
-
-        if (isset($this->variables["contactosUsuario"])) {
-            //Ordenamos los contactos del array
-            usort($this->variables["contactosUsuario"], "cmp2");
-        }
+        $this->variables["contactosUsuario"] = R::convertToBeans('usuario', R::getAll('SELECT * FROM usuario, contacto'
+                . ' WHERE (usuario.id = alice_id AND bob_id = :usu OR usuario.id = bob_id AND alice_id = :usu) AND admitido = 1 AND usuario.id != :usu ', array( ':usu'=>$idUsuario)));
 
         //Cerramos conexioon
         R::close();
@@ -342,19 +318,19 @@ class ControladorUsuario {
         $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
 
         $this->variables["apunte"] = R::findOne("apunte", ' id = ? '
-                . 'AND ('
-                    . 'usuario_id = ? '
-                    . 'OR id IN ('
+                        . 'AND ('
+                        . 'usuario_id = ? '
+                        . 'OR id IN ('
                         . 'SELECT apunte_id '
                         . 'FROM usuariointeractuaapunte '
                         . 'WHERE usuario_id = ? '
                         . 'AND permiso > 1)'
-                . ') '
-                . 'AND ('
-                    . 'TIMESTAMPDIFF(SECOND, ultimaedicion, NOW()) >= 15 '
-                    . 'OR TIMESTAMPDIFF(SECOND, ultimaedicion, NOW()) < 15 AND ultimoeditor = ?'
-                . ')', [$idApunte, $idUsuario, $idUsuario, $idUsuario]);
-        
+                        . ') '
+                        . 'AND ('
+                        . 'TIMESTAMPDIFF(SECOND, ultimaedicion, NOW()) >= 15 '
+                        . 'OR TIMESTAMPDIFF(SECOND, ultimaedicion, NOW()) < 15 AND ultimoeditor = ?'
+                        . ')', [$idApunte, $idUsuario, $idUsuario, $idUsuario]);
+
         $this->variables["usuario"] = R::findOne('usuario', 'id=?', [$idUsuario]);
 
         $this->variables["interaccion"] = R::findOne('usuariointeractuaapunte', ' usuario_id = ? AND apunte_id = ?', [$idUsuario, $idApunte]);
@@ -676,14 +652,14 @@ class ControladorUsuario {
         R::close();
         return $this->variables;
     }
-    
-    public function peticionesApuntes(){
+
+    public function peticionesApuntes() {
         $idUsuario = filter_var($_SESSION["idUsuario"], FILTER_SANITIZE_NUMBER_INT);
-        
+
         $this->setUpDatabase();
-        
+
         $this->variables["peticiones"] = R::findAll('peticionapunte', 'apunte_id IN (SELECT id FROM apunte WHERE usuario_id = ?) AND admitido = 0', [$idUsuario]);
-        
+
         return $this->variables;
     }
 
@@ -748,9 +724,9 @@ class ControladorUsuario {
     }
 
     private function setUpDatabase() {
-            R::setup('mysql:host=' . DbConfig::$dbHost . ';dbname=' . DbConfig::$dbName, DbConfig::$dbUser, DbConfig::$dbPassword);
-            R::freeze(TRUE);
-            $this->cargarComunes();
+        R::setup('mysql:host=' . DbConfig::$dbHost . ';dbname=' . DbConfig::$dbName, DbConfig::$dbUser, DbConfig::$dbPassword);
+        R::freeze(TRUE);
+        $this->cargarComunes();
     }
 
     private function errorPage() {
