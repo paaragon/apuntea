@@ -47,7 +47,7 @@ ob_start();
             <div class="col-5"><p><img src="../img/usuarios/perfil/<?php echo $apunte->usuario->avatar ?>" class="img-responsive"/></p></div>
             <div class="col-7">
                 <p>
-                    <strong>Cholo 1</strong> 
+                    <strong><?php echo $apunte->usuario->nombre ?></strong> 
                     <small><a href="usuarios-detalles.php?id=<?php echo $apunte->usuario->id ?>" class="color-green">@<?php echo $apunte->usuario->nick ?></a></small>
                 </p>
                 <blockquote>
