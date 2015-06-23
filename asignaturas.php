@@ -1,4 +1,11 @@
-<?php ob_start(); ?>
+<?php
+require "controladores/ControladorEstandar.php";
+
+$controlador = new ControladorEstandar();
+$variables = $controlador->asignaturas();
+
+ob_start();
+?>
 <section>
     <h1>Asignaturas</h1>
 </section>
@@ -7,90 +14,112 @@
     <li>Asignaturas</li>
 </ul>
 <hr>
-<form action="asignaturas.php" method="post">
-    <input type="text" class="campo-formulario" placeholder="Buscar...">
+<form action="asignaturas.php" method="post" id="form">
+    <input type="text" class="campo-formulario" id="consulta" placeholder="Asignatura...">
     <label>Universidad: </label>
-    <select name="universidad" class="campo-formulario campo-en-linea">
-        <option value="todas">Todas</option>
-        <option value="[Nombre universidad]">[Nombre universidad]</option>
-        <option value="[Nombre universidad]">[Nombre universidad]</option>
-        <option value="[Nombre universidad]">[Nombre universidad]</option>
+    <select id="selectUniversidad" name="universidad" class="campo-formulario campo-en-linea">
+        <option value="-">Todas</option>
+        <?php foreach ($variables["universidades"] as $uni): ?>
+            <option value="<?php echo $uni->id . '-' . $uni->siglas ?>"><?php echo $uni->siglas ?></option>
+        <?php endforeach; ?>
     </select> 
     <label>Carrera: </label>
-    <select name="carrera" class="campo-formulario campo-en-linea">
-        <option value="todas">Todas</option>
-        <option value="[Nombre carrera]">[Nombre carrera]</option>
-        <option value="[Nombre universidad]">[Nombre carrera]</option>
-        <option value="[Nombre universidad]">[Nombre carrera]</option>
+    <select id="selectCarrera" name="carrera" class="campo-formulario campo-en-linea">
+        <option value="">Todas</option>
     </select>
-    <input type="submit" class="campo-formulario" value="Buscar">
 </form>
 <section>
-    <div>
-        <h2><span class="fa fa-paint-brush"></span> Artes y humanidades</h2>
-        <hr>
-        <ul>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-        </ul>
-    </div>
+    <?php if (count($variables["asignaturas"]) > 0): ?>
+        <?php
+        $i = 0;
+        echo '<div class="rama-conocimiento">';
+        echo "<h2><span class='fa " . $variables['ramas'][array_values($variables["asignaturas"])[0]->carrera->rama] . "'></span>" . array_values($variables["asignaturas"])[0]->carrera->rama . "</h2>";
+        echo '<hr>';
+        echo '<ul>';
+        $rama = array_values($variables["asignaturas"])[0]->carrera->rama;
 
-    <div>
-        <h2><span class="fa fa-rocket"></span> Ciencias</h2>
-        <hr>
-        <ul>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>  
-        </ul>
-    </div>
-
-    <div>
-        <h2><span class="fa fa-user-md"></span> Ciencias de la salud</h2>
-        <hr>
-        <ul>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-        </ul>
-    </div>
-    <div>
-        <h2><span class="fa fa-cogs"></span> Ingeniería y arquitectura</h2>
-        <hr>
-        <ul>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-        </ul>
-    </div>
-
-    <div>
-        <h2><span class="fa fa-gavel"></span> Ciencias sociales y jurídicas</h2>
-        <hr>
-        <ul>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-            <li><a href="asignatura.php">[Nombre de asignatura]</a> - <a href="carrera.php">[Nombre carrera]</a>/<a href="universidad.php">[Nombre universidad]</a></li>
-        </ul>
-    </div>
+        foreach ($variables["asignaturas"] as $asignatura) {
+            if ($asignatura->carrera->rama != $rama) {
+                echo "</ul>";
+                echo "</div>";
+                echo '<div class="rama-conocimiento">';
+                echo "<h2><span class='fa " . $variables['ramas'][$asignatura->carrera->rama] . "'></span>" . $asignatura->carrera->rama . "</h2>";
+                echo '<hr>';
+                echo '<ul>';
+                $rama = $asignatura->carrera->rama;
+            }
+            echo '<li class="asignatura"><a href="asignatura.php?id=' . $asignatura->id . '" class="nombre">' . $asignatura->nombre . '</a> - <a href="carrera.php?id=' . $asignatura->carrera->id . '" class="carrera">' . $asignatura->carrera->nombre . '</a> / <a href="universidad.php?id=' . $asignatura->carrera->universidad->id . '" class="universidad">' . $asignatura->carrera->universidad->siglas . '</a></li>';
+        }
+        echo "</ul>";
+        echo "</div>";
+        ?>
+    <?php else: ?>
+        <blockquote><h3>No hay asignaturas.</h3></blockquote>
+    <?php endif; ?>
 </section>
-<?php
+<script>
+    $(document).on("ready", function () {
 
+        $("#selectUniversidad").on("change", function () {
+            getCarreras($("#selectUniversidad").val().split("-")[0]);
+        });
+
+        $("#selectUniversidad").on("change", function () {
+            buscar();
+        });
+
+        $("#form").on("change", "#selectCarrera", function () {
+            buscar();
+        });
+
+        $("#consulta").on("keyup", function () {
+            buscar();
+        });
+    });
+    function getCarreras(id) {
+        $("#selectCarrera").html("");
+        $("#selectCarrera").append('<option value="">Todas</option>');
+        $.post("servicios/standarHandler.php?action=getCarreras", {idUniversidad: id}, function (data) {
+            for (i = 0; i < data.length; i++) {
+                $("#selectCarrera").append("<option value='" + data[i]["nombre"] + "'>" + data[i]["nombre"] + "</option>");
+            }
+        }, "json");
+    }
+
+    function buscar() {
+        universidad = $("#selectUniversidad").val().split("-")[1];
+        carrera = $("#selectCarrera").val();
+        consulta = $("#consulta").val();
+
+        $(".asignatura").each(function () {
+            var uni = $(this).children(".universidad").text();
+            var car = $(this).children(".carrera").text();
+            var con = $(this).children(".nombre").text();
+
+            if ((universidad.indexOf(uni) !== -1 || universidad === "") && (carrera.indexOf(car) !== -1 || carrera === "") && (quitaAcentos(con.toLowerCase()).indexOf(quitaAcentos(consulta.toLowerCase())) > -1)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+
+    function quitaAcentos(str) {
+        for (var i = 0; i < str.length; i++) {
+            if (str.charAt(i) == "á")
+                str = str.replace(/á/, "a");
+            if (str.charAt(i) == "é")
+                str = str.replace(/é/, "e");
+            if (str.charAt(i) == "í")
+                str = str.replace(/í/, "i");
+            if (str.charAt(i) == "ó")
+                str = str.replace(/ó/, "o");
+            if (str.charAt(i) == "ú")
+                str = str.replace(/ú/, "u");
+        }
+        return str;
+    }
+</script>
+<?php
 $contenido = ob_get_clean();
 require "common/std/layout.php";

@@ -1,36 +1,46 @@
 <div class="panel" id="chat">
     <div class="panel-cabecera"><h4><strong>Chat</strong></h4></div>
     <div class="panel-cuerpo">
-        <h5><strong>Usuarios conectados:</strong></h5>
+        <h5><strong>Usuarios conectados:</strong><img src="../img/loading.gif" id="loading"></h5>
         <hr>
-        <p>
-            <img src="../img/no-user.jpg"><a href="#">[Usuario]</a> <span class="distintivo"><span class="fa fa-envelope"></span> 5</span><br>
-            <img src="../img/no-user.jpg"><a href="#">[Usuario]</a><br>
-            <img src="../img/no-user.jpg"><a href="#">[Usuario]</a> <span class="distintivo"><span class="fa fa-envelope"></span> 5</span><br>
-            <img src="../img/no-user.jpg"><a href="#">[Usuario]</a><br>
-        </p>
-        <p><small>Al hacer click sobre un usuario de los de arriba se abrirá la conversación con ese usuario en el chat de abajo.</small></p>
-        <hr>
-        <h5><strong>Conversación con <a href="perfil-usuario.php">[Usuario]</a>:</strong></h5>
-        <div class="panel" id="conversacion">
-            <p class="msg msg-amigo">adrt lsrg lgwpser jndzfg</p>
-            <p class="msg msg-propio">señorigj f osij psorgjpoier rm owr ñsldfmg ñsdf spob dñ</p>
-            <p class="msg msg-amigo">s rtdfg g sldrgf sxcbn sc fxg</p>
-            <p class="msg msg-amigo">sdñfgij dfg</p>
-            <p class="msg msg-amigo">dgfdlcgs</p>
-            <p class="msg msg-propio">dbñ oij pjg po spo jdog dfvm dlksv slreng pe epirj p speov po nerg ps bpsgn rpb epg sfpo bnsrepov epo ipoiej poei gpeosb nsepob</p>
-            <p class="msg msg-amigo">adrt lsrg lgwpser jndzfg</p>
-            <p class="msg msg-propio">señorigj f osij psorgjpoier rm owr ñsldfmg ñsdf spob dñ</p>
-            <p class="msg msg-amigo">s rtdfg g sldrgf sxcbn sc fxg</p>
-            <p class="msg msg-amigo">sdñfgij dfg</p>
-            <p class="msg msg-amigo">dgfdlcgs</p>
-            <p class="msg msg-propio">dbñ oij pjg po spo jdog dfvm dlksv slreng pe epirj p speov po nerg ps bpsgn rpb epg sfpo bnsrepov epo ipoiej poei gpeosb nsepob</p>
-            <div class="clear"></div>
+        <div id="contactos-conectados">
         </div>
-        <form action="#" method="post">
-            <textarea class="campo-formulario" placeholder="Escribe aquí tu mensaje"></textarea>
-            <input type="submit" class="campo-formulario" value="Enviar">
-        </form>
-        <p><a href="#">Ocultar chat</a></p>
+        <hr>
+        <div id="panel-conversacion">
+            <h5><strong>Conversación con <a href="perfil-usuario.php" id="nombre-conversacion"></a>:</strong></h5>
+            <div class="panel" id="conversacion">
+            </div>
+            <div id="loading-msg"><img src="../img/loading.gif"></div>
+            <textarea class="campo-formulario" placeholder="Escribe aquí tu mensaje" id="texto" required></textarea>
+            <input type="hidden" id="idContacto">
+            <input type="submit" id="enviarMensaje" class="campo-formulario" value="Enviar">
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Leyenda para iconos
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <ul>
+                                <li><span class="twa twa-laughing"></span>: "XD"</li>
+                                <li><span class="twa twa-smile"></span>: ":D"</li>
+                                <li><span class="twa twa-wink"></span>: ";)"</li>
+                                <li><span class="twa twa-kissing-heart"></span>: :*</li>
+                                <li><span class="twa twa-cry"></span>: ":_("</li>
+                                <li><span class="twa twa-unamused"></span>: "¬¬"</li>
+                                <li><span class="twa twa-blush"></span>: "^^"</li>
+                                <li><span class="twa twa-sleeping"></span>: "zzz"</li>
+                                <li><span class="twa twa-heart"></span>: "<3"</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+<script src="../js/chat.js"></script>

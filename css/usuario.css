@@ -112,7 +112,7 @@ textarea#area-apunte{
 /**Perfil usuario**/
 
 .profile #fondo {
-    height: 250px;
+    height: 330px;
     margin: -10px;
     overflow: hidden;
     border-bottom: 3px solid #e7e7e7;
@@ -120,7 +120,6 @@ textarea#area-apunte{
 
 .profile #fondo img {
     width: 100%;
-    margin-top: -20%;
 }
 
 .profile #avatar {
@@ -181,6 +180,7 @@ textarea#area-apunte{
 }
 
 .picture {
+    width: 167px;
     float: left;
     margin: 5px;
     text-align: center;
@@ -207,14 +207,7 @@ textarea#area-apunte{
     height: 20px;
     border: 3px solid white;
     border-radius: 100%;  
-}
-/*Status on*/
-.status-red {
-    background-color: red;
-}
-/*Status off*/
-.status-green {
-    background-color: green;
+    background-color: #fff;
 }
 
 .teaser .panel .panel-cuerpo h3{
@@ -265,6 +258,7 @@ textarea#area-apunte{
     clear: both;
     max-width: 80%;
     color: #5C5C5C;
+    padding-top: 15px;
 }
 
 .msg-amigo{
@@ -275,7 +269,7 @@ textarea#area-apunte{
     float: right;
 }
 
-#conversacion{
+#conversacion, #conversacion-2{
     overflow-y: scroll;
     height: 500px;
 }
@@ -300,16 +294,83 @@ textarea#area-apunte{
     background-color: #DCE4F6;
 }
 
-#chat img{
+#chat .conectado p.nombre{
+    line-height: 50px;
+}
+
+#chat .conectado p.imagen{
     width: 50px;
+    height: 50px;
     border-radius: 50px;
     margin: 5px;
+    overflow: hidden;
+    float: left;
+    margin: 0;
+    padding: 0;
+    margin-right: 5px;
+}
+
+#chat .conectado img{
+    width: 100%;
+}
+
+img#loading{
+    float: right;
+    width: 100px;
+}
+
+#loading-msg{
+    height: 15px;
+    text-align: center;
+}
+
+#loading-msg img{
+    height: 10px;
+    width: auto;
+    margin-top: -5px;
+}
+
+#panel-conversacion{
+    display: none;
+}
+
+.fecha-chat{
+    font-size: 0.5em;
+    margin-top: -20px;
+    background-color: #e7e7e7;
+    border-radius: 3px;
+    padding: 3px;
+    color: #707070;
+}
+
+.dia-chat{
+    clear: both;
+    float: left;
+    width: 100%;
+    text-align: center;
+    border-top: 1px solid #e7e7e7;
+}
+
+.dia-chat span{
+    position: relative;
+    padding: 5px;
+    font-size: 0.7em;
+    color: #707070;
+    top: -7px;
+    background-color: #fff;
+}
+
+.msg-amigo .fecha-chat{
+    float: left;
+}
+
+.msg-propio .fecha-chat{
+    float: right;
 }
 
 #conversaciones-recientes{
     width: 100%;
     overflow-x: scroll;
-
 }
 
 #conversaciones-recientes > div{
@@ -319,6 +380,11 @@ textarea#area-apunte{
 #img-perfil-user{
     width: 100%;
     border-radius: 50%;
+    overflow: hidden;
+}
+
+#img-perfil-user img{
+    width: 100%;
 }
 
 .notice {
@@ -397,4 +463,91 @@ textarea#area-apunte{
 
 .fa-trash, .fa-trash-o{
     color: #b94a48;
+}
+
+@media(min-width: 768px){
+    #menu-user, #main, #main-aside{
+        position: relative;
+        height: 100%;
+    }
+}
+
+.editar-apunte{
+    border: 0 solid #000!important;
+    box-shadow: none!important;
+}
+
+.fa-thumbs-o-up.likeBtn:hover{
+    cursor: pointer;
+    color: #3B9845;
+}
+
+.fa-thumbs-o-up.iLike{
+    color: #3B9845;
+}
+
+.fa-thumbs-o-down.dislikeBtn:hover{
+    cursor: pointer;
+    color: #b94a48;
+}
+
+.fa-star.favBtn:hover{
+    cursor: pointer;
+    color: #46B552;
+}
+
+.fa-thumbs-o-down.iDislike{
+    color: #b94a48;
+}
+
+.fa-trash-o{
+    cursor: pointer;
+}
+
+#error-page, #error-page p{
+    text-align: center;
+}
+
+#error-page img{
+    display: inline;
+}
+
+.teaser .panel .panel-body h3{
+    text-align: left;
+    margin: 9px;
+}
+
+.teaser .panel .panel-body .teaser-icon{
+    margin-left: 15px;
+    text-align: right;
+    font-size: 2.2em;
+    margin-top: 9px;
+}
+
+.go-icon{
+    text-align: right;
+    font-size: 1.5em;
+}
+
+.teaser{
+    margin: 5px 0 5px 0;
+}
+
+.navbar-default .badge{
+    color: #fff!important;
+    text-shadow: none;
+    font-size: 0.6em;
+    padding: 2px 4px;
+    position: absolute;
+    margin-left: -32px;
+    margin-top: 8px;
+}
+
+.cosa-verde{
+    color: #FFF;
+    background: transparent linear-gradient(to bottom, #43AD4C 0%, #4AA14E 52%, #3B9844 100%) repeat scroll 0% 0%;
+}
+
+#avatar img{
+    background-color: #fff;
 }

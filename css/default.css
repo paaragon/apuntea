@@ -24,12 +24,17 @@ section h3{
 }
 
 /*** Presentación universidades (index.php) ***/
-#top-universidades > .slide{
+#top-universidades{
+    width: 100%;
+    overflow-x: scroll;
+}
+#top-universidades > div > .slide{
     padding: 5px;
     float: left;
+    width: 178px;
 }
 
-#top-universidades > .slide img{
+#top-universidades > div > .slide img{
     width: 100%;
 }
 
@@ -97,4 +102,16 @@ section h3{
 #error-page h1{
     font-weight: bold;
     font-size: 5em;
+}
+
+.img-registro{
+    text-align: center;
+}
+
+#imgperfil{
+    max-width: 50%;
+}
+
+#imgportada{
+    width: 100%;
 }
